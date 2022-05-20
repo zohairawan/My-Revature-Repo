@@ -1,0 +1,575 @@
+Sql Lecture Notes Module - Intro to SQL
+This module covers SQL at a high level, introducing the important concepts needed for working with relational databases.
+
+Helpful References
+SQL Fiddle
+SQL Bolt
+SQL Zoo
+Oracle documentation
+MySQL
+Postgres
+Background
+SQL stands for Structured Query Language - it is a domain-specific language for working with certain databases called relational databases. SQL is not a programming language, although there are extensions to the specification like PL/SQL that add familiar programming constructs. Instead, it is an English-like syntax that lets developers and database administrators abstract away the process of manipulating data and focus on the WHAT instead of HOW in the database.
+
+Before we understand more about SQL, we need to understand what a relational database is. A relational database is a type of database that stores information in tables - that is, the data is stored in rows and columns, similar to a spreadsheet. Each row in the table is a record, and each record has properties which correspond to the different columns in the table. In order to provide a way for external entities to manipulate the database, we use a special kind of software called a relational database management system, or RDBMS. There are many different providers of vendors of RDBMS systems, including:
+
+Oracle
+PostgreSQL (or just "Postgres")
+MySQL
+Microsoft SQLServer
+Microsoft Access
+Relational databases are often contrasted with another category of databases - non-relational databases. We won't go into the details of non-relational databases here, but you should be aware that there are major differences. Nonrelational databases do not store data within tables that relate to each other, and thus do not use SQL to interact with the databse.
+
+RDBMS systems are one of the key components of any enterprise application or system. Why is this the case? Think about it - data by itself doesn’t mean a lot or even have intrinsic value. A lot of data thrown in a bucket would it mean be meaningless unless some kind of processing and analysis was done on it. Related data is what provides meaning and organizes the structure of data. For example, “an employee is in one or more departments”. We might have one table to store employees and another to store departments, and then define some relationship between them.
+
+Normally, relational databases are used in an OLTP (OnLine Transaction Processing) environment, which means that the idea of having related data is preferable in a very transactional system, and that are normally row-based.
+
+For non-transactional environments, the counter part is OLAP (OnLine Analytic Processing) systems, which are normally columnar-based, which is faster for reading but slower for manipulation.
+
+Data Types
+When defining the properties of an entity in the database (i.e. the columns), you must specify the data type to store. Common SQL datatypes include:
+
+Numeric
+BIT
+TINYINT
+BIGINT
+DECIMAL
+NUMERIC
+FLOAT
+REAL
+Date/Time
+DATE
+TIMESTAMP
+DATETIME
+TIME
+YEAR
+Character/String
+CHAR
+NCHAR
+VARCHAR
+NVARCHAR
+NTEXT
+Binary
+BINARY
+VARBINARY
+IMAGE
+Miscellaneous
+CLOB
+BLOB
+XML
+JSON
+Each database vendor may support their own data types, or not support some of the ones listed above. Refer to the specific vendor documentation for more information.
+
+Conventions
+SQL is a case-insensitive language, but the convention is to use UPPERCASE to refer to SQL keywords and lowercase for non-SQL specific entities (like table or column names). This helps distinguish between SQL keywords and other words. Also, for readability purposes we should split long commands or queries into multiple lines.
+
+For example, this:
+
+SELECT * FROM table1
+LEFT JOIN table2 ON table1.a = table2.b
+WHERE table1.x < 5
+AND table2.y > 8
+ORDER BY table1.a DESC
+is much more readable than:
+
+SELECT * FROM table1 LEFT JOIN table2 ON table1.a = table2.b WHERE table1.x < 5 AND table2.y > 8 ORDER BY table1.a DESC
+Module - SQL Sublanguages
+This module covers the sublanguages of SQL - DDL, DML, DQL, DCL, and TCL.
+
+Helpful References
+Overview
+All SQL statements are separated into different sub categories, also known as sub-languages. There are 5 sublanguages of SQL in total:
+
+DDL - data definition language
+DML - data manipulation language
+DQL - data query language
+DCL - data control language
+TCL - transaction control language
+We will also cover scalar and aggregate functions here, which related to database queries.
+
+DDL
+Data Definition Language statements are utilized to define the database schema or skeleton. It is how we implement the design structure of it. Some of the keywords in this sublanguage are:
+
+CREATE, to create new objects or tables.
+CREATE TABLE TABLE_NAME (C_NAME C_TYPE C_SYZE [NULL | NOT NULL], [CONSTRAINT])
+ALTER, to modify existing objects or tables.
+ALTER TABLE TABLE_NAME [ADD | MODIFY | DROP] C_NAME
+ALTER USER IDENTIFIED BY PASSWORD
+DROP, to delete existing objects or tables.
+DROP TABLE TABLE_NAME [CASCADE]
+TRUNCATE, to delete all the data existing within a table leaving the skeleton of the table only.
+TRUNCATE TABLE_NAME
+This is similar to performing DELETE TABLE with no where clause, the key difference is that TRUNCATE commits at the end of the operation.
+
+All DDL operations cannot be rolled back, which means that any change made by these are permanent.
+
+DML
+Data Manipulation Language statements are used to perform CRUD operations on the actual data. Operations are normally performed by row in a relational database.
+
+INSERT, to insert a new row into a table.
+INSERT INTO TABLE_NAME VALUES (V1, V2, ..., VN)
+INSERT INTO TABLE_NAME (C1, C2, C3) VALUES (V1, V2, V3)
+UPDATE, to update one or more rows column values of a table that match a specific WHERE clause.
+UPDATE TABLE_NAME SET C1 = V1, ... , CN = VN WHERE X = Y
+DELETE, to delete one or more rows of a table that match a specific WHERE clause.
+DELETE TABLE_NAME WHERE [condition]
+SELECT, to obtain one or more rows of a table that match a specific WHERE clause. In ORACLE databases this one is considered DML. This is how we perform queries in a database.
+SELECT C1, ..., CN FROM TABLE_NAME [table] WHERE [condition] GROUP BY [expression]
+HAVING [condition] ORDER BY table.field
+DCL
+Data Control Language statements are used to manage the security and control of database systems.
+
+GRANT, to grant any permissions to an existing user.
+GRANT PERMISSION TO USERNAME
+REVOKE, to revoke any permissions of an existing user.
+REVOKE PERMISSION TO USERNAME
+TCL
+Transaction Control Language statements are utilized to manage transactions within a relational database.
+
+COMMIT, any DML operations that were executed before the statements will be persisted permanently.
+ROLLBACK, any DML operations between two COMMIT statements will be completely erased (something like Ctrl + Z that will stop only when it reaches last time you opened the specific file). Committed transactions cannot be rollbacked.
+SAVEPOINT, utilized to ROLLBACK to a specific point in time.
+The general flow of using TCL could be as follows:
+
+[Many DML Operations]
+SAVEPOINT A
+[Many DML Operations]
+ROLLBACK TO A
+DQL
+Data Query Language, not really a sub-language within Oracle databases, is the sub language where only the SELECT statement exists. Remember, in Oracle the SELECT statement is considered as DML, but DQL could be an interview question.
+
+DQL Clauses
+GROUP BY & HAVING
+
+The GROUP BY clause will combine all rows by a column specified in a query and perform any aggregate functions which are stated.
+
+SELECT NAME, COUNT(NAME) FROM STUDENT GROUP BY (NAME)
+The HAVING clause will pass another filter similar to the WHERE clause after everything has been filtered and grouped.
+
+SELECT NAME, COUNT(NAME) FROM STUDENT GROUP BY (NAME) HAVING COUNT(NAME) > 5;
+If you try to perform this HAVING clause in a WHERE clause, a SQL error will be thrown, and it makes sense - the RDBMS doesn't want you to perform an aggregate function combining all rows, per each row. It's a performance safety measure.
+
+Scalar Functions
+Scalar functions operate on individual values and will perform some operation per row, and can be used in the SELECT or WHERE clause.
+
+TO_CHAR(DATE,'DATE_FORMAT')
+TO_DATE(DATE,'DATE_FORMAT')
+UPPER('VALUE')
+LOWER('VALUE')
+To write them in a query:
+
+SELECT UPPER(NAME) FROM STUDENT;
+SELECT NAME FROM STUDENT WHERE UPPER(NAME) LIKE 'P%'. 
+Aggregate Functions
+Aggregate functions operate on multiple values (multiple rows). These functions are used to combine (aggregate) the values existing in one column.
+
+MAX(COLUMN), which returns the max value on a column.
+MIN(COLUMN), which returns the minimum value on a column.
+AVG(COLUMN), which returns the average value of the column.
+SUM(COLUMN), which returns the sum of the column.
+COUNT(COLUMN), which returns the count of elements in a column.
+And many others.
+These functions are used in the SELECT clause. They can't be used in the WHERE clause.
+
+If there is more than one column being selected in the SELECT column section of a query which is not aggregating, a GROUP BY clause is required.
+
+In order to perform similar WHERE clause Boolean operations with aggregate functions, the HAVING clause can be used.
+
+Module - SQL Schema
+This module covers schemas, constraints, multiplicity, and normalization in RDBMS systems.
+
+Helpful References
+Defining 'Schema'
+A database schema refers to the formal structure of data defined in a relational database. This includes the various tables in the database as well as their columns, data types, and the relationship between tables. Schemas are enforced using constraints when defining tables, and we can visualize the schema of relational databases through entity-relationship diagrams, or ERDs.
+
+NOTE: In Oracle databases, schema can also refer to a logical data storage structure. Oracle systems create a separate "schema" for each database user. However, we will refer to the original definition above from now on when we mention schema. Don't let this confuse you.
+
+Constraints
+We can put integrity constraints on specific columns in our database when defining tables, which allow us to enforce the schema by ensuring consistency and integrity of the data in the table. The different constraints are listed below:
+
+PRIMARY KEY
+FOREIGN KEY
+NOT NULL
+UNIQUE
+CHECK
+DEFAULT
+A primary key is a constraint that uniquely identifies a record in a table. Often, this constraint will be enforced on some sort of "ID" field, such as "employee_id". A primary key is inherently composed of two other constraints - unique and not null. Thus, a primary key MUST be provided when inserting a record into a table, unless the RDBMS system is generating it automatically behind the scenes.
+
+A foreign key constraint signifies that a column represents a reference to the primary key of another table. This allows us to create relationships between tables. For example, if we are modeling cars and the owners of those cars, we might have a Car table with an owner_id foreign key that references the user_id field in the People table. We can then lookup the owner of any car by fetching the owner_id of the car and finding the matching user_id in the People table.
+
+A not null constraint simply enforces that all records must have a field for the column on which this constraint is applied. For example, we know that every person has a social security number, so we might want to consider placing a not null constraint on that field in our users table (assuming we want to store the social security numbers). This prevents users of the database from leaving the table in an inconsistent or invalid state. The unique constraint works similarly - records cannot be inserted if another record already has the same value for the column on which this is declared.
+
+The check constraint provides a way of performing validation on values before records are entered into the table. For example, we may want to ensure that a bank account can never have a negative balance, so we might set a check constraint (CHECK (balance >= 0)).
+
+Finally, a default constraint allows setting default values on columns for records that are inserted into the table.
+
+Candidate and Composite Keys
+Usually a primary key consists of a single column; however, sometimes we may have a scenario in which there could be multiple columns that together create a primary key to uniquely identify rows. We call these candidate keys. Once we identify the actual combination of columns to use as the primary key, we call this a composite key. For example, if you are modeling your CD collection, you might have fields such as track_no, album_id, and genre in the Track table. The track_no itself cannot work as a primary key because many different albums can have a track #1, for example. So we would need to create a composite key here, consisting of the track_no and the album_id columns. Using both of these columns together we can find the specific track we are looking for.
+
+Multiplicity
+As mentioned before, table relationships can be defined using foreign key constraints. There are several different kinds of relationships that exist between tables in relational databases:
+
+One to one
+One to Many / Many to One
+Many to Many
+A one-to-one relationship means that each entity in the table only relates to a single entity in the other table. For example, if we are modeling a school, where each classroom has a single projector in it, we would want to make this relationship a one to one between the Classroom and the Projector tables. In our database, we can provide the classroom table a projector_id foreign key and provide the projector table a classroom_id foreign key. To enforce the one to one aspect, we should also apply a unique constraint on the foreign key columns. Otherwise, a user could add another projector record with the same classroom_id as an existing record, and then our one to one relationship would be broken.
+
+A one to many (or vice versa, many to one) relationship is where one entity can belong to, own, or otherwise relate to multiple other entities. In our school modeling example, a Student could have many books, so this would be a one to many relationship. To create this in the database, we add the foreign key only on the many side of the relationship - so a book entity would have a field such as student_id as a foreign key to identify the owning student.
+
+A many-to-many relationship implies a one-to-many relationship in both directions on the entities. For example, a Teacher can have many Students, but a Student could have many Teachers as well. In this case, we cannot provide a direct link between the tables in the database - instead, we need to create what is called a junction table or bridge table to relate the two tables. So, in our student-teacher example, we could create a Class table which contains two foreign keys - one that refers to the Teacher table's primary key and one that refers to the Student table's primary key. This creates a list of unique Teacher-Student mappings that can be used to look up which students a particular teacher teaches, or which teachers a particular student has. An example is shown below.
+
+Class Table
+ClassId	TeacherId	StudentId
+1	1	1
+1	1	2
+2	1	3
+3	2	1
+3	2	3
+We can see above that Teacher 1 teaches both Student 1 and 2 in the same class. Teacher 2 teaches Student 1 and 3 in a different class. Teacher 1 also has another class where he just teaches Student 3.
+
+Referential Integrity
+When we create table relationships as demonstrated above, it is important that our data remains in a consistent state throughout the database. For example, we never want a record on our class table to be pointing to a record in either the Teacher or the Student table that does not exist. We call enforcing this property as maintaining referential integrity. When we break referential integrity, we will find orphan records in the database - these are records whose foreign keys do not point to an existing record in the other table. One way of preventing this from occuring is by using a setting called CASCADE DELETE - when we enable this, deleting a record in the table will also cascade that operation and delete any records in tables that reference the that record via foreign keys.
+
+Normalization
+Normalization refers to an optimization process of structuring a relational database in a way that reduces redundancy of data and improves data integrity and consistency. There are many different normal forms, which relate to the degree to which a database has been normalized. We will look at the first three normal forms, each of which build upon the previous:
+
+1NF - must have a primary key, no repeating groups, and atomic columns
+2NF - must already be in 1NF, plus have no partial dependencies
+3NF - must already be in 2NF, plus have no transitive dependencies
+The first normal form enforces that a table must:
+
+Have a primary key
+Each column should be as granular as possible (e.g. "Name" column should be broken up into: "First Name", "Last Name", "Middle Name", etc..)
+To be in second normal form, a table must also:
+
+Cannot have columns that are dependent on only one part of the key
+If there are no composite primary keys, you are automatically in 2NF
+Finally, to get to third normal form, a table must also:
+
+Not have transitive dependencies
+This means that if column C relates to column B which relates to column A which is the primary key, this is not in 3NF because C is related to the primary key but indirectly (it is a transitive dependency)
+To advance into higher normal forms, we typically "break up" tables into multiple tables and relate them to each other via foreign keys.
+
+A good way of remembering these normal forms in order is to remember the legal proceeding of swearing to tell the truth, the whole truth, and nothing but the truth. In relational databases, we must have the key (1NF), the whole key (2NF), and nothing but the key (3NF).
+
+Module - Transactions
+Helpful References
+Transactions
+Any amount of DML statements before a COMMIT statement is considered a transaction. After the COMMIT is done, the transaction should follow certain properties. Transactions are considered to be logical units of work - for example, transferring money from Person A's bank account to Person B's account. You should think about how to logically group your DML operations into transactions when writing code.
+
+The properties of transactions should be as follows:
+
+ATOMIC - "All or nothing", if any statement on the transaction fails, the whole transaction fails.
+CONSISTENT - If the database was in a consistent state before the transaction, it should be after it.
+ISOLATED - One transaction shouldn't affect other transactions. It can be applied in different levels.
+DURABLE - Persisted data should be saved permanently, even in the case of power loss or catastrophic software or hardware failure.
+Some RDBMS's have different approaches, even to recover from catastrophes (Oracle has special logs [Bitacora]).
+You can remember the properties of a transaction using the ACID acronym.
+
+Isolation Levels
+Isolation levels are applied in RDBMS to provide consistency and avoid certain read phenomena. The following isolation levels are presented from most to least isolated:
+
+Serializable
+Allowed in Oracle
+Read/Write locks
+Applies range locks even in the WHERE clauses of a select statement
+Phantom reads can't happen because of this
+Table that is being read can't be modified until the reading is done (no INSERTS, no UPDATES, no DELETES)
+Repeatable Reads
+Not used often
+Read/Write locks
+Doesn't provide range locks, that means phantom reads can happen
+Doesn't lock the whole SELECT statement, nor INSERTS, nor UPDATES, nor DELETS
+Read Committed
+Oracle default
+Write only locks
+Only data that is committed will be seen by other transactions
+Dirty reads can't happen, but Phantom reads can
+This is why it is recommended to not perform very long transactions
+Read Uncommitted
+A disaster
+Dirty reads are normal, any transaction can see any uncommitted data
+Very inconsistent
+Read Phenomena
+Dirty Read: reading data that is uncommitted
+Non-repeatable read: when a row is read twice in a transaction and the values are different
+Phantom Read: reading data that is being added or modified by a running transaction
+Module - PL/SQL
+Helpful References
+PL/SQL
+PL/SQL stands for the Procedural Language extension to SQL and it is a complete programming language which also allows SQL statements.
+
+Besides the programming itself, Oracle offers an OOP aspect to its databases, providing certain types of objects, some of which require PL/SQL code. CREATE [OR REPLACE] and DROP statements are allowed for these objects. ALTER is not allowed.
+
+Sequence
+A sequence is an object which holds a numeric number that starts from a certain point and it also contains a max. It increments by a specific amount every time NEXTVAL is called.
+
+They can be combined with Triggers to auto increment primary key columns.
+
+CREATE [OR REPLACE] SEQUENCE START WITH 1 INCREMENT BY 1
+Trigger
+A trigger is a block of code that executes when a specific event happens. These events can be INSERT, UPDATE or DELETE statements, and they can happen AFTER or BEFORE.
+
+Syntax:
+
+CREATE [OR REPLACE] TRIGGER 
+BEFORE INSERT ON TABLE_NAME
+  FOR EACH ROW
+  BEGIN
+    (PL/SQL code)
+  END;
+Cursor
+Pointers to a result set. They can be used to loop programmatically on the output of a SELECT statement (similar to iterators in Java).
+
+Oracle provides SYS_REFCURSOR, its own type of REFCURSOR. This means you can create your own type of REFCURSOR.
+
+Stored Procedure
+PL/SQL code that can be executed in certain ways and has some properties:
+
+They don't return anything.
+They may or may not contain IN (by value) and OUT (by reference) parameters.
+They allow any DML statements within.
+These means transactions can be created in a stored procedure.
+Stored procedures can call other procedures and functions.
+Can NOT use stored procedures in DML statements.
+EXEC STORED_PROCEDURE
+Function
+Also known as User Defined Functions, these are like stored procedures but have some other restrictions or abilities:
+
+They must return something.
+Cursors are allowed.
+It should be a single value.
+They may or may not contain IN parameters (by default).
+Only SELECT statements are allowed.
+Functions can only call other functions (no stored procedures).
+They can be used in any DML statement.
+To call a function, you have to use a DML statement (you can't EXEC).
+Use FROM DUAL if you are not selecting from a specific table.
+DUAL is a dummy table which returns anything your throw at it.
+Types
+Similar to classes, they can be used as your own datatypes for columns. We are not going to use this, because this is a high level technique which doesn't follow the normal forms.
+
+VARRAY
+Arrays of any Oracle data type or your own type, they can be used for columns.
+
+NESTED TABLE
+Infinite arrays, they can be seen as tables in columns. They have to be of a specific data type.
+
+Module - Views / Indexes
+Views
+Views are virtual tables - they are constructed from DQL queries and provide a window or "view" into the table. Views can be used to provide access to some portion of the data in a table but not all, which might be useful if the data is sensitive and needs to be kept private. Views are also used to abstract or hide complexity in the database - a view could be constructed with joins over multiple tables so that end users can query from denormalized tables easily. Users can query views just as if they were normal tables. Changes to the underlying table will be reflected in the view whenever it is queried next.
+
+Materialized Views
+Materialized views were introduced by Oracle and give a static snapshot of the data at a given point in time.
+
+Creating Views
+Create a view with the following syntax:
+
+CREATE VIEW [viewname] AS [any DQL statement]
+For example,
+
+CREATE VIEW myview AS SELECT col1, col2 FROM mytable WHERE mycolumn > 12
+Now, we can query from the view just as we would from a table:
+
+SELECT * FROM myview WHERE mycolumn > 20
+Indexes
+To explain the concept of indexes, think of the purpose of indexes in a book - you use them to speed up the process of locating some specific piece of information. You wouldn't want to skim an entire book to find where one word was mentioned; similarly, indexes allow databases to speed up the process of retrieving data.
+
+When an index is created on a database column, a separate data structure is created in the database (typically some sort of balanced tree), which stores references that point to the actual records in the table. This data structure can be searched much more quickly than searching through the entire table itself. Significant performance benefits can be achieved by implementing indexes on commonly queried columns. For this reason, primary keys are automatically indexed by the RDBMS system.
+
+Creating Indexes
+The syntax to create an index on a table's column is:
+
+CREATE INDEX index_name ON table_name (col1, col2, ...)
+Deleting Indexes
+ALTER TABLE table_name DROP INDEX index_name
+Best Practices
+You should consider adding an index to a column when you anticipate or already know that the column will often be used when searching the table for records. Often you will not know which columns should be indexed until you have gathered some data about queries run on the system in production.
+
+Types of Indexes
+Indexes can be categorized into two types: clustered and non-clustered. Clustered indexes alter the order in which the records are physically stored on disk. Thus only one clustered index can be created on a given table. Non-clustered indexes specify a logical ordering of rows but do not affect the physical ordering, so there may be more than one non-clustered index in a table.
+
+Additionally, there are further types of indexes:
+
+Bitmap
+Dense
+Sparse
+Reverse
+Primary
+Secondary
+In-depth knowledge of indexes is not necessary for our training purposes, however.
+
+Module - Joins & Set Operations
+Joins
+Used to combine two or more tables, joins are a database technique used in SELECT statements. Joins are normally performed comparing primary keys to foreign keys, however, they can be performed with any type of column, as long as the types match. Joins are a way of denormalizing a set of tables in order to aggregate or process some query.
+
+They can be performed in many ways:
+
+INNER JOIN.
+The most commonly used type of join, returns rows only if the columns specified in the join clause match.
+OUTER JOIN.
+The OUTER keyword can be used with LEFT, RIGHT or FULL keywords to obtain rows which some of the join columns are NULL.
+However, in Oracle, this word is optional. LEFT, RIGHT or FULL will be automatically OUTER.
+LEFT [OUTER] JOIN.
+Returns the matching rows plus the ones that where null in the first table.
+RIGHT [OUTER] JOIN.
+Returns the matching rows plus the ones that where null on the second table.
+FULL [OUTER] JOIN.
+Returns all rows from both tables specified including the ones which had null values on either side.
+CROSS JOIN.
+Returns the cartesian product two or more tables.
+SELF JOIN.
+An INNER JOIN performed matching two columns existing in the same table.
+They represent hierarchies.
+NATURAL JOIN
+Used as a shortcut so that the join predicate is not needed to be specified
+The tables are joined on matching column names
+As you can see, all JOINS are INNER unless otherwise specified with keywords.
+
+To write a join:
+
+SELECT A.FIRSTNAME, C.NAME FROM STUDENT S INNER JOIN COURSE C  ON S.COURSEID = C.ID;
+SELECT A.FIRSTNAME, C.NAME FROM STUDENT S, COURSE C  WHERE S.COURSEID = C.ID;
+SELECT A.FIRSTNAME, C.NAME FROM STUDENT S, COURSE C  WHERE S.COURSEID = C.ID(+);
+To optimize joins, put the tables to join from more data to less data, and then perform the joins in order.
+
+Sub Queries
+SELECT statements that can be performed in place of any DML statement.
+
+INSERT
+In the VALUES clause as long as the SELECT returns only one row
+To ensure this, add ROWNUM = 1 in the WHERE clause
+UPDATE
+In the SET clause as long as the SELECT statement returns one row
+In the WHERE clause (same SELECT WHERE rules apply)
+DELETE
+In the WHERE clause (same SELECT WHERE rules apply)
+SELECT
+In the FROM clause
+In the WHERE clause
+If the SELECT returns more than one row, use the keyword IN instead of the = operator
+By theory, JOINS are faster than sub-queries, however, these last ones come in handy in many cases and there are some cases that they might perform better than a join.
+
+Set Operators
+Set operators are different from joins. Instead of combining columns of two tables, set operators combine the rows of different result sets. Essentially, set operators perform some kind of (set) operation on two different queries.
+
+Some set operators are:
+
+UNION [ALL]
+UNION does not keep duplicates, but UNION ALL will
+INTERSECT
+Only returns records in common between the queries
+MINUS
+Removes from the first result set any rows that appear in the second result set and returns what remains
+EXCEPT
+Same as MINUS, but for SQLServer instead of Oracle
+Module - JDBC
+This module covers JDBC, the Java Database Connectivity API.
+
+Helpful References
+Oracle - Intro to JDBC
+Oracle JDBC tutorial
+SQL Fiddle
+Background
+JDBC is a Java API consisting of interfaces that allows Java applications to interact with relational databases. It comes with the Java Standard Edition (SE), so there is no need to include any external dependencies to get started. JDBC allows developers to query and manipulate any database that provides a JDBC driver - including Oracle DB, MySQL, Postgres, SQLServer, and many more.
+
+Since JDBC is a collection of interfaces, the database providers must write the drivers which implement the JDBC interfaces.
+
+Connect to Database
+To connect to a database the following elements are needed:
+
+Use either of the folling to retrieve a Connection object: a. The DriverManager class, the implementation of the JDBC interfaces (OJDBC for Oracle) b. The DataSource interface (preferred)
+Username.
+Password.
+URL (the endpoint to the database) - this varies by database, common connection string formats are: a. MySQL: jdbc:mysql://myhost:3306/ b. Oracle: jdbc:oracle:thin:@//myhost:1521/servicename c. SQLServer: jdbc:sqlserver://myhost:1433 d. PostgreSQL: jdbc:postgresql://myhost:5432/dbname
+The main interfaces of JDBC are:
+
+Connection - used to execute statements and get database information.
+Statement - regular SQL statement which can be hard to manage because single quotes need to be provided for String values. a. SQL Injection can happen.
+PreparedStatement, Java precompiled and controlled type of Statement that provides more readability, maintainability and security (no SQL injections). a. Values are inserted with indexes, starting from 1. b. E.g.: "INSERT INTO TABLE_NAME VALUES(?,?,NULL)" i. statement.setInt(1, 35); ii. statement.setString (2, "Hello"); iii. Yes, they start indexing from 1.
+CallableStatement - used to call stored procedures. (E.g.: {call [(,, ...)]}).
+ResultSet - the interface for retrieving and manipulating data from an SQL query
+Retrieving the Connection Object
+NOTE: before JDBC 4.0 (with Java SE 6), the programmer must first load the Driver implementation manually:
+
+Class.forName(oracle.jdbc.driver.OracleDriver);
+Assuming you are working with a JDK 6 or above, we can skip the above step and simply retrieve the Connection object in one of two ways:
+
+Via the DriverManager class
+Connection con = DriverManager.getConnection("jdbc:mysql://myhost:3306/","myusername", "mypassword");
+Via the DataSource interface (preferred)
+The specific vendor driver will have an implementation for the interface:
+
+OracleDataSource ods = new OracleDataSource();
+
+ods.setServerName("myhost");
+ods.setServiceName("myservice");
+ods.setDriverType("thin");
+ods.setUser("myuser");
+ods.setPassword("mypass");
+
+Connection con = ods.getConnection();
+Using Statements
+Next, we can use the Connection object to create Statements:
+
+String username = "Sally";
+String myQuery = "SELECT * FROM users WHERE username = " + username;
+Statement stmt = con.createStatement(myQuery); // just a regular Statement - vulnerable
+
+String safeSQL = "SELECT * FROM users WHERE username = ?";
+PreparedStatement ps = con.prepareStatement(safeSQL); // prevents SQL injection 
+ps.setString(1,"Sally");
+Generally, you'll want to use PreparedStatements to avoid the security flaw of SQL injection as shown above. You mark the parameters in the SQL with "?" and then later call .set[datatype]() methods to set those values dynamically, passing in the (1-based) index of the parameter and the value to use. Using PreparedStatements like this means that the SQL code will be pre-compiled before sending it over to the database to be executed - meaning that SQL injection is not possible.
+
+Executing SQL and Retrieving Results
+Once we've created whichever Statement we're using, we can then execute the SQL on the database and retrieve results via a ResultSet:
+
+ResultSet rs = ps.executeQuery(); // for DQL, returns a ResultSet
+
+// if our SQL is a DML or DDL statement, we can use executeUpdate which returns the number of rows the update touched
+int rowsAffected = ps.executeUpdate();
+
+// or, we can use execute for any SQL statement which returns true if it successfully completed
+boolean executed = ps.execute();
+Data Access Object Pattern
+One common design pattern regarding data access logic is the Data Access Object pattern - or DAO.
+
+This pattern achieves abstraction of functionality to retrieve, manipulate, and delete data (CRUD operations) away from the users of data objects by using interfaces which define the relevant methods.
+
+For example, say we have a Car table in our database that stores information of cars we'd like to view and manipulate. We want to be able to grab a car from the database, update its information, and even delete a car.
+
+First, we create an interface that defines the functionality we desire:
+
+public interface CarDAO {
+  Car getCarByVIN(String vin);
+  List<Car> getAllCars();
+  void updateCar(Car c);
+  void deleteCar(Car c);
+}
+This interface has declared all of the functionality we need. Now, we can implement the interface by writing the persistence-layer logic in a class that implements the interface:
+
+public class CarOracleDAO implements CarDAO {
+  public Car getCarByVIN(String vin) {
+    // some JDBC code here...
+    return myCar;
+  }
+  public List<Car> getAllCars() {
+    // etc...
+  }
+  public void updateCar(Car c) {
+    // more JDBC code here...
+  }
+  public void deleteCar(Car c) {
+    // and so on..
+  }
+}
+
+The benefit of using an interface to define these data operations is that we **don't care which underlying implementation is being used** - all we care about are the methods defined in the interface. If we use a `CarDAO` whose implementation is `CarOracleDAO`, we can later on easily swap out something like `CarMySQLDAO` or even `CarFileIODAO` to persist our Cars to local files instead of a database.
+
+```java
+CarDAO cd = new CarOracleDAO(); // at any time we can change CarOracleDAO to another class which implements CarDAO and the rest of the code works fine
+List<Car> allCars = cd.getAllCars();
+for (Car c : allCars) {
+  cd.deleteCar(c);
+}
+System.out.println("I have demolished all the cars!!!");
