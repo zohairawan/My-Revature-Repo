@@ -15,7 +15,7 @@ An "Aspect" is one of these cross-cutting concerns, such as logging.
 "JoinPoints" are the locations that can be injected at. The potential targets for injection.
 "PointCuts" are expressions (like Regular Expressions) that describe some subset of the targets, or JoinPoints.
 
-Specifically, the JoinPoints are methods. We can inject functionality before, after, or around methods being invoked.
+Specifically, the JoinPoints are methods. We can inject functionality before, after, throws, or around methods being invoked.
 
 PointCuts will be some expression to define some collection of method signatures that will be target for some specific scenario of injection.
 
