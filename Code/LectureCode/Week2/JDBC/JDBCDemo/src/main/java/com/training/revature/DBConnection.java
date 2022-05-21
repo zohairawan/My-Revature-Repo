@@ -16,7 +16,7 @@ public class DBConnection {
         Connection conn = null;
         try {
             //1.Retrieve the file containing the Driver and connection information and store it in reader
-            FileReader reader = new FileReader("C:\\Users\\Zohair\\IdeaProjects\\Revature\\Code\\LectureCode\\Week2\\DBConnection.properties");
+            FileReader reader = new FileReader("C:\\Users\\Zohair\\IdeaProjects\\Revature\\Code\\LectureCode\\Week2\\JDBC\\DBConnection.properties");
 
             //2.Properties object will be used to store the key/value pairs of the reader file(DBConnection.properties)
             Properties properties = new Properties();

@@ -17,7 +17,7 @@ public class InsertProductStmt {
         Statement stmt = conn.createStatement();
 
         //4.Updating the database table and storing the return data
-        int rowsUpdated = stmt.executeUpdate("INSERT INTO product VALUES(11, 'BigScreenTv', 'Good', 55, 350, 'Good')");
+        int rowsUpdated = stmt.executeUpdate("INSERT INTO product VALUES(12, 'Flatscreen', 'Good', 35, 200, 'Good')");
 
         //5.Printing the return data
         System.out.println(rowsUpdated + " row(s) updated");
