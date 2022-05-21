@@ -47,7 +47,7 @@ public class InsertProductPstmt {
             //3.Create the PreparedStatement
             pstmt = conn.prepareStatement("INSERT INTO product VALUES(?,?,?,?,?,?)");
 
-            //4.Setting the values for a row from the user input
+            //4.Storing the values for a row from the user input
             pstmt.setInt(1, productId);
             pstmt.setString(2, productName);
             pstmt.setString(3, productFeedback);
@@ -55,10 +55,10 @@ public class InsertProductPstmt {
             pstmt.setInt(5, price);
             pstmt.setString(6, productReview);
 
-            //5.Storing the return data
+            //5.Updating the table with stored values from user and storing how many rows were updated
             int rowsUpdated = pstmt.executeUpdate();
 
-            //6.Printing the return data
+            //6.Printing how many rows were updated
             System.out.println(rowsUpdated + " row(s) updated");
         } catch (ClassNotFoundException e) {
             System.out.println("Driver not available");
