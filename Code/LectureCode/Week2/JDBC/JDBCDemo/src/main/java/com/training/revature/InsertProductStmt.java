@@ -21,6 +21,7 @@ public class InsertProductStmt {
 
         //5.Printing the return data
         System.out.println(rowsUpdated + " row(s) updated");
+
         //6.Closing the connection
         stmt.close();
         conn.close();

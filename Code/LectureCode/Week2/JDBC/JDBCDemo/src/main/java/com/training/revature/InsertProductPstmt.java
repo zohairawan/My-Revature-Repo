@@ -52,6 +52,7 @@ public class InsertProductPstmt {
 
         //6.Printing how many rows were updated
         System.out.println(rowsUpdated + " row(s) updated");
+
         //6.Closing the connection
         pstmt.close();
         conn.close();
