@@ -12,7 +12,7 @@ public class FirstSpringBootProjectApplication {
         SpringApplication.run(FirstSpringBootProjectApplication.class, args);
     }
 
-    @RequestMapping                 //http://localhost:8081/ type this in the browser to display message
+    @RequestMapping()                 //http://localhost:8081/ type this in the browser to display message
     public String index() {
         return "Welcome to Revature";
     }
