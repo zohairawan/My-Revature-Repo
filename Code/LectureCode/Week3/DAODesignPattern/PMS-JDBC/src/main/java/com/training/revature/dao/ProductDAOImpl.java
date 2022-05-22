@@ -39,11 +39,11 @@ public class ProductDAOImpl implements ProductDAO{
 
     //8.Update Stock
     //The UPDATE PreparedStatement to be executed on the database
-    private static final String UPDATE_STOCK = "UPDATE product SET qoh = ? WHERE productid = ?";
+    private static final String UPDATE_STOCK = "UPDATE product SET qoh = qoh + ? WHERE productid = ?";
 
     //9.Update Price
     //The UPDATE PreparedStatement to be executed on the database
-    private static final String UPDATE_PRICE = "UPDATE product SET price = ? WHERE productid = ?";
+    private static final String UPDATE_PRICE = "UPDATE product SET price = price - (price/100 * ?) WHERE productid = ?";
 
     @Override
     public boolean isProductExist(int productId) {
