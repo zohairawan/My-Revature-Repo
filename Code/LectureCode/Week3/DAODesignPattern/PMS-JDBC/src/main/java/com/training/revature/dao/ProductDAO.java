@@ -34,6 +34,6 @@ public interface ProductDAO {
     //8.Update Stock
     public int updateStock(int productId, int addQoh);
 
-    //9. Discount Price
+    //9. Update Price
     public int updatePrice(int productId, int discountPercent);
 }

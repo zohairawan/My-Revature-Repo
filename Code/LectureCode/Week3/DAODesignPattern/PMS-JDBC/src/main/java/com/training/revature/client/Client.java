@@ -9,7 +9,7 @@
  * 6. Find product by Name
  * 7. Find all Products
  * 8. Update Stock
- * 9. Discount Price
+ * 9. Update Price
  * 10. E X I T
  */
 

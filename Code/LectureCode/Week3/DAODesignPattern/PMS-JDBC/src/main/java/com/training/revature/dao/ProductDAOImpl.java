@@ -11,37 +11,37 @@ public class ProductDAOImpl implements ProductDAO{
 
     //1.Does product exist
     //The SELECT PreparedStatement to be executed on the database
-    private static final String SELECT_PRODUCT_PSTATEMENT = "SELECT productid FROM product WHERE productid = ?";
+    private static final String SELECT_PRODUCT = "SELECT productid FROM product WHERE productid = ?";
 
     //2.Add Product
     //The INSERT INTO PreparedStatement to be executed on the database
-    private static final String INSERT_PRODUCT_PSTATEMENT = "INSERT INTO product VALUES(?,?,?,?)";
+    private static final String INSERT_PRODUCT = "INSERT INTO product VALUES(?,?,?,?)";
 
     //3.Update Product
     //The UPDATE PreparedStatement to be executed on the database
-    private static final String UPDATE_PRODUCT_PSTATEMENT = "UPDATE product SET productId = ?, productName = ?, qoh = ?, price = ?";
+    private static final String UPDATE_PRODUCT = "UPDATE product SET productname = ?, qoh = ?, price = ? WHERE productid = ?";
 
     //4.Delete Product
     //The DELETE PreparedStatement to be executed on the database
-    private static final String DELETE_PRODUCT_PSTATEMENT = "DELETE FROM product WHERE productid = ?";
+    private static final String DELETE_PRODUCT = "DELETE FROM product WHERE productid = ?";
 
     //5.Find Product by Id
     //The SELECT PreparedStatement to be executed on the database
-    private static final String FIND_PRODUCT_ID_PSTATEMENT = "SELECT productid FROM product WHERE productid = ?";
+    private static final String GET_PRODUCT_BY_ID = "SELECT * FROM product WHERE productid = ?";
 
     //6.Find product by Name
     //The SELECT PreparedStatement to be executed on the database
-    private static final String FIND_PRODUCT_NAME_PSTATEMENT = "SELECT productid FROM product WHERE productname = ?";
+    private static final String GET_PRODUCT_BY_NAME = "SELECT * FROM product WHERE productname = ?";
 
     //7.Find all Products
     //The SELECT PreparedStatement to be executed on the database
-    private static final String FIND_ALL_PRODUCT_PSTATEMENT = "SELECT productname FROM product";
+    private static final String GET_ALL_PRODUCT = "SELECT * FROM product";
 
     //8.Update Stock
     //The UPDATE PreparedStatement to be executed on the database
     private static final String UPDATE_STOCK = "UPDATE product SET qoh = ? WHERE productid = ?";
 
-    //9.Discount Price
+    //9.Update Price
     //The UPDATE PreparedStatement to be executed on the database
     private static final String UPDATE_PRICE = "UPDATE product SET price = ? WHERE productid = ?";
 
