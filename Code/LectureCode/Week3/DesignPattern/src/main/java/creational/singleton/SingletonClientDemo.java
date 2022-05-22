@@ -4,7 +4,7 @@
  * Singleton Design Pattern creates one object to be used for all users of the app
  * This shows that only one object gets created
  */
-package singleton;
+package creational.singleton;
 
 public class SingletonClientDemo {
     public static void main(String[] args) {

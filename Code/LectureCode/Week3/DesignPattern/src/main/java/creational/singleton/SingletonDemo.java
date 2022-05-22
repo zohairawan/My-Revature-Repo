@@ -3,7 +3,7 @@
  * Singleton Design Pattern creates one object to be used for all users of the app
  */
 
-package singleton;
+package creational.singleton;
 
 public class SingletonDemo {
 
