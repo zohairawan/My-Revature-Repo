@@ -26,12 +26,20 @@ public class ProductDAOImpl implements ProductDAO{
     private static final String DELETE_PRODUCT_PSTATEMENT = "DELETE FROM product WHERE productid = ?";
 
     //5.Find Product by Id
-    //The FIND PreparedStatement to be executed on the database
-    
+    //The SELECT PreparedStatement to be executed on the database
+    private static final String FIND_PRODUCT_ID_PSTATEMENT = "SELECT productid FROM product WHERE productid = ?";
+
     //6.Find product by Name
+    //The SELECT PreparedStatement to be executed on the database
+    private static final String FIND_PRODUCT_NAME_PSTATEMENT = "SELECT productid FROM product WHERE productname = ?";
+
     //7.Find all Products
+    //The SELECT PreparedStatement to be executed on the database
+    private static final String FIND_ALL_PRODUCT_PSTATEMENT = "SELECT productname FROM product";
     //8.Update Stock
+
     //9.Discount Price
+
 
     @Override
     public boolean isProductExist(int productId) {
