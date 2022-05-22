@@ -36,10 +36,14 @@ public class ProductDAOImpl implements ProductDAO{
     //7.Find all Products
     //The SELECT PreparedStatement to be executed on the database
     private static final String FIND_ALL_PRODUCT_PSTATEMENT = "SELECT productname FROM product";
+
     //8.Update Stock
+    //The UPDATE PreparedStatement to be executed on the database
+    private static final String UPDATE_STOCK = "UPDATE product SET qoh = ? WHERE productid = ?";
 
     //9.Discount Price
-
+    //The UPDATE PreparedStatement to be executed on the database
+    private static final String UPDATE_PRICE = "UPDATE product SET price = ? WHERE productid = ?";
 
     @Override
     public boolean isProductExist(int productId) {
