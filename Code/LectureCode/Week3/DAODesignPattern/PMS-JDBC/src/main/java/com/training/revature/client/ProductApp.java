@@ -33,7 +33,7 @@ public class ProductApp {
                 //Add
                 case 1:
                     System.out.println("Welcome to the 'Add Product' section");
-                    System.out.print("Please enter a Product Id: ");
+                    System.out.print("Please enter a Product ID: ");
                     int productId = keyboard.nextInt();
 
                     if (productDAOImpl.isProductExist(productId)) {
@@ -64,7 +64,7 @@ public class ProductApp {
                 //Delete
                 case 2:
                     System.out.println("Welcome to the 'Delete Product' section");
-                    System.out.print("Please enter the Product Id: ");
+                    System.out.print("Please enter the Product ID: ");
                     productId = keyboard.nextInt();
 
                     if(!productDAOImpl.deleteProduct(productId)) {
@@ -85,7 +85,7 @@ public class ProductApp {
                 case 3:
                     System.out.println("Welcome to the 'Find Product by Id' section");
                     System.out.println("In this section we will display the relevant product for you");
-                    System.out.print("Please enter the Product Id: ");
+                    System.out.print("Please enter the Product ID: ");
                     productId = keyboard.nextInt();
 
                     if(productDAOImpl.isProductExist(productId)) {
@@ -121,11 +121,47 @@ public class ProductApp {
                 //Update
                 case 6:
                     System.out.println("Welcome to the 'Update Stock' section");
+                    System.out.print("Please enter the Product ID: ");
+                    productId = keyboard.nextInt();
+
+                    if(productDAOImpl.isProductExist(productId)) {
+                        System.out.print("Please enter the additional Quantity on hand: ");
+                        int addQoh = keyboard.nextInt();
+                        result = productDAOImpl.updateStock(productId, addQoh);
+
+                        if(result) {
+                            System.out.println("Additional Quanitity on hand updated successfully");
+                        }
+                        else {
+                            System.out.println("An error occurred when updating the additional Quantity on hand");
+                        }
+                    }
+                    else {
+                        System.out.println("Item does not exist, please try with a valid Product ID");
+                    }
                     break;
 
                 //Update
                 case 7:
                     System.out.println("Welcome to the 'Update Price' section");
+                    System.out.print("Please enter the Product ID: ");
+                    productId = keyboard.nextInt();
+
+                    if(productDAOImpl.isProductExist(productId)) {
+                        System.out.print("Please enter the percentage you want the item discounted by: ");
+                        int discountPercent = keyboard.nextInt();
+                        int resultInt = productDAOImpl.updatePrice(productId, discountPercent);
+
+                        if(resultInt > 0) {
+                            System.out.println("Price updated successfully");
+                        }
+                        else {
+                            System.out.println("An error occurred with updating the price");
+                        }
+                    }
+                    else {
+                        System.out.println("This product does not exist, please enter a valid Product ID number");
+                    }
                     break;
 
                 //Update

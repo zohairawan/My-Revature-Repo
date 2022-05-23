@@ -259,7 +259,7 @@ public class ProductDAOImpl implements ProductDAO {
         PreparedStatement pstmt;
         int result;
         ResultSet resultSet;
-        Product product = null;
+        //Product product = null;
         //UPDATE product SET price = price - (price/100 * ?) WHERE productid = ?
         try {
             pstmt = connection.prepareStatement(UPDATE_PRICE);
@@ -276,9 +276,9 @@ public class ProductDAOImpl implements ProductDAO {
             //Only one product will be retrieved so no need for loop
             resultSet.next();
             //Getting productid from database and setting in Product object
-            product.setProductPrice(resultSet.getInt(4));
+            //product.setProductPrice(resultSet.getInt(4));
             //Print updated price
-            System.out.println(product.getPrice());
+            //System.out.println(product.getPrice());
 
             if(result == 0) {
                 return -1;
@@ -301,10 +301,10 @@ public class ProductDAOImpl implements ProductDAO {
         try {
             //UPDATE product SET productname = ?, qoh = ?, price = ? WHERE productid = ?
             pstmt = connection.prepareStatement(UPDATE_PRODUCT);
-            pstmt.setInt(4, product.getProductId());
             pstmt.setString(1, product.getProductName());
             pstmt.setInt(2, product.getQoh());
             pstmt.setInt(3, product.getPrice());
+            pstmt.setInt(4, product.getProductId());
             //Execute the PreparedStatement and storing the result
             result = pstmt.executeUpdate();
         } catch (SQLException e) {
