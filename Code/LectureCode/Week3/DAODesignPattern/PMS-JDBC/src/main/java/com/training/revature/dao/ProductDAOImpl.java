@@ -7,39 +7,37 @@ package com.training.revature.dao;
 import com.training.revature.model.Product;
 import com.training.revature.util.DBConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAOImpl implements ProductDAO {
 
     //These will be our PreparedStatements
-    //1.Does product exist
+    //Does product exist
     private static final String DOES_PRODUCT_EXIST = "SELECT productid FROM product WHERE productid = ?";
-    //2.Add Product
+    //1.Add Product
     private static final String INSERT_PRODUCT = "INSERT INTO product VALUES(?,?,?,?)";
-    //3.Update Product
-    private static final String UPDATE_PRODUCT = "UPDATE product SET productname = ?, qoh = ?, price = ? WHERE productid = ?";
-    //4.Delete Product
+    //2.Delete Product
     private static final String DELETE_PRODUCT = "DELETE FROM product WHERE productid = ?";
-    //5.Find Product by Id
+    //3.Find Product by Id
     private static final String GET_PRODUCT_BY_ID = "SELECT * FROM product WHERE productid = ?";
-    //6.Find product by Name
+    //4.Find product by Name
     private static final String GET_PRODUCT_BY_NAME = "SELECT * FROM product WHERE productname = ?";
-    //7.Find all Products
+    //5.Find all Products
     private static final String GET_ALL_PRODUCT = "SELECT * FROM product";
-    //8.Update Stock
+    //6.Update Stock
     private static final String UPDATE_STOCK = "UPDATE product SET qoh = qoh + ? WHERE productid = ?";
-    //9.Update Price
+    //7.Update Price
     private static final String UPDATE_PRICE = "UPDATE product SET price = price - (price/100 * ?) WHERE productid = ?";
+    //8.Update Product
+    private static final String UPDATE_PRODUCT = "UPDATE product SET productname = ?, qoh = ?, price = ? WHERE productid = ?";
 
     //Create this object so we can use a PreparedStatement
     Connection connection = DBConnection.getConnection();
 
     @Override
-    //1.Does product exist
+    //Does product exist
     public boolean isProductExist(int productId) {
         //This object allows us to execute our query
         PreparedStatement pstmt;
@@ -64,7 +62,7 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    //2.Add Product
+    //1.Add Product
     public boolean addProduct(Product product) {
         //This object allows us to execute our update
         PreparedStatement pstmt;
@@ -91,33 +89,7 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    //3.Update Product
-    public boolean updateProduct(Product product) {
-        //This object allows us to execute our update
-        PreparedStatement pstmt;
-        int result = 0;
-        try {
-            //UPDATE product SET productname = ?, qoh = ?, price = ? WHERE productid = ?
-            pstmt = connection.prepareStatement(UPDATE_PRODUCT);
-            pstmt.setInt(4, product.getProductId());
-            pstmt.setString(1, product.getProductName());
-            pstmt.setInt(2, product.getQoh());
-            pstmt.setInt(3, product.getPrice());
-            //Execute the PreparedStatement and storing the result
-            result = pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if(result == 0) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
-
-    @Override
-    //4.Delete Product
+    //2.Delete Product
     public boolean deleteProduct(int productId) {
         //This object allows us to execute our update
         PreparedStatement pstmt;
@@ -141,7 +113,7 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    //5.Find Product by Id
+    //3.Find Product by Id
     public Product getProduct(int productId) {
         //This object allows us to execute our query
         PreparedStatement pstmt;
@@ -168,27 +140,30 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    //6.Find product by Name
+    //4.Find product by Name
     public List<Product> getProduct(String productName) {
         //SELECT * FROM product WHERE productname = ?
         //This object allows us to execute our query
         PreparedStatement pstmt;
         ResultSet resultSet;
-        Product product = new Product();
+        List <Product> productList = new ArrayList<Product>();
         try {
             //SELECT * FROM product WHERE productid = ?
             pstmt = connection.prepareStatement(GET_PRODUCT_BY_NAME);
             pstmt.setString(1, productName);
             //Execute the PreparedStatement and storing the result
             resultSet = pstmt.executeQuery();
-            //Only one product will be retrieved so no need for loop
-            resultSet.next();
-            //Getting productid from database and setting in Product object
-            product.setProductId(resultSet.getInt(1));
-            product.setProductName(resultSet.getString(2));
-            product.setProductQoh(resultSet.getInt(3));
-            product.setProductPrice(resultSet.getInt(4));
-            return product;
+            //Getting product values from database and setting in Product object
+            while (resultSet.next()) {
+                Product product = new Product();
+                product.setProductId(resultSet.getInt(1));
+                product.setProductName(resultSet.getString(2));
+                product.setProductQoh(resultSet.getInt(3));
+                product.setProductPrice(resultSet.getInt(4));
+                //Adding product pne by one in ArrayList
+                productList.add(product);
+            }
+            return productList;
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
@@ -196,14 +171,37 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    //7.Find all Products
+    //5.Find all Products
     public List<Product> getProducts() {
         //SELECT * FROM product
-        return null;
+        //This object allows us to execute our query
+        Statement stmt;
+        ResultSet resultSet;
+        List <Product> productList = new ArrayList<Product>();
+        try {
+            //SELECT * FROM product
+            stmt = connection.createStatement();
+            //Execute the PreparedStatement and storing the result
+            resultSet = stmt.executeQuery(GET_ALL_PRODUCT);
+            //Getting product values from database and setting in Product object
+            while (resultSet.next()) {
+                Product product = new Product();
+                product.setProductId(resultSet.getInt(1));
+                product.setProductName(resultSet.getString(2));
+                product.setProductQoh(resultSet.getInt(3));
+                product.setProductPrice(resultSet.getInt(4));
+                //Adding product pne by one in ArrayList
+                productList.add(product);
+            }
+            return productList;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    //8.Update Stock
+    //6.Update Stock
     public boolean updateStock(int productId, int addQoh) {
         //This object allows us to execute our update
         PreparedStatement pstmt;
@@ -213,7 +211,7 @@ public class ProductDAOImpl implements ProductDAO {
             pstmt = connection.prepareStatement(UPDATE_STOCK);
             pstmt.setInt(1, addQoh);
             pstmt.setInt(2, productId);
-            //Execute the PreparedStatement and storing the result
+            //Execute the PreparedStatement and storing number of row(s) that got updated
             result = pstmt.executeUpdate();
             if (result == 0) {
                 return false;
@@ -228,10 +226,68 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    //9.Update Price
+    //7.Update Price
     public int updatePrice(int productId, int discountPercent) {
         //This object allows us to execute our
+        PreparedStatement pstmt;
+        int result;
+        ResultSet resultSet;
+        Product product = null;
         //UPDATE product SET price = price - (price/100 * ?) WHERE productid = ?
-        return 0;
+        try {
+            pstmt = connection.prepareStatement(UPDATE_PRICE);
+            pstmt.setInt(1, discountPercent);
+            pstmt.setInt(2, productId);
+            //Execute the PreparedStatement and storing number of row(s) that got updated
+            result = pstmt.executeUpdate();
+
+            //SELECT * FROM product WHERE productid = ?;
+            pstmt = connection.prepareStatement(GET_PRODUCT_BY_ID);
+            pstmt.setInt(1, productId);
+            //Execute the PreparedStatement and storing
+            resultSet = pstmt.executeQuery();
+            //Only one product will be retrieved so no need for loop
+            resultSet.next();
+            //Getting productid from database and setting in Product object
+            product.setProductPrice(resultSet.getInt(4));
+            //Print updated price
+            System.out.println(product.getPrice());
+
+            if(result == 0) {
+                return -1;
+            }
+            else {
+                return result;
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    //8.Update Product
+    public boolean updateProduct(Product product) {
+        //This object allows us to execute our update
+        PreparedStatement pstmt;
+        int result = 0;
+        try {
+            //UPDATE product SET productname = ?, qoh = ?, price = ? WHERE productid = ?
+            pstmt = connection.prepareStatement(UPDATE_PRODUCT);
+            pstmt.setInt(4, product.getProductId());
+            pstmt.setString(1, product.getProductName());
+            pstmt.setInt(2, product.getQoh());
+            pstmt.setInt(3, product.getPrice());
+            //Execute the PreparedStatement and storing the result
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if(result == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }
