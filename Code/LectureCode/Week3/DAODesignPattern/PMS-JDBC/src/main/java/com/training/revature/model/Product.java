@@ -59,11 +59,11 @@ public class Product implements Serializable {
     //You need toString() if you want to print the object out
     @Override
     public String toString() {
-        return "Product{" +
-                "productId=" + productId +
-                ", productName='" + productName + '\'' +
-                ", qoh=" + qoh +
-                ", price=" + price +
-                '}';
+        return "\nProduct{" +
+                "\nproductId=" + productId +
+                "\nproductName='" + productName + '\'' +
+                "\nqoh=" + qoh +
+                "\nprice=" + price +
+                "}\n";
     }
 }

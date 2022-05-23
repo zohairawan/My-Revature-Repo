@@ -16,6 +16,8 @@ public class ProductDAOImpl implements ProductDAO {
     //These will be our PreparedStatements
     //Does product exist
     private static final String DOES_PRODUCT_EXIST = "SELECT productid FROM product WHERE productid = ?";
+    //Does product exist
+    private static final String DOES_PRODUCT_EXIST_NAME = "SELECT productname FROM product WHERE productname = ?";
     //1.Add Product
     private static final String INSERT_PRODUCT = "INSERT INTO product VALUES(?,?,?,?)";
     //2.Delete Product
@@ -47,6 +49,31 @@ public class ProductDAOImpl implements ProductDAO {
             //SELECT productid FROM product WHERE productid = ?
             pstmt = connection.prepareStatement(DOES_PRODUCT_EXIST);
             pstmt.setInt(1, productId);
+            //Execute the PreparedStatement and storing the result
+            resultSet = pstmt.executeQuery();
+            //Checking to see if Product object exists
+            if(resultSet.next()) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    //Does product exist
+    public boolean isProductExist(String productName) {
+        //This object allows us to execute our query
+        PreparedStatement pstmt;
+        //Holds product if it exists
+        ResultSet resultSet;
+        try {
+            //SELECT productname FROM product WHERE productname = ?
+            pstmt = connection.prepareStatement(DOES_PRODUCT_EXIST_NAME);
+            pstmt.setString(1, productName);
             //Execute the PreparedStatement and storing the result
             resultSet = pstmt.executeQuery();
             //Checking to see if Product object exists
@@ -127,7 +154,7 @@ public class ProductDAOImpl implements ProductDAO {
             resultSet = pstmt.executeQuery();
             //Only one product will be retrieved so no need for loop
             resultSet.next();
-            //Getting productid from database and setting in Product object
+            //Getting productid from database and setting in Product object to present to user
             product.setProductId(resultSet.getInt(1));
             product.setProductName(resultSet.getString(2));
             product.setProductQoh(resultSet.getInt(3));
@@ -153,7 +180,7 @@ public class ProductDAOImpl implements ProductDAO {
             pstmt.setString(1, productName);
             //Execute the PreparedStatement and storing the result
             resultSet = pstmt.executeQuery();
-            //Getting product values from database and setting in Product object
+            //Getting product values from database and setting in Product object to present to user
             while (resultSet.next()) {
                 Product product = new Product();
                 product.setProductId(resultSet.getInt(1));
@@ -183,7 +210,7 @@ public class ProductDAOImpl implements ProductDAO {
             stmt = connection.createStatement();
             //Execute the PreparedStatement and storing the result
             resultSet = stmt.executeQuery(GET_ALL_PRODUCT);
-            //Getting product values from database and setting in Product object
+            //Getting product values from database and setting in Product object to present to user
             while (resultSet.next()) {
                 Product product = new Product();
                 product.setProductId(resultSet.getInt(1));

@@ -10,30 +10,24 @@ import com.training.revature.model.Product;
 import java.util.List;
 
 public interface ProductDAO {
-    //1.Does product exist
+    //Does product exist
     public boolean isProductExist(int productId);
-
-    //2.Add Product
+    //Does product exist
+    public boolean isProductExist(String productName);
+    //1.Add Product
     public boolean addProduct(Product product);
-
-    //3.Update Product
-    public boolean updateProduct(Product product);
-
-    //4.Delete Product
+    //2.Delete Product
     public boolean deleteProduct(int productId);
-
-    //5.Find Product by Id
+    //3.Find Product by Id
     public Product getProduct(int productId);
-
-    //6.Find product by Name
+    //4.Find product by Name
     public List<Product> getProduct(String productName);
-
-    //7.Find all Products
+    //5.Find all Products
     public List<Product> getProducts();
-
-    //8.Update Stock
+    //6.Update Stock
     public boolean updateStock(int productId, int addQoh);
-
-    //9. Update Price
+    //7.Update Price
     public int updatePrice(int productId, int discountPercent);
+    //8.Update Product
+    public boolean updateProduct(Product product);
 }

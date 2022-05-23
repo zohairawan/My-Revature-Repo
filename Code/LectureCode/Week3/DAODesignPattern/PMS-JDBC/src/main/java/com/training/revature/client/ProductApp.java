@@ -13,7 +13,8 @@ public class ProductApp {
         ProductDAOImpl productDAOImpl = new ProductDAOImpl();
         boolean result = false;
 
-        while (choice != 10) {
+        while (choice != 9) {
+            System.out.println();
             System.out.println("M E N U");
             System.out.println("1. Add Product");
             System.out.println("2. Delete Product");
@@ -23,15 +24,16 @@ public class ProductApp {
             System.out.println("6. Update Stock");
             System.out.println("7. Update Price");
             System.out.println("8. Update Product");
-            System.out.println("10. E X I T");
+            System.out.println("9. E X I T");
 
             System.out.print("Please enter your choice: ");
             choice = keyboard.nextInt();
 
             switch (choice) {
+                //Add
                 case 1:
-                    System.out.println("Welcome to the 'Does product exist section");
-                    System.out.print("Please enter the Product Id: ");
+                    System.out.println("Welcome to the 'Add Product' section");
+                    System.out.print("Please enter a Product Id: ");
                     int productId = keyboard.nextInt();
 
                     if (productDAOImpl.isProductExist(productId)) {
@@ -47,6 +49,7 @@ public class ProductApp {
                         int price = keyboard.nextInt();
                         Product product = new Product(productId, productName, qoh, price);
 
+                        //Adding it to database
                         result = productDAOImpl.addProduct(product);
 
                         if (result) {
@@ -58,9 +61,10 @@ public class ProductApp {
                     }
                     break;
 
+                //Delete
                 case 2:
-                    System.out.println("Welcome to the product delete section");
-                    System.out.print("Please enter a Product Id: ");
+                    System.out.println("Welcome to the 'Delete Product' section");
+                    System.out.print("Please enter the Product Id: ");
                     productId = keyboard.nextInt();
 
                     if(!productDAOImpl.deleteProduct(productId)) {
@@ -76,6 +80,62 @@ public class ProductApp {
                         }
                     }
                     break;
+
+                //Find / Get
+                case 3:
+                    System.out.println("Welcome to the 'Find Product by Id' section");
+                    System.out.println("In this section we will display the relevant product for you");
+                    System.out.print("Please enter the Product Id: ");
+                    productId = keyboard.nextInt();
+
+                    if(productDAOImpl.isProductExist(productId)) {
+                        System.out.println(productDAOImpl.getProduct(productId).toString());
+                    }
+                    else {
+                        System.out.println("Product does not exist");
+                    }
+                    break;
+
+                //Find / Get
+                case 4:
+                    System.out.println("Welcome to the 'Find product by Name' section");
+                    System.out.println("In this section we will display the relevant product for you");
+                    System.out.print("Please enter the Product Name: ");
+                    String productName = keyboard.next();
+
+                    if(productDAOImpl.isProductExist(productName)) {
+                        System.out.println(productDAOImpl.getProduct(productName).toString());
+                    }
+                    else {
+                        System.out.println("Product does not exist");
+                    }
+                    break;
+
+                //Find / Get
+                case 5:
+                    System.out.println("Welcome to the 'Find all Products' section");
+                    System.out.println("In this section we will display all the products for you");
+                    System.out.println(productDAOImpl.getProducts());
+                    break;
+
+                //Update
+                case 6:
+                    System.out.println("Welcome to the 'Update Stock' section");
+                    break;
+
+                //Update
+                case 7:
+                    System.out.println("Welcome to the 'Update Price' section");
+                    break;
+
+                //Update
+                case 8:
+                    System.out.println("Welcome to the 'Update Product' section");
+                    break;
+
+                case 9:
+                    System.out.println("Thanks fpr using my Product App");
+                    System.exit(0);
             }
         }
     }
