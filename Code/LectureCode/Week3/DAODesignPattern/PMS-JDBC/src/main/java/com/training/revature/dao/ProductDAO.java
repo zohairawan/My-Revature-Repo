@@ -32,7 +32,7 @@ public interface ProductDAO {
     public List<Product> getProducts();
 
     //8.Update Stock
-    public int updateStock(int productId, int addQoh);
+    public boolean updateStock(int productId, int addQoh);
 
     //9. Update Price
     public int updatePrice(int productId, int discountPercent);

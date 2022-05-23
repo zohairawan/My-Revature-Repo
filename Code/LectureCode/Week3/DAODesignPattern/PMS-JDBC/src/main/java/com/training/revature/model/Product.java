@@ -32,8 +32,8 @@ public class Product implements Serializable {
     //You need to have setters, at least for the variables that represent the columns in the table
     public void setProductId(int productId) {this.productId = productId;}
     public void setProductName(String productName) {this.productName = productName;}
-    public void setQoh(int qoh) {this.qoh = qoh;}
-    public void setPrice(int price) {this.price = price;}
+    public void setProductQoh(int qoh) {this.qoh = qoh;}
+    public void setProductPrice(int price) {this.price = price;}
 
     //You need to have getters, at least for the variables that represent the columns in the table
     public int getProductId() {return productId;}

@@ -143,15 +143,56 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     //5.Find Product by Id
     public Product getProduct(int productId) {
-        //SELECT * FROM product WHERE productid = ?
-        return null;
+        //This object allows us to execute our query
+        PreparedStatement pstmt;
+        ResultSet resultSet;
+        Product product = new Product();
+        try {
+            //SELECT * FROM product WHERE productid = ?
+            pstmt = connection.prepareStatement(GET_PRODUCT_BY_ID);
+            pstmt.setInt(1, productId);
+            //Execute the PreparedStatement and storing the result
+            resultSet = pstmt.executeQuery();
+            //Only one product will be retrieved so no need for loop
+            resultSet.next();
+            //Getting productid from database and setting in Product object
+            product.setProductId(resultSet.getInt(1));
+            product.setProductName(resultSet.getString(2));
+            product.setProductQoh(resultSet.getInt(3));
+            product.setProductPrice(resultSet.getInt(4));
+            return product;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     //6.Find product by Name
     public List<Product> getProduct(String productName) {
         //SELECT * FROM product WHERE productname = ?
-        return null;
+        //This object allows us to execute our query
+        PreparedStatement pstmt;
+        ResultSet resultSet;
+        Product product = new Product();
+        try {
+            //SELECT * FROM product WHERE productid = ?
+            pstmt = connection.prepareStatement(GET_PRODUCT_BY_NAME);
+            pstmt.setString(1, productName);
+            //Execute the PreparedStatement and storing the result
+            resultSet = pstmt.executeQuery();
+            //Only one product will be retrieved so no need for loop
+            resultSet.next();
+            //Getting productid from database and setting in Product object
+            product.setProductId(resultSet.getInt(1));
+            product.setProductName(resultSet.getString(2));
+            product.setProductQoh(resultSet.getInt(3));
+            product.setProductPrice(resultSet.getInt(4));
+            return product;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -163,27 +204,33 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     //8.Update Stock
-    public int updateStock(int productId, int addQoh) {
+    public boolean updateStock(int productId, int addQoh) {
         //This object allows us to execute our update
         PreparedStatement pstmt;
         int result = 0;
         try {
             //UPDATE product SET qoh = qoh + ? WHERE productid = ?
             pstmt = connection.prepareStatement(UPDATE_STOCK);
-            pstmt.setInt(1, productId);
-            pstmt.setInt(3, addQoh);
+            pstmt.setInt(1, addQoh);
+            pstmt.setInt(2, productId);
             //Execute the PreparedStatement and storing the result
             result = pstmt.executeUpdate();
+            if (result == 0) {
+                return false;
+            }
+            else {
+                return true;
+            }
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
     //9.Update Price
     public int updatePrice(int productId, int discountPercent) {
+        //This object allows us to execute our
         //UPDATE product SET price = price - (price/100 * ?) WHERE productid = ?
         return 0;
     }
