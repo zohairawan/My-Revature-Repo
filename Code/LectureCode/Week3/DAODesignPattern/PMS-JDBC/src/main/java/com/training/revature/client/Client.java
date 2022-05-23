@@ -11,6 +11,8 @@
  * 8. Update Stock
  * 9. Update Price
  * 10. E X I T
+ *
+ * Input values for initializing Product object will be taken from this class
  */
 
 package com.training.revature.client;
