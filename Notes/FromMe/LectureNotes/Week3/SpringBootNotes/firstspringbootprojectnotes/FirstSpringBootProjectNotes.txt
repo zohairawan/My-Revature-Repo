@@ -1,0 +1,38 @@
+-Spring Boot has a web server(Tomcat) embedded on it
+-When you first set up your project you can run the program on the Tomcat server
+-You can change the port it runs on by specifying it in the 'application.properties' file
+-When you first run it on the Tomcat server it won't do anything, if you want it to
+do stuff then you should implement the concept of the 'controller'. The requests
+come to the controller. Do this by specifying the annotation @RestController
+above the class with the main method
+
+-MVC Design Pattern - Model view Controller
+-Model is your POJO like Product
+-View is your HTML
+-Controller will accept the request
+
+*****STARTING SPRING BOOT PROJECT*****
+-While creating your Spring Boot project choose any dependencies that you may need
+-For my 'firstspringbootproject' I used Spring Dev Tools, Spring Lombok, and Spring Web
+-You will have a class created with the same name that you gave your project
+but just with the word 'Application' after it
+-As stated earlier it comes with an embedded server(tomcat) so you can run it right
+out of the box, it won't do anything but it can be connected to the server
+-Steps we took during our Spring Boot demo:
+	1.) Wrote @RestController above class that contained main method
+			@RestController is responsible for accepting the request
+	2.) Wrote @RequestMapping above methods which would be used to call web pages
+			@RequestMapping if any requests come with port number you specified
+			then the methods you specified will be returned
+
+Two types of apps:
+1.) To be consumed by end user - End user needs HTML
+2.) To be consumed by another app - Data will be sent in the form of JSON to the other app
+
+HTTP methods:
+GET - 		get a record			@GetMapping	
+POST - 		insert or create		@PostMapping
+PUT - 		update a record			@PutMapping
+DELETE - 	delete a record			@DeleteMapping
+
+We want to create an app that gives another app these above options

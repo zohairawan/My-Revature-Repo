@@ -30,6 +30,8 @@ it is runnable and you can deploy it on the server
 which you'll create has an embedded server(Tomcat) inside it
 -If you want to make any configuration changes they must be done in the 
 'application.properties' file
+-beans - object managed by Spring
+-beans get injected into the class that requires them
 
 
 *****DEPENDENCY INJECTION*****
@@ -41,11 +43,11 @@ which you'll create has an embedded server(Tomcat) inside it
 	-Laptop is dependent on these objects
 	-But you want to be able to switch out your Hardrive down the line if you want
 	 or loose coupling of objects
--Loose coupling can be achieved by having 'dependency injection container' create 
+-Loose coupling can be achieved by having 'Spring IOC Conatiner' create 
 the objects we are
 dependent on(dependency)
 -We want to inject the dependency(object) inside the class that needs it, which
-will be done by some dependency injection container
+will be done by Spring IOC Container
 -Use @Component(above the class) on the object dependency
 -Use @AutoWired(above the object) in the class that we need the dependency
 -This concept achieves loose coupling as well as another factor, testing
@@ -62,4 +64,17 @@ effecting one another
 			auditing/logging
 
 
-***** *****
+*****STARTING SPRING BOOT PROJECT*****
+-While creating your Spring Boot project choose any dependencies that you may need
+-For my 'firstspringbootproject' I used Spring Dev Tools, Spring Lombok, and Spring Web
+-You will have a class created with the same name that you gave your project
+but just with the word 'Application' after it
+-As stated earlier it comes with an embedded server(tomcat) so you can run it right
+out of the box, it won't do anything but it can be connected to the server
+-Steps we took during our Spring Boot demo:
+	1.) Wrote @RestController above class that contained main method
+			@RestController is responsible for accepting the request
+	2.) Wrote @RequestMapping above methods which would be used to call web pages
+			@RequestMapping if any requests come with port number you specified
+			then the methods you specified will be returned
+	

@@ -24,6 +24,6 @@ public class FirstSpringBootProjectApplication {
 
     @RequestMapping("/contactUs")   //http://localhost:8081/contactUs type this in the browser to display message
     public String contactUs() {
-        return "Welcome to Contact Us page";
+        return "Welcome to Contact Us page of Revature";
     }
 }
