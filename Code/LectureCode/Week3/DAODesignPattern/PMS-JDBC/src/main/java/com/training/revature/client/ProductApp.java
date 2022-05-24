@@ -167,6 +167,30 @@ public class ProductApp {
                 //Update
                 case 8:
                     System.out.println("Welcome to the 'Update Product' section");
+                    System.out.print("Please enter a Product ID: ");
+                    productId = keyboard.nextInt();
+
+                    if(productDAOImpl.isProductExist(productId)) {
+                        System.out.print("Please enter Product Name: ");
+                        productName = keyboard.next();
+                        System.out.print("Please enter Product Quantity on hand: ");
+                        int qoh = keyboard.nextInt();
+                        System.out.print("Please enter Product Product Price: ");
+                        int price = keyboard.nextInt();
+                        Product product = new Product(productId, productName, qoh, price);
+
+                        result = productDAOImpl.updateProduct(product);
+
+                        if (result) {
+                            System.out.println("Product updated successfully");
+                        }
+                        else {
+                            System.out.println("An error occurred while updating your product");
+                        }
+                    }
+                    else {
+                        System.out.println("This product does not exist, please enter a valid Product ID");
+                    }
                     break;
 
                 case 9:

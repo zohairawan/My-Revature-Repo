@@ -60,10 +60,10 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "\nProduct{" +
-                "\nproductId=" + productId +
-                "\nproductName='" + productName + '\'' +
-                "\nqoh=" + qoh +
-                "\nprice=" + price +
+                "productId=" + productId +
+                " productName='" + productName + '\'' +
+                " qoh=" + qoh +
+                " price=" + price +
                 "}\n";
     }
 }

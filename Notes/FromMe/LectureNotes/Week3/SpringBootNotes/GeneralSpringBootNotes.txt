@@ -1,0 +1,65 @@
+*****WHAT IS SPRING BOOT?*****
+Spring Framework Features:
+POJO
+Dependency Injection
+MVC
+REST
+Security
+Batch
+Data
+AOP
+....
+
+Spring Framework can integrate with other frameworks as well:
+	Hibernate
+	Struts
+	
+-Spring Boot is not a replacement for Spring Framework because you are still working
+with Spring Framework
+-Working with just Spring Framework you need to do a lot of configuration and it can
+be a bit tricky
+-Spring Boot takes care of a lot of configuration for you
+-Developer ---> Spring Boot ---> Spring Framework
+-Spring Boot acts as a middleman to help you work with the Spring Framework
+-Spring Boot gives you Dependency(JAR files) and configuration that you would 
+otherwise have to do yourself
+-Main idea of Spring Boot is to give you a production ready application
+-The moment you create a Spring Boot project you don't have to do any configuration,
+it is runnable and you can deploy it on the server
+-Spring Boot provides you an embedded server, which means the application JAR file
+which you'll create has an embedded server(Tomcat) inside it
+-If you want to make any configuration changes they must be done in the 
+'application.properties' file
+
+
+*****DEPENDENCY INJECTION*****
+-Dependency Injection is a design pattern
+-Objects depend on other objects
+-You want this dependency to be 'loose coupling'
+-Example:
+	-Laptop has components(Hardrive, RAM, Screen, etc..)
+	-Laptop is dependent on these objects
+	-But you want to be able to switch out your Hardrive down the line if you want
+	 or loose coupling of objects
+-Loose coupling can be achieved by having 'dependency injection container' create 
+the objects we are
+dependent on(dependency)
+-We want to inject the dependency(object) inside the class that needs it, which
+will be done by some dependency injection container
+-Use @Component(above the class) on the object dependency
+-Use @AutoWired(above the object) in the class that we need the dependency
+-This concept achieves loose coupling as well as another factor, testing
+-We should always test each component and this will allow us to test without
+effecting one another
+-At its core dependency injection:
+	Centralizes the creation of concrete objects that your code(client) uses
+	Benefits from this include:
+		easily switching out the implementation
+		easily test the implementation
+		able to wrap/manipulate how you want it to instantiate:
+			this can be wrapping authentication around it
+			adding pre/post processing
+			auditing/logging
+
+
+***** *****
