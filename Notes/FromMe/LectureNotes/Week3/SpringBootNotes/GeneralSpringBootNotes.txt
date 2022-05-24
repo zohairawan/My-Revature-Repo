@@ -72,7 +72,7 @@ but just with the word 'Application' after it
 -As stated earlier it comes with an embedded server(tomcat) so you can run it right
 out of the box, it won't do anything but it can be connected to the server
 -Steps we took during our Spring Boot demo:
-	1.) Wrote @RestController above class that contained main method
+	1.) Wrote @RestController above class that is in controller package
 			@RestController is responsible for accepting the request
 	2.) Wrote @RequestMapping above methods which would be used to call web pages
 			@RequestMapping if any requests come with port number you specified

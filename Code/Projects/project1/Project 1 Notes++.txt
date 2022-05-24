@@ -20,10 +20,10 @@ How to implement features:
 1)	Register – register new users
 	a.	Have to use Postman for this feature:
 		i.	localhost:8085/registerUser(must expose this URLs)
-			1.	Port number can be anyone you chose
+			1.	Port number can be anyone you chosse
 	b.	It should take in the body similar to what we did for ‘AddProduct’/’SaveProduct’
 	
-2)	Login/Logout – login and logout users
+2)	Login/Logout – login and logout users (GET request that gets users info and cart and returns response entity of type user)
 	a.	Have to use Postman for this feature:
 		i.	localhost:8085/login/username/password
 			1.	username is a parameter

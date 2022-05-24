@@ -19,20 +19,8 @@ but just with the word 'Application' after it
 -As stated earlier it comes with an embedded server(tomcat) so you can run it right
 out of the box, it won't do anything but it can be connected to the server
 -Steps we took during our Spring Boot demo:
-	1.) Wrote @RestController above class that contained main method
+	1.) Wrote @RestController above class that is in the controller package
 			@RestController is responsible for accepting the request
 	2.) Wrote @RequestMapping above methods which would be used to call web pages
 			@RequestMapping if any requests come with port number you specified
 			then the methods you specified will be returned
-
-Two types of apps:
-1.) To be consumed by end user - End user needs HTML
-2.) To be consumed by another app - Data will be sent in the form of JSON to the other app
-
-HTTP methods:
-GET - 		get a record			@GetMapping	
-POST - 		insert or create		@PostMapping
-PUT - 		update a record			@PutMapping
-DELETE - 	delete a record			@DeleteMapping
-
-We want to create an app that gives another app these above options

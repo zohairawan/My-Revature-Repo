@@ -1,0 +1,27 @@
+Two types of apps:
+1.) To be consumed by end user - End user needs HTML
+2.) To be consumed by another app - Data will be sent in the form of JSON to the other app
+
+HTTP methods:
+GET - 		get a record			@GetMapping	
+POST - 		insert or create		@PostMapping
+PUT - 		update a record			@PutMapping
+DELETE - 	delete a record			@DeleteMapping
+
+We want to create an app that gives another app these above options
+
+Request ---> Controller ---> DAO ---> Database
+Request comes to controller and from there it goes to DAO layer and DAO layer will call DB
+
+Example:
+	localhost:8084/product			GET all products
+	localhost:8084/product/123		GET a single product Client app can retrieve a single product with specified productId
+	localhost:8084/product/Lakme	GET all products matching the productName  Client app can retrieve all products matching productName
+
+@PathVariable - allows you to pass a parameter in the URL
+Example:
+	@GetMapping("{pId}")
+	public Product getProduct(@PathVariable("pId") int productId) {
+		Product product = new Product(1, "Lakme", 99, 100);
+		return product;
+	}
