@@ -5,6 +5,7 @@
 package com.revature.pms.model;
 
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 //Comes from lombok, a 3rd party library, which is used to reduce boiler plate codes
 //Generates @Getter, @Setter, @ToString(), and @EqualsAndHashCode()
@@ -13,6 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 //Generate constructor with no parameters(default constructor)
 @NoArgsConstructor
+@Component
 public class Product {
 
     //Instance Variables
@@ -20,4 +22,8 @@ public class Product {
     private String productName;
     private int qoh;
     private int price;
+
+    public String displayMessage() {
+        return "This is a message from the Product class";
+    }
 }

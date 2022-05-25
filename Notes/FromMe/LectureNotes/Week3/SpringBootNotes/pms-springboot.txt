@@ -21,7 +21,6 @@ GET - 		get a record			@GetMapping
 POST - 		insert or create		@PostMapping
 PUT - 		update a record			@PutMapping
 DELETE - 	delete a record			@DeleteMapping
-
 We want to create an app that gives another app these above options
 
 Request ---> Controller ---> DAO ---> Database
@@ -45,3 +44,42 @@ Postman
 -When we try to run our @GetMapping commands in the browser they run fine
 but the browser can't run @PostMapping, @PutMapping, or @DeleteMapping
 so we have to use Postman for those
+
+Saving a Product
+@RequestBody - allows you to pass your product/object in the body of Postman
+Remember to click 'raw' then paste your object and switch to JSON format
+
+Dependency Injection
+bean - an object managed by Spring
+-Two ways to create a bean:
+	1.) Spring can create if you specify by certain annotations, few are stereotype annotations
+			@Component in dependency class(above class name)
+			@Autowired in class where object is needed(above object decleration)
+	2.) We can create explicitly by @bean annotation
+			@Bean in dependency class(above a method that returns dependency object)
+				used to create a bean in Spring
+			@Configuration in configuration class(above class name), in same location where you write @Bean
+				annotates a class as a configuration class
+			@Autowired in class where object is needed(above object decleration)
+				scans the container and auto injects the bean if available
+				if unavailable then throws error message
+					you can bypass this by writing @Autowired(required = false)
+					even if the bean is unavailable it won't give you an error, unless you try using it
+					
+@SpringBootApplication - Does the following:
+1.) Scans the package and children package and creates the bean if you've instructed it to do so
+		In our project it scans com.revature.pms
+		Our child packages are .config, .controller, .dao, .exception, .model, .services, .util
+		Our Client is PmsSpringBootApplication class which our main application file
+		If you want to scan other packages include scanBasePackages = ("name of package you want to scan") after @SpringBootApplication(which is in you main application file)
+		If you do the above though com.revature.pms won't get scanned
+		By default the package with the @SpringBootApplication annotation will be scanned but if you specify another package then the default ones won't be scanned
+		If you want the default package 
+2.) Auto-configuration is done
+
+Stereotype annotation - all these annoations will give you bean
+	@Component		-scan and create a bean automatically(you won't have to use @Bean annotation
+	@Controller		-returns VIEWS data
+	@RestController -returns JSON data
+	@Service		-service layer
+	@Repository		-DAO layer

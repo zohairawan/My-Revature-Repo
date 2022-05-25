@@ -1,11 +1,13 @@
 /**
  * Class(es) in the controller package will accept the requests
  * This will contain the methods like GET, PUT, UPDATE, etc..., this will be exposed to the other app
+ * Controller class is also responsible for creating an object and managing it
  */
 
 package com.revature.pms.controller;
 
 import com.revature.pms.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,10 +16,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("product")
 public class ProductController {
 
+    @Autowired
+    Product product;
+
+    /**
+     * @Autowired
+     * AnotherProduct
+     */
+
     //Mapping for the method level
     @GetMapping("/home") //localhost:8084/product/home
     public String home() {
-        return "Welcome to Home Product App";
+        return "Welcome to Home Product App page";
     }
 
     @GetMapping() //localhost:8084/product
