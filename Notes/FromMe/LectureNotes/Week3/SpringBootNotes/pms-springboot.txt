@@ -1,3 +1,17 @@
+*****STARTING SPRING BOOT PROJECT*****
+-While creating your Spring Boot project choose any dependencies that you may need
+-For my 'firstspringbootproject' I used Spring Dev Tools, Spring Lombok, and Spring Web
+-You will have a class created with the same name that you gave your project
+but just with the word 'Application' after it
+-As stated earlier it comes with an embedded server(tomcat) so you can run it right
+out of the box, it won't do anything but it can be connected to the server
+-Steps we took during our Spring Boot demo:
+	1.) Wrote @RestController above class that is in the controller package
+			@RestController is responsible for accepting the request
+	2.) Wrote @RequestMapping above methods which would be used to call web pages
+			@RequestMapping if any requests come with port number you specified
+			then the methods you specified will be returned
+
 Two types of apps:
 1.) To be consumed by end user - End user needs HTML
 2.) To be consumed by another app - Data will be sent in the form of JSON to the other app
@@ -18,7 +32,7 @@ Example:
 	localhost:8084/product/123		GET a single product Client app can retrieve a single product with specified productId
 	localhost:8084/product/Lakme	GET all products matching the productName  Client app can retrieve all products matching productName
 
-@PathVariable - allows you to pass a parameter in the URL
+@PathVariable - allows you to take parameters in your method which allows you to pass a parameter in the URL
 Example:
 	@GetMapping("{pId}")
 	public Product getProduct(@PathVariable("pId") int productId) {

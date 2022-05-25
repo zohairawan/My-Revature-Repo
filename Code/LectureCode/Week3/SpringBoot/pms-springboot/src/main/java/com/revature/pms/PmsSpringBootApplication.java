@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PmsSpringBootApplication {
 
 	public static void main(String[] args) {SpringApplication.run(PmsSpringBootApplication.class, args);
-		
+
 	}
 
 }
