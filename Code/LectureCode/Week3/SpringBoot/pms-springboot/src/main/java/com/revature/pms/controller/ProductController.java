@@ -7,6 +7,7 @@
 package com.revature.pms.controller;
 
 import com.revature.pms.model.Product;
+import com.revature.pms.util.CheckVal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,9 @@ public class ProductController {
 
     @Autowired
     Product product;
+
+    @Autowired
+    CheckVal checkVal;
 
     /**
      * @Autowired
@@ -77,7 +81,13 @@ public class ProductController {
     @PostMapping() //localhost:8084/product
     public String saveProduct(@RequestBody Product product) {
         System.out.println("Saving details of " + product);
-        return "Saved successfully";
+        //Check whether price or qoh is negative
+        if(checkVal.isValueNegative(product.getQoh(),product.getPrice())) {
+            return "Could not be saved because qoh or price is negative";
+        }
+        else {
+            return "Saved successfully";
+        }
     }
 
     //Update a product
