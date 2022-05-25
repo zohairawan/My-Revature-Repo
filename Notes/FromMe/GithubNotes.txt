@@ -1,0 +1,8 @@
+Importing remote repo to your local machine
+1.) Create directory on local machine if one does not exist
+2.) Navigate inside that directory and type 'git init' if it isn't already initialized
+3.) Type 'git remote -v' to see if you are already synced with remote repo
+4.) Type 'git remote add upstream remoterepourl'
+5.) Type 'git fetch upstream'
+6.) Type 'git checkout master'
+7.) Type 'git pull'
