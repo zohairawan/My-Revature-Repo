@@ -39,3 +39,9 @@ Example:
 		Product product = new Product(1, "Lakme", 99, 100);
 		return product;
 	}
+	
+Postman
+-A tool to test Rest web services
+-When we try to run our @GetMapping commands in the browser they run fine
+but the browser can't run @PostMapping, @PutMapping, or @DeleteMapping
+so we have to use Postman for those
