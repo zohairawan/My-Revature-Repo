@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CheckVal {
 
-    public boolean isValueNegative(int qoh, int price) {
-        if(qoh < 0 || price < 0) {
+    public boolean isValuePositive(int qoh, int price) {
+        if(qoh >= 0 && price >= 0) {
             return true;
         }
         else {

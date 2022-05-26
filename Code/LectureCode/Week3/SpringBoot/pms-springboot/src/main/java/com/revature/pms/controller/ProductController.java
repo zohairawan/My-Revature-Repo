@@ -8,8 +8,12 @@ package com.revature.pms.controller;
 
 import com.revature.pms.dao.ProductDAO;
 import com.revature.pms.model.Product;
+import com.revature.pms.services.ProductService;
+import com.revature.pms.services.ProductServiceImpl;
 import com.revature.pms.util.CheckVal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,13 +23,10 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     @Autowired
-    ProductDAO productDAO;
+    ProductService productService;
 
     @Autowired
     Product product;
-
-    @Autowired
-    CheckVal checkVal;
 
     /**
      * @Autowired
@@ -77,23 +78,43 @@ public class ProductController {
     @DeleteMapping("{pId}") //localhost:8084/product/123
     public String deleteProductById(@PathVariable("pId") int productId) {
         System.out.println("Deleted item number " + productId);
+        productService.deleteProduct(productId);
         return "Product " + productId + " successfully deleted";
     }
 
+    /**
+     * //Old way of deleting item before JPARepository
+     * //Deletes a single product based on productId
+     *     @DeleteMapping("{pId}") //localhost:8084/product/123
+     *     public String deleteProductById(@PathVariable("pId") int productId) {
+     *         System.out.println("Deleted item number " + productId);
+     *         return "Product " + productId + " successfully deleted";
+     *     }
+     */
+
     //Save/Add a product
     //This method will save a product in DB
+    boolean result;
     @PostMapping() //localhost:8084/product
-    public String saveProduct(@RequestBody Product product) {
-        //Check whether price or qoh is negative
-        if(checkVal.isValueNegative(product.getQoh(),product.getPrice())) {
-            productDAO.save(product);
-            return "Could not be saved because qoh or price is negative";
+    public ResponseEntity<String> saveProduct(@RequestBody Product product) {
+;        ResponseEntity responseEntity = null;
+        if(productService.isProductExist(product.getProductId())) {
+            responseEntity = new ResponseEntity<String>
+                    ("Cannot save because product with product Id " + product.getProductId() + " already exists", HttpStatus.CONFLICT); //409
         }
         else {
-            return "Saved successfully";
+            result = productService.addProduct(product);
+            if(result) {
+                responseEntity = new ResponseEntity<String>
+                        ("Saved successfully your product " + product.getProductId(), HttpStatus.OK); //200
+            }
+            else {
+                responseEntity = new ResponseEntity<String>
+                        ("Could not be saved because qoh or price is negative", HttpStatus.NOT_ACCEPTABLE); //406
+            }
         }
+        return responseEntity;
     }
-
     /**
      * //Old way of creating save method before using JPARepository
      * @PostMapping() //localhost:8084/product

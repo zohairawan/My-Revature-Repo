@@ -130,3 +130,14 @@ Some JPA annotations
 
 JPARepository and CrudRepository
 -Interface which has methods to perform CRUD operations(Create, Read, Update, Delete)
+
+Services Class
+Works as an intermediatery between classes
+Client ---> Controller ---> Service ---> DAO
+
+HTTP Status Codes
+200	-OK
+400 -Bad Request
+404	-Not Found
+500	-Internal Server Error
+Use ResponseEntity class to achieve this
