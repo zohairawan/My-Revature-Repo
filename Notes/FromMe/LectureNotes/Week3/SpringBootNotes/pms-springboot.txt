@@ -83,3 +83,26 @@ Stereotype annotation - all these annoations will give you bean
 	@RestController -returns JSON data
 	@Service		-service layer
 	@Repository		-DAO layer
+	
+	
+Spring Boot JPA - Java Persistence API
+Hibernate
+	-Framework ORM (Object Relationship Mapping)
+Use of Spring JPA is to work with DB
+1.) Create Product table - not required, automatically will create one by using JPARepository or CrudRepository
+	provides lots of methods like save,update,delete, etc...
+Configuring JPA:
+1.) Update pom.xml with jpa dependency and also postgres dependency
+2.) Configure database properties in application.properties file
+server.port=8084
+
+spring.datasource.driver-class-name=org.postgresql.Driver //(THIS DEPENDS ON THE DRIVER YOU'RE USING)
+spring.datasource.url=jdbc:postgresql://localhost:5432/postgres //(THIS DEPENDS ON THE DATABASE YOU'RE CONNECTING TO)
+spring.datasource.username=postgres //(THIS DEPENDS ON THE USERNAME YOU'RE USING IN YOUR DATABASE)
+spring.datasource.password=root (THIS DEPENDS ON THE PASSWORD YOU'RE USING IN YOUR DATABASE)
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.generate-ddl=true
+spring.jpa.properties.hibernate.formate_sql=true
+spring.jackson.serialization.fail_on_empty_beans=false
+spring.jpa.show-sql=true
