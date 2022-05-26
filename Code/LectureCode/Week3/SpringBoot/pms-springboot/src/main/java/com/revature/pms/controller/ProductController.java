@@ -6,6 +6,7 @@
 
 package com.revature.pms.controller;
 
+import com.revature.pms.dao.ProductDAO;
 import com.revature.pms.model.Product;
 import com.revature.pms.util.CheckVal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 //Mapping at the class level
 @RequestMapping("product")
 public class ProductController {
+
+    @Autowired
+    ProductDAO productDAO;
 
     @Autowired
     Product product;
@@ -80,15 +84,30 @@ public class ProductController {
     //This method will save a product in DB
     @PostMapping() //localhost:8084/product
     public String saveProduct(@RequestBody Product product) {
-        System.out.println("Saving details of " + product);
         //Check whether price or qoh is negative
         if(checkVal.isValueNegative(product.getQoh(),product.getPrice())) {
+            productDAO.save(product);
             return "Could not be saved because qoh or price is negative";
         }
         else {
             return "Saved successfully";
         }
     }
+
+    /**
+     * //Old way of creating save method before using JPARepository
+     * @PostMapping() //localhost:8084/product
+     *     public String saveProduct(@RequestBody Product product) {
+     *         System.out.println("Saving details of " + product);
+     *         //Check whether price or qoh is negative
+     *         if(checkVal.isValueNegative(product.getQoh(),product.getPrice())) {
+     *             return "Could not be saved because qoh or price is negative";
+     *         }
+     *         else {
+     *             return "Saved successfully";
+     *         }
+     *     }
+     */
 
     //Update a product
     @PutMapping() //localhost:8084/product

@@ -93,6 +93,20 @@ Use of Spring JPA is to work with DB
 	provides lots of methods like save,update,delete, etc...
 Configuring JPA:
 1.) Update pom.xml with jpa dependency and also postgres dependency
+These are the dependencies for jpa and postgres (VERSIONS CAN CHANGE DEPENDING ON WHICH YOU'RE USING)
+<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>2.6.7</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.3.5</version>
+		</dependency>
 2.) Configure database properties in application.properties file
 server.port=8084
 
@@ -106,3 +120,13 @@ spring.jpa.generate-ddl=true
 spring.jpa.properties.hibernate.formate_sql=true
 spring.jackson.serialization.fail_on_empty_beans=false
 spring.jpa.show-sql=true
+
+3.) Create the table
+Some JPA annotations
+@Entity
+@Table
+@Id
+@Column
+
+JPARepository and CrudRepository
+-Interface which has methods to perform CRUD operations(Create, Read, Update, Delete)
