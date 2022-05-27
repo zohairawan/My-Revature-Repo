@@ -1,0 +1,39 @@
+Project 1 Steps:
+
+Create New Project
+Select 'Spring Initializer' under 'Generators'
+Select Java 8 for version
+Under 'Developer Tools' select 'Spring Boot DevTools' and 'Lombok'
+Under 'Web' select 'Spring Web'
+Create your project
+Create proper package structure
+Right click on com.project1.training.revature and select package
+	In mine it goes com.project1.training.revature
+												  |
+												   -model
+												   -controller
+												   -dao
+												   -services
+												   -exceptions
+												   -util
+Create a User class in model package
+	private int userId;
+    private String email;
+    private String password;
+    //private Cart cart;
+Create a Item class in model package
+	private int itemId;
+    private String itemName;
+    private double itemPrice;
+Create a Cart class in model package
+	private int cartId;
+    private int itemId;
+    private int userId;
+Add @Data in all classes in model package (add above class name)
+	Comes from Lombok which is a 3rd party library
+	Used to reduce boiler plate code(shortcut)
+	Generates @ToString, @EqualsAndHashCode, @Getter, @Setter
+Add @AllArgsConstructor in all classes in model package (add above class name)
+Add @NoArgsConstructor in all classes in model package (add above class name)
+Create a UserController class in controller package
+Create a ItemController class in controller package
