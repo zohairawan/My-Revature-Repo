@@ -40,5 +40,40 @@ Create a ItemController class in controller package
 Add @RestController in all classes in controller package (add above class name)
 Controller class is meant to contain HTTP methods like: Get, Post, Put, Delete
 We will use Postman app to send HTTP methods(Get,Post,Put,Delete) and those methods will be sent to the controller classes actually perform those operations
-Add @RequestMapping in all classes in controller package (add above class name)
+Add @RequestMapping() in all classes in controller package (add above class name)
 	("nameToBeTypedInAfter'localhost:xxxx/'")
+	The argument you put into @RequestMapping() is what will allow you to get into that class
+	For Example: @RequestMapping("user")
+		In order to navigate to this via broswer or Postman you'd say: localhost:8085/user
+		8080 is the port number and can be changed to whatever you like in the application.properties file
+			To change port number just type: server.port=8085
+			Default port is 8080
+The controller class can accept different HTTP methods and as such has corresponding annotations for the methods
+GET		@GetMapping()
+POST	@PostMapping()
+PUT		@PutMapping()
+DELETE	@DeleteMapping()
+The argument you put into @GetMapping(),etc... is what will allow you to execute that method
+	Just like the example for @RequestMapping()
+	If we build on that previous example and we put @GetMapping("registerUser")
+	then in order to navigate to this method via Postman(only GET methods work via browser, everything else must be done via Postman)
+	you'd type: localhost:8085/user/registerUser
+	If using Postman be sure to select the GET option as there are also options for POST,PUT,DELETE, and others
+So far everything we've passed in the mapping has been a literal but you can also pass in parameters
+To pass parameters you must:
+Add {} around the parameter when passing it to mapping
+Add @PathVariable as an argument to the method
+	For example:
+	@GetMapping("{uId}")
+	public User getUser(@PathVariable("uId") int userId) {
+		System.out.println("Getting the user with user ID: " + userId);
+		User user = new User(1, "John", "password123");
+		return user;
+	}
+	The argument passed in mapping and PathVariable must be the same
+At this stage our controller class is doing everything, accepting client requests(HTTP methods) and executing method to carry out the request all on its own
+	For example: If we want to register a user we are accepting the POST request(registering a user means to add them to the users table in DB so its POST)
+	and then trying to add the user to the table all in the controller class
+	This is too much for one class
+	We should implement SRP (Single Responsibility Principle) where we break up the work into seperate classes
+	

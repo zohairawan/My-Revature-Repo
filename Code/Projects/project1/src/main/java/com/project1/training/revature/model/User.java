@@ -4,6 +4,14 @@
 
 package com.project1.training.revature.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+//Generates @ToString, @EqualsAndHashCode, @Getter, @Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     private int userId;
     private String email;
