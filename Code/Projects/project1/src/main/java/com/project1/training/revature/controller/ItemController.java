@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("item")
 public class ItemController {
 
+    //GETS all items
     //http://localhost:8085/item/getItems
     @GetMapping("getItems")
     public String getAllItems() {
