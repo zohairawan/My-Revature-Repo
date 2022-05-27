@@ -36,9 +36,9 @@ Add @Data in all classes in model package (add above class name)
 Add @AllArgsConstructor in all classes in model package (add above class name)
 Add @NoArgsConstructor in all classes in model package (add above class name)
 Create a UserController class in controller package
-	Every controller class must be annotated with @RestController
 Create a ItemController class in controller package
-	Every controller class must be annotated with @RestController
+Add @RestController in all classes in controller package (add above class name)
 Controller class is meant to contain HTTP methods like: Get, Post, Put, Delete
-We will use Postman app to send HTTP methods(Get,Post,Put,Delete) and those methods will be sent here to actually perform those operations
-Add @RequestMapping("nameToBeTypedInAfter'localhost:xxxx/'") (add above class name)
+We will use Postman app to send HTTP methods(Get,Post,Put,Delete) and those methods will be sent to the controller classes actually perform those operations
+Add @RequestMapping in all classes in controller package (add above class name)
+	("nameToBeTypedInAfter'localhost:xxxx/'")
