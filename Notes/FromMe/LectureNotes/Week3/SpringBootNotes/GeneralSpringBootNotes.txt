@@ -80,14 +80,41 @@ Read ---> 	R	GET
 Update ---> U	PUT
 Delete ---> D	DELETE
 
+*****Spring Boot Startup Steps*****
+-SpringApplication.run(NameOfClass.class, args);
+	This line:
+	Creates your Spring Container
+		Where your beans are stored
+	Sets up default configuration
+	Starts Spring application context
+		Spring is a container for all your code that runs on your application server(Tomcat in our case)
+		model, controller, services, dao, etc... Spring acts as a container for all these
+		This container is what's called an application context
+		Every Spring application has this application context which runs when the Spring application runs
+	Performs class path scan
+		Finds all annotations and registers them
+		The way to plug in code into Spring Boot is by creating custom classes and annotating them with proper annotations
+		Model class annotated with @Component, Controller class annotated with @RestController if you're using REST api(can also use @Controller)
+		Service class annotated with @Service, etc...
+		You will learn later on which annotations go where and what purpose they serve
+		Annotations serve to mark your classes
+		Spring looks at these classes and depending on the marker treats them differently
+		If it sees a @RestController annoation it treats it as a controller, etc
+		In order to find the classes that you've marked it performs a class path scan which identifies all the different classes you've annotated
+		Important note: These classes will only be scanned if they're in the same package as the main class
+	Starts Tomcat server
+		Tomcat server comes embedded with Spring Boot
+
 *****Controller*****
 -Accepts requests
 -Returns response
+-Maps request to a repsonse
 -A Java Class
 -Marked with annotations
 -Has info about:
 	What URL access triggers it
 	What method to run when accessed
+-Methods map to URL requests
 
 *****STARTING SPRING BOOT PROJECT*****
 -While creating your Spring Boot project choose any dependencies that you may need
