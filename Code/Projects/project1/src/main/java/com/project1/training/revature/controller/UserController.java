@@ -25,7 +25,7 @@ public class UserController {
 
     @PostMapping("registerUserTest")
     public User registerUserTest() {
-        User user = new User(2, "doe@yahoo.com", "pswd1234");
+        User user = new User(2, "amer@yahoo.com", "bhai1234");
         return user;
     }
 }

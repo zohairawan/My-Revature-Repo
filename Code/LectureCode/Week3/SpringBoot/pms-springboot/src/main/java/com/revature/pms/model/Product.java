@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Component
 //You want this data to persist, so you must mark it as such
 @Entity
-@Table(name ="productone")
+@Table(name ="producttwo", schema = "test")
 public class Product {
 
     //Instance Variables

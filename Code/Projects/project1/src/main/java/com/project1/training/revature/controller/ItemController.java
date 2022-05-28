@@ -1,6 +1,7 @@
 /**
  * Controller class is meant to contain HTTP methods like: Get, Post, Put, Delete
- * We will use Postman app to send HTTP methods(Get,Post,Put,Delete) and those methods will be sent here to actually perform those operations
+ * We will use Postman app to send HTTP methods(Get,Post,Put,Delete) and those methods will be sent here
+ * Controller is the API layer
  * Postman ---> Controller
  */
 

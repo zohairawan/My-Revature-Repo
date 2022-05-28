@@ -73,7 +73,7 @@ Add @PathVariable as an argument to the method
 	The argument passed in mapping and PathVariable must be the same
 At this stage our controller class is doing everything, accepting client requests(HTTP methods) and executing method to carry out the request all on its own
 	For example: If we want to register a user we are accepting the POST request(registering a user means to add them to the users table in DB so its POST)
-	and then trying to add the user to the table all in the controller class
+	and then implementing the "business logic"(in reality we're just returning a String saying "User registered")
 	This is too much for one class
 	We should implement SRP (Single Responsibility Principle) where we break up the work into seperate classes
 	
