@@ -44,12 +44,18 @@ which you'll create has an embedded server(Tomcat) inside it
 	-But you want to be able to switch out your Hardrive down the line if you want
 	 or loose coupling of objects
 -Loose coupling can be achieved by having 'Spring IOC Conatiner' create 
-the objects we are
-dependent on(dependency)
+the objects we are dependent on(dependency)
 -We want to inject the dependency(object) inside the class that needs it, which
 will be done by Spring IOC Container
+-Spring will initialize and collect all of its beans and will store them into the Spring Container
+-Whenever you want the object --> you just bring it out of the container
 -Use @Component(above the class) on the object dependency
+	This will automatically instantiate your object (create and store your object in the container) when you start your application
+	Evidence that an object is automatically created and stored is that you can write a constructor with an output message
+	and when you start your app you will see the output message, without you having to even create an object
 -Use @AutoWired(above the object) in the class that we need the dependency
+	When you want to use an object just put this annotation above declaration of object, it will then be available for use
+	This will connect you with the object
 -This concept achieves loose coupling as well as another factor, testing
 -We should always test each component and this will allow us to test without
 effecting one another
@@ -63,6 +69,25 @@ effecting one another
 			adding pre/post processing
 			auditing/logging
 
+HTTP Methods:
+GET
+POST
+PUT
+DELETE
+
+Create ---> C	POST
+Read ---> 	R	GET
+Update ---> U	PUT
+Delete ---> D	DELETE
+
+*****Controller*****
+-Accepts requests
+-Returns response
+-A Java Class
+-Marked with annotations
+-Has info about:
+	What URL access triggers it
+	What method to run when accessed
 
 *****STARTING SPRING BOOT PROJECT*****
 -While creating your Spring Boot project choose any dependencies that you may need

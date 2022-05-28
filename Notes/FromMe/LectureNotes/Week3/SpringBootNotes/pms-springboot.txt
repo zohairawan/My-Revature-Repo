@@ -1,7 +1,7 @@
 *****STARTING SPRING BOOT PROJECT*****
 -While creating your Spring Boot project choose any dependencies that you may need
 -For my 'firstspringbootproject' I used Spring Dev Tools, Spring Lombok, and Spring Web
--You will have a class created with the same name that you gave your project
+-You will have a class created automatically with the same name that you gave your project
 but just with the word 'Application' after it
 -As stated earlier it comes with an embedded server(tomcat) so you can run it right
 out of the box, it won't do anything but it can be connected to the server
