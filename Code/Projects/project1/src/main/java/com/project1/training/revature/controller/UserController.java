@@ -8,10 +8,9 @@ package com.project1.training.revature.controller;
 
 import com.project1.training.revature.model.Item;
 import com.project1.training.revature.model.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.project1.training.revature.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +20,9 @@ import java.util.List;
 @RequestMapping("user")
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
     // 1.Register new users
     // http://localhost:8085/user/registerUser
     @PostMapping("registerUser")
@@ -28,13 +30,17 @@ public class UserController {
         return "User has been added";
     }
 
+    //Returns list of all items
+    // http://localhost:8085/user/getItems
     @GetMapping("/getItems")
     public List<Item> getItems() {
-        return Arrays.asList(
-                new Item(1, "Laptop", 455),
-                new Item(2, "Keyboard", 105),
-                new Item(3, "PS5", 800),
-                new Item(4, "Xbox1", 650)
-        );
+        return userService.getItems();
+    }
+
+    //Returns one item based on Id
+    // http://localhost:8085/user/getItem/
+    @GetMapping("/getItem/{itemId}")
+    public Item getItem(@PathVariable("itemId") int itemId) {
+        return userService.getItem(itemId);
     }
 }

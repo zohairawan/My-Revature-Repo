@@ -10,10 +10,10 @@ Objective:
 7)	User’s orders are stored in the Orders table.
 
 Features to be Implemented:
-1)	Register – register new users
+1)	Register – register new users CAN DO
 2)	Login/Logout – login and logout users
 3)	Get Users/Cart items – get all users and their cart items
-4)	Get Items – get all items that are available in the store
+4)	Get Items – get all items that are available in the store CAN DO
 5)	Add Item to Cart – adds selected item to the cart
 
 How to implement features:
