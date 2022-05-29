@@ -7,18 +7,38 @@
 
 package com.project1.training.revature.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.project1.training.revature.model.Item;
+import com.project1.training.revature.services.ItemService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("item")
+@RequestMapping("items")
 public class ItemController {
+    @Autowired
+    ItemService itemService;
 
-    //GETS all items
-    //http://localhost:8085/item/getItems
-    @GetMapping("getItems")
-    public String getAllItems() {
-        return "Displaying all your items";
+    //Returns list of all items
+    // http://localhost:8089/user/getItems
+    @GetMapping("/getItems")
+    public List<Item> getItems() {
+        return itemService.getItems();
+    }
+
+    //Returns one item based on Id
+    // http://localhost:8089/user/getItem/
+    @GetMapping("/getItem/{itemId}")
+    public Item getItem(@PathVariable("itemId") int itemId) {
+        return itemService.getItem(itemId);
+    }
+
+    //Adds an item
+    // http://localhost:8089/user/addItem/
+    @PostMapping("/addItem")
+    public String addItem(@RequestBody Item item) {
+        itemService.addItem(item);
+        return "Item added successfully";
     }
 }

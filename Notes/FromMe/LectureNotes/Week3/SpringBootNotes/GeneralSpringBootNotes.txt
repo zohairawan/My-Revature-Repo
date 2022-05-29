@@ -125,7 +125,7 @@ effecting one another
 	Change server port
 	Connect to a database(add dependency in pom.xml also)
 	
-
+*****HTTP Methods*****
 HTTP Methods:
 GET
 POST
@@ -137,7 +137,33 @@ Read ---> 	R	GET
 Update ---> U	PUT
 Delete ---> D	DELETE
 
+*****Passing a parameter*****
+-If you want to pass a parameter in the HTTP request you can do so
+-Add @PathVariable as a method argument to the method that maps to that request
+	For example:
+	request -> localhost:8080/user/getUser/parameterGoesHere
+	@GetMapping("getUser/"{userId}")
+	public User getUserbyId(@PathVariable("userId") int uId)
+-Remember to add {} in @GetMapping
+-Parameter name in @GetMapping must be the same as @PathVariable
+	Can also be same as parameter name after @PathVariable but not required
+
+*****Passing data using @RequestBody*****
+-You can pass values using a parameters from the request(as seen above) but if you're passing a lot of parameters it can become cumbersome
+-If we want to register a new user we would have to pass all the data that makes up a user(userId, email, password)
+-Instead we can use @RequestBody
+-This allows you to pass the data through Postman and keeps your request(URL) clutter free
+-Add @RequestBody as a method argument to the method that maps to that request
+-Then pass in the object you want to give data for
+	For example:
+	request -> localhost:8080/user/registerUser
+	@PostMapping("/registerUser")
+	public User registerUser(@RequestBody User user)
+
+*****Connecting your Java app to a db*****
+
 *****What is JPA*****
+-Note: You must first add a db dependency before you can perform CRUD operations on db
 -Java Persistence API
 	Lets you do ORM(Object-Relational Mapping) when connecting to a relational db
 -ORM
@@ -147,6 +173,26 @@ Delete ---> D	DELETE
 -JPA is a way for you to use ORM
 -Adding JPA dependency to your pom.xml file will allow you to communicate with db
 	You also have to import a db dependency so your app knows which db to connect with(PostgreSQL)
+	
+*****Mapping your Java app to db*****
+-Note: You must first add a db dependency before you can perform CRUD operations on db
+-Your Model classes will serve as a template to your tables
+	For example: We have a User class in the Model package
+	User contains userId, email, and password
+-We want to create a user table that has userId, email, and password as columns
+	Each object of user will serve as a row for our user table
+
+*****Creating a table of your Model classes in db*****
+-Add @Entity annotation in all Model classes(add above class name)
+	JPA now knows to create a table of this class in the db
+	It will create columns that map to the instance variables in that class
+	
+*****Adding Primary Key*****
+-Add @Id annotation to the variable you want to serve as primary key
+	Every table must contain a primary key
+
+*****Connecting Service classes to db*****
+-This will allow you to perform your CRUD operations
 
 *****STARTING SPRING BOOT PROJECT*****
 -While creating your Spring Boot project choose any dependencies that you may need
