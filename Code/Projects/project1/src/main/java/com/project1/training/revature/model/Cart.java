@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Cart {
     private int cartId;
-    private int itemId;
     private int userId;
+    private int itemId;
 }

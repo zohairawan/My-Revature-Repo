@@ -69,6 +69,19 @@ effecting one another
 			adding pre/post processing
 			auditing/logging
 
+*****pom.xml*****
+-This is discussing the simple setup of pom.xml
+-Dependencies we've added so far:
+	spring-boot-starter-test
+	spring-boot-starter-web
+	spring-boot-devtools
+	lombok
+-In our pom.xml file we have two tags we want to focus on:
+	<parent></parent>
+		Tells maven which version of the dependency to download
+	<dependencies></dependencies>
+		Tells maven what dependency to download
+
 HTTP Methods:
 GET
 POST
@@ -109,12 +122,14 @@ Delete ---> D	DELETE
 -Accepts requests
 -Returns response
 -Maps request to a repsonse
+-Return type of response gets converted to JSON
 -A Java Class
 -Marked with annotations
 -Has info about:
 	What URL access triggers it
 	What method to run when accessed
--Methods map to URL requests
+-Methods mapped to URL requests
+	
 
 *****STARTING SPRING BOOT PROJECT*****
 -While creating your Spring Boot project choose any dependencies that you may need

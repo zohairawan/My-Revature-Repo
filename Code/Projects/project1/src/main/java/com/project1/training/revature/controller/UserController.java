@@ -6,11 +6,16 @@
 
 package com.project1.training.revature.controller;
 
+import com.project1.training.revature.model.Item;
 import com.project1.training.revature.model.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("user")
@@ -23,9 +28,13 @@ public class UserController {
         return "User has been added";
     }
 
-    @PostMapping("registerUserTest")
-    public User registerUserTest() {
-        User user = new User(2, "amer@yahoo.com", "bhai1234");
-        return user;
+    @GetMapping("/getItems")
+    public List<Item> getItems() {
+        return Arrays.asList(
+                new Item(1, "Laptop", 455),
+                new Item(2, "Keyboard", 105),
+                new Item(3, "PS5", 800),
+                new Item(4, "Xbox1", 650)
+        );
     }
 }
