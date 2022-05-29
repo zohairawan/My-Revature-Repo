@@ -137,6 +137,11 @@ Read ---> 	R	GET
 Update ---> U	PUT
 Delete ---> D	DELETE
 
+*****Live Reload*****
+-Dev tools allows for live reload
+	-File > Settings > Build, Execution, Deployment(Click on drop down menu) > Compiler > Check mark box next to "Build project automatically" > Apply > Ok
+	-File > Settings > Advanced Settings > Check mark box next to "Allow auto-make to start even if developed application is currently running" > Apply > Ok
+
 *****Passing a parameter*****
 -If you want to pass a parameter in the HTTP request you can do so
 -Add @PathVariable as a method argument to the method that maps to that request
