@@ -137,6 +137,17 @@ Read ---> 	R	GET
 Update ---> U	PUT
 Delete ---> D	DELETE
 
+*****What is JPA*****
+-Java Persistence API
+	Lets you do ORM(Object-Relational Mapping) when connecting to a relational db
+-ORM
+	Allows you to map your Model classes into SQL tables
+		When you connect to db you provide some metadata on your Model classes
+	You don't have to do query and then mapping by yourself, ORM takes care of it
+-JPA is a way for you to use ORM
+-Adding JPA dependency to your pom.xml file will allow you to communicate with db
+	You also have to import a db dependency so your app knows which db to connect with(PostgreSQL)
+
 *****STARTING SPRING BOOT PROJECT*****
 -While creating your Spring Boot project choose any dependencies that you may need
 -For my 'firstspringbootproject' I used Spring Dev Tools, Spring Lombok, and Spring Web
