@@ -69,30 +69,6 @@ effecting one another
 			adding pre/post processing
 			auditing/logging
 
-*****pom.xml*****
--This is discussing the simple setup of pom.xml
--Dependencies we've added so far:
-	spring-boot-starter-test
-	spring-boot-starter-web
-	spring-boot-devtools
-	lombok
--In our pom.xml file we have two tags we want to focus on:
-	<parent></parent>
-		Tells maven which version of the dependency to download
-	<dependencies></dependencies>
-		Tells maven what dependency to download
-
-HTTP Methods:
-GET
-POST
-PUT
-DELETE
-
-Create ---> C	POST
-Read ---> 	R	GET
-Update ---> U	PUT
-Delete ---> D	DELETE
-
 *****Spring Boot Startup Steps*****
 -SpringApplication.run(NameOfClass.class, args);
 	This line:
@@ -129,7 +105,37 @@ Delete ---> D	DELETE
 	What URL access triggers it
 	What method to run when accessed
 -Methods mapped to URL requests
+
+*****pom.xml*****
+-This is discussing the simple setup of pom.xml
+-Dependencies we've added so far:
+	spring-boot-starter-test
+	spring-boot-starter-web
+	spring-boot-devtools
+	lombok
+-In our pom.xml file we have two tags we want to focus on:
+	<parent></parent>
+		Tells maven which version of the dependency to download
+	<dependencies></dependencies>
+		Tells maven what dependency to download
+
+*****application.properties*****
+-Customizing Spring Boot
+-This file allows you to make changes to Spring Boot:
+	Change server port
+	Connect to a database(add dependency in pom.xml also)
 	
+
+HTTP Methods:
+GET
+POST
+PUT
+DELETE
+
+Create ---> C	POST
+Read ---> 	R	GET
+Update ---> U	PUT
+Delete ---> D	DELETE
 
 *****STARTING SPRING BOOT PROJECT*****
 -While creating your Spring Boot project choose any dependencies that you may need

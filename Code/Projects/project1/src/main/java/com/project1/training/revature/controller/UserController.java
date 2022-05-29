@@ -43,4 +43,12 @@ public class UserController {
     public Item getItem(@PathVariable("itemId") int itemId) {
         return userService.getItem(itemId);
     }
+
+    //Adds an item
+    // http://localhost:8085/user/addItem/
+    @PostMapping("/addItem")
+    public String addItem(@RequestBody Item item) {
+        userService.addItem(item);
+        return "Item added successfully";
+    }
 }
