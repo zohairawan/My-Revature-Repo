@@ -166,6 +166,35 @@ Delete ---> D	DELETE
 	public User registerUser(@RequestBody User user)
 
 *****DI / IOC*****
+-Dependency Injection and Inversion of Control
+-Dependency Injection occurs when the Spring Container creates an object and passes it to you
+	Add @Component annotation in any class that you want an object of(add above class name)
+	Add @AutoWired annotation in any class when you want to call/use an object(add above object declaration)
+-Two ways to create a bean:
+	1.) Spring creates for you(as seen above)
+	2.) You explicitly create one
+		When creating your own beans you should do so in a seperate package called config(package name doesn't matter)
+		Create a class in that package called AppConfig(class name doesn't matter)
+		Add @Configuration annotation in you AppConfig class(add above class name)
+		Add @Bean annotation above a method that creates an object
+		@Configuration
+			public class AppConfig {
+				@Bean
+				public User getUserInstance(){
+					return new User();
+				}
+			}
+			Now you have your bean created(this is comparable to @Component)
+			Notice how we are creating a user bean in the class AppConfig, you can create all different kinds of beans here
+		Add @AutoWired annotation in any class when you want to call/use an object(add above object declaration)
+		In order to explicitly create your own bean you must use these 3 annotations:
+			@Configuration - annotates a class as a configuration class
+			@Bean - used to create a bean
+			@AutoWired - scans the container and auto injects the bean if it is available, if not available you get error
+				There's a way to get around the error if bean is not available
+				@AutoWired(required = false)
+				This allows you to bypass the error message even if your bean isn't available
+		
 
 *****Connecting your Java app to a db*****
 
