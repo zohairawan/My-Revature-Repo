@@ -7,6 +7,7 @@
 
 package com.project1.training.revature.controller;
 
+import com.project1.training.revature.dao.UserDAO;
 import com.project1.training.revature.model.User;
 import com.project1.training.revature.services.UserService;
 import com.project1.training.revature.services.UserServiceImpl;
