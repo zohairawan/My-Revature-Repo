@@ -88,7 +88,7 @@ effecting one another
 		You will learn later on which annotations go where and what purpose they serve
 		Annotations serve to mark your classes
 		Spring looks at these classes and depending on the marker treats them differently
-		If it sees a @RestController annoation it treats it as a controller, etc
+		If it sees a @RestController annotation it treats it as a controller, etc
 		In order to find the classes that you've marked it performs a class path scan which identifies all the different classes you've annotated
 		Important note: These classes will only be scanned if they're in the same package as the main class
 	Starts Tomcat server
@@ -168,12 +168,15 @@ Delete ---> D	DELETE
 *****DI / IOC*****
 -Dependency Injection and Inversion of Control
 -Dependency Injection occurs when the Spring Container creates an object and passes it to you
-	Add @Component annotation in any class that you want an object of(add above class name)
-	Add @AutoWired annotation in any class when you want to call/use an object(add above object declaration)
 -Two ways to create a bean:
 	1.) Spring creates for you(as seen above)
+		Add @Component annotation in any class that you want an object of(add above class name)
+		Add @AutoWired annotation in any class when you want to call/use an object(add above object declaration)
+		In order for Spring to create a bean for you you must use these 2 annotations:
+			@Component
+			@AutoWired
 	2.) You explicitly create one
-		When creating your own beans you should do so in a seperate package called config(package name doesn't matter)
+		When creating your own beans you should do so in a separate package called config(package name doesn't matter)
 		Create a class in that package called AppConfig(class name doesn't matter)
 		Add @Configuration annotation in you AppConfig class(add above class name)
 		Add @Bean annotation above a method that creates an object
@@ -194,7 +197,14 @@ Delete ---> D	DELETE
 				There's a way to get around the error if bean is not available
 				@AutoWired(required = false)
 				This allows you to bypass the error message even if your bean isn't available
-		
+*****@SpringBootApplication*****
+-Very important annotation, if you remove this nothing will work
+-Does 3 things:
+	Triggers auto-configuration
+	Scans the classes within the package and child packages
+	Creates the bean
+-If you want it to scan other packages write it like this @SpringBootApplication(scanBasePackages = packagename)
+	If you do this though, it will only scan this package and not the package where your main class is located
 
 *****Connecting your Java app to a db*****
 
