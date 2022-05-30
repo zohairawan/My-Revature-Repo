@@ -244,10 +244,10 @@ Steps to connecting Java app to a db:
 	You also have to import a db dependency so your app knows which db to connect with(PostgreSQL)
 	
 *****JPA Annotations*****	
-@Entity
-@Table
-@Id
-@Column
+@Entity - Creates the table
+@Table - Specifies table name as well as schema
+@Id - Specifies primary key
+@Column - Allows you to give different column name than default
 
 *****Creating a table of your Model classes in db*****
 -Your Model classes will serve as a template to your tables
@@ -263,8 +263,9 @@ Steps to connecting Java app to a db:
 -Add @Id annotation to the variable you want to serve as primary key
 	Every table must contain a primary key
 
-*****Connecting Service classes to db*****
--This will allow you to perform your CRUD operations
+*****JPARepository*****
+-Interface
+-Contains methods for CRUD operations
 
 *****STARTING SPRING BOOT PROJECT*****
 -While creating your Spring Boot project choose any dependencies that you may need
