@@ -34,8 +34,21 @@ public class ItemServiceImpl implements ItemService{
         }
     }
 
+    // Get all items
     public List<Item> getItems() {
-        return null;
+        return itemDAO.findAll();
+    }
+
+    //Increases stock of item
+    public Item addStock(Item item) {
+        if(itemExists(item.getItemId())) {
+            itemDAO.save(item);
+            return item;
+        }
+        else {
+            System.out.println("Item does not exist");
+            return null;
+        }
     }
 
     public Item getItem(int itemId) {

@@ -8,4 +8,5 @@ public interface ItemService {
     public boolean itemExists(int itemId);
     public String addItem(Item item);
     public List<Item> getItems();
+    public Item addStock(Item item);
 }

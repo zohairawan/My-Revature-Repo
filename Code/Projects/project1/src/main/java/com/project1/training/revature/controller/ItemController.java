@@ -27,17 +27,17 @@ public class ItemController {
         return itemService.addItem(item);
     }
 
-    // Returns list of all items
+    // 4.Get all items
     // http://localhost:8089/items/getItems
     @GetMapping("/getItems")
     public List<Item> getItems() {
         return itemService.getItems();
     }
 
-    // Returns one item based on Id
-    // http://localhost:8089/items/getItem/
-    @GetMapping("/getItem/{itemId}")
-    public Item getItem(@PathVariable("itemId") int itemId) {
-        return null;
+    // http://localhost:8089/items/addStock
+    @PostMapping("/addStock")
+    public Item addStock(@RequestBody Item item) {
+        return itemService.addStock(item);
     }
+
 }
