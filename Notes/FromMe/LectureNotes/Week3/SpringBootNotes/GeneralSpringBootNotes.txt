@@ -243,15 +243,18 @@ Steps to connecting Java app to a db:
 -Adding JPA dependency to your pom.xml file will allow you to communicate with db
 	You also have to import a db dependency so your app knows which db to connect with(PostgreSQL)
 	
-*****Mapping your Java app to db*****
--Note: You must first add a db dependency before you can perform CRUD operations on db
+*****JPA Annotations*****	
+@Entity
+@Table
+@Id
+@Column
+
+*****Creating a table of your Model classes in db*****
 -Your Model classes will serve as a template to your tables
-	For example: We have a User class in the Model package
+-For example: We have a User class in the Model package
 	User contains userId, email, and password
 -We want to create a user table that has userId, email, and password as columns
 	Each object of user will serve as a row for our user table
-
-*****Creating a table of your Model classes in db*****
 -Add @Entity annotation in all Model classes(add above class name)
 	JPA now knows to create a table of this class in the db
 	It will create columns that map to the instance variables in that class
