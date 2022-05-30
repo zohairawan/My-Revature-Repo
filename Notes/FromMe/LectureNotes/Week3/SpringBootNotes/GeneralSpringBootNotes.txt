@@ -216,10 +216,24 @@ Delete ---> D	DELETE
 -@Repository		-DAO
 
 *****Connecting your Java app to a db*****
+-In order to connect with a db you have to configure JPA which is what lets you work with a db
+-Connection to your db will be done in application.properties
+Steps to connecting Java app to a db:
+	1.) Update your pom.xml file with 2 dependencies:
+		JPA dependency
+		postgres dependency
+			Once you add these dependencies Spring will automatically connect to the specified db for you,
+			problem is we haven't specified a db yet so if you run your app you will get an error
+	2.) Configure database properties in application.properties file (URL, username, password)
+	3.) App is now ready to run and connected to a db
 
 *****What is JPA*****
 -Note: You must first add a db dependency before you can perform CRUD operations on db
 -Java Persistence API
+	Used to work with db
+	Allows you to save your data from Java app into db
+	Gives you access to JPARepository & CRUDRepository
+		These repositories give you access to CRUD methods
 	Lets you do ORM(Object-Relational Mapping) when connecting to a relational db
 -ORM
 	Allows you to map your Model classes into SQL tables
