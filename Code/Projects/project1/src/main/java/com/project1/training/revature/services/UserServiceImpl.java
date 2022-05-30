@@ -6,7 +6,6 @@ package com.project1.training.revature.services;
 
 import com.project1.training.revature.model.User;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +31,11 @@ public class UserServiceImpl implements UserService{
 
     // 1.Register new users
     public String registerUser(User user) {
-        return "Registered user: " + user + " successfully";
+        if(userExists(user)) {
+            return "Can't register user because they are already registered";
+        }
+        else {
+            return "Registered user: " + user + " successfully";
+        }
     }
 }
