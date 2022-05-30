@@ -51,8 +51,8 @@ public class ItemServiceImpl implements ItemService{
         }
     }
 
-    public Item getItem(int itemId) {
-        return null;
-        //return items.stream().filter(i -> i.getItemId() == itemId).findFirst().get();
-    }
+//    public Item getItem(int itemId) {
+//        return null;
+//        return items.stream().filter(i -> i.getItemId() == itemId).findFirst().get();
+//    }
 }
