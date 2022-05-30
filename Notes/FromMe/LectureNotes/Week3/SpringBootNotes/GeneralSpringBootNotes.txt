@@ -165,6 +165,8 @@ Delete ---> D	DELETE
 	@PostMapping("/registerUser")
 	public User registerUser(@RequestBody User user)
 
+*****DI / IOC*****
+
 *****Connecting your Java app to a db*****
 
 *****What is JPA*****
