@@ -25,6 +25,7 @@ public class UserController {
         return userService.registerUser(user);
     }
 
+    // Delete existing user
     // http://localhost:8089/user/deleteUser
     @DeleteMapping("/deleteUser/{userId}")
     public String deleteUser(@PathVariable("userId") int userId) {

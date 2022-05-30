@@ -9,7 +9,6 @@ package com.project1.training.revature.controller;
 
 import com.project1.training.revature.model.Item;
 import com.project1.training.revature.services.ItemService;
-import com.project1.training.revature.services.ItemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,25 +20,24 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-    //Returns list of all items
+    // Adds an item
+    // http://localhost:8089/items/addItem/
+    @PostMapping("/addItem")
+    public String addItem(@RequestBody Item item) {
+        return itemService.addItem(item);
+    }
+
+    // Returns list of all items
     // http://localhost:8089/items/getItems
     @GetMapping("/getItems")
     public List<Item> getItems() {
         return itemService.getItems();
     }
 
-    //Returns one item based on Id
+    // Returns one item based on Id
     // http://localhost:8089/items/getItem/
     @GetMapping("/getItem/{itemId}")
     public Item getItem(@PathVariable("itemId") int itemId) {
-        return itemService.getItem(itemId);
-    }
-
-    //Adds an item
-    // http://localhost:8089/items/addItem/
-    @PostMapping("/addItem")
-    public String addItem(@RequestBody Item item) {
-        itemService.addItem(item);
-        return "Item added successfully";
+        return null;
     }
 }
