@@ -22,21 +22,21 @@ public class ItemController {
     ItemService itemService;
 
     //Returns list of all items
-    // http://localhost:8089/user/getItems
+    // http://localhost:8089/items/getItems
     @GetMapping("/getItems")
     public List<Item> getItems() {
         return itemService.getItems();
     }
 
     //Returns one item based on Id
-    // http://localhost:8089/user/getItem/
+    // http://localhost:8089/items/getItem/
     @GetMapping("/getItem/{itemId}")
     public Item getItem(@PathVariable("itemId") int itemId) {
         return itemService.getItem(itemId);
     }
 
     //Adds an item
-    // http://localhost:8089/user/addItem/
+    // http://localhost:8089/items/addItem/
     @PostMapping("/addItem")
     public String addItem(@RequestBody Item item) {
         itemService.addItem(item);

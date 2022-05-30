@@ -169,7 +169,7 @@ Delete ---> D	DELETE
 -Dependency Injection and Inversion of Control
 -Dependency Injection occurs when the Spring Container creates an object and passes it to you
 -Two ways to create a bean:
-	1.) Spring creates for you(as seen above)
+	1.) Spring creates one for you if you specify with certain annotations
 		Add @Component annotation in any class that you want an object of(add above class name)
 		Add @AutoWired annotation in any class when you want to call/use an object(add above object declaration)
 		In order for Spring to create a bean for you you must use these 2 annotations:
@@ -205,6 +205,15 @@ Delete ---> D	DELETE
 	Creates the bean
 -If you want it to scan other packages write it like this @SpringBootApplication(scanBasePackages = packagename)
 	If you do this though, it will only scan this package and not the package where your main class is located
+
+*****Stereotypes annotation*****
+-Markers for any class that fulfills a role within an application
+-Automatically creates a bean
+-@Component		-scans and creates beans
+-@Controller		-controller returns VIEWS
+-@RestController	-rest controller returns JSON
+-@Service		-service layer
+-@Repository		-DAO
 
 *****Connecting your Java app to a db*****
 

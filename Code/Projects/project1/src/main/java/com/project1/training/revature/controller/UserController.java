@@ -23,6 +23,11 @@ public class UserController {
     // http://localhost:8089/user/registerUser
     @PostMapping("registerUser")
     public String registerUser(@RequestBody User user) {
-        return userService.registerUser(user);
+        if(userService.userExists(user)) {
+            return "Can't register user because they are already registered";
+        }
+        else {
+            return userService.registerUser(user);
+        }
     }
 }
