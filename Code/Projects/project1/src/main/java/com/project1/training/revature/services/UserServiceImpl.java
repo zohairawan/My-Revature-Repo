@@ -7,12 +7,17 @@ package com.project1.training.revature.services;
 import com.project1.training.revature.dao.UserDAO;
 import com.project1.training.revature.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserDAO userDAO;
+
+    @Override
+    public boolean userExists(int userId) {
+        return userDAO.existsById(userId);
+    }
 
     // 1.Register new users
     public String registerUser(User user) {
@@ -25,8 +30,14 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-    @Override
-    public boolean userExists(int userId) {
-        return userDAO.existsById(userId);
+    // Delete user
+    public String deleteUser(int userId) {
+        if(userExists(userId)) {
+            userDAO.deleteById(userId);
+            return "User deleted successfully";
+        }
+        else {
+            return "User does not exist, delete unsuccessful";
+        }
     }
 }

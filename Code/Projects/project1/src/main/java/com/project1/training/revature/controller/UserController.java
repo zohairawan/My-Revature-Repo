@@ -24,4 +24,10 @@ public class UserController {
     public String registerUser(@RequestBody User user) {
         return userService.registerUser(user);
     }
+
+    // http://localhost:8089/user/deleteUser
+    @DeleteMapping("/deleteUser/{userId}")
+    public String deleteUser(@PathVariable("userId") int userId) {
+        return userService.deleteUser(userId);
+    }
 }
