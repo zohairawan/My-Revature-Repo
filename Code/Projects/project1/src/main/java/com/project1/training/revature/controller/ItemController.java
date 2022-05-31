@@ -10,6 +10,7 @@ package com.project1.training.revature.controller;
 import com.project1.training.revature.model.Item;
 import com.project1.training.revature.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class ItemController {
     // Adds an item
     // http://localhost:8089/items/addItem/
     @PostMapping("/addItem")
-    public String addItem(@RequestBody Item item) {
+    public ResponseEntity<String> addItem(@RequestBody Item item) {
         return itemService.addItem(item);
     }
 

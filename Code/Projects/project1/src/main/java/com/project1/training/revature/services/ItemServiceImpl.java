@@ -7,6 +7,8 @@ package com.project1.training.revature.services;
 import com.project1.training.revature.dao.ItemDAO;
 import com.project1.training.revature.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,13 +26,14 @@ public class ItemServiceImpl implements ItemService{
     }
 
     // Adds an item
-    public String addItem(Item item) {
+    public ResponseEntity<String> addItem(Item item) {
+        ResponseEntity responseEntity;
         if(itemExists(item.getItemId())) {
-            return "Cannot add item, already exists. You can increase item stock however";
+            return new ResponseEntity<String>("Cannot add item, already exists. You can increase item stock however", HttpStatus.CONFLICT);
         }
         else {
             itemDAO.save(item);
-            return "Item added successfully";
+            return new ResponseEntity<String>("Item added successfully", HttpStatus.OK);
         }
     }
 
