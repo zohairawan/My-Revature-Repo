@@ -10,5 +10,5 @@ import org.springframework.http.ResponseEntity;
 public interface UserService {
     public boolean userExists(int userId);
     public ResponseEntity<String> registerUser(User user);
-    public String deleteUser(int userId);
+    public ResponseEntity<String> deleteUser(int userId);
 }

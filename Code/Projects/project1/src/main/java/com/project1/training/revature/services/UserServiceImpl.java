@@ -33,13 +33,15 @@ public class UserServiceImpl implements UserService{
     }
 
     // Delete user
-    public String deleteUser(int userId) {
+
+    public ResponseEntity<String> deleteUser(int userId) {
+        ResponseEntity responseEntity;
         if(userExists(userId)) {
             userDAO.deleteById(userId);
-            return "User deleted successfully";
+            return new ResponseEntity<String>("User deleted successfully", HttpStatus.OK);
         }
         else {
-            return "User does not exist, delete unsuccessful";
+            return new ResponseEntity<String> ("User does not exist, delete unsuccessful", HttpStatus.NOT_ACCEPTABLE);
         }
     }
 }
