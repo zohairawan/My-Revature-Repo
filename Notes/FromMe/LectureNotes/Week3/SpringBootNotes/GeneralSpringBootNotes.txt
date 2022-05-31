@@ -147,7 +147,7 @@ Delete ---> D	DELETE
 -Add @PathVariable as a method argument to the method that maps to that request
 	For example:
 	request -> localhost:8080/user/getUser/parameterGoesHere
-	@GetMapping("getUser/"{userId}")
+	@GetMapping("getUser/{userId}")
 	public User getUserbyId(@PathVariable("userId") int uId)
 -Remember to add {} in @GetMapping
 -Parameter name in @GetMapping must be the same as @PathVariable
