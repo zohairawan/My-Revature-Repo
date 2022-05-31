@@ -53,9 +53,4 @@ public class ItemServiceImpl implements ItemService{
             return null;
         }
     }
-
-//    public Item getItem(int itemId) {
-//        return null;
-//        return items.stream().filter(i -> i.getItemId() == itemId).findFirst().get();
-//    }
 }
