@@ -10,6 +10,7 @@ package com.project1.training.revature.controller;
 import com.project1.training.revature.model.User;
 import com.project1.training.revature.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +22,7 @@ public class UserController {
     // 1.Register new users
     // http://localhost:8089/user/registerUser
     @PostMapping("registerUser")
-    public String registerUser(@RequestBody User user) {
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
         return userService.registerUser(user);
     }
 

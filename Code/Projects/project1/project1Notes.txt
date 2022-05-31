@@ -6,14 +6,14 @@ Objective:
 3)	Then they can place orders.
 4)	Registered users are stored in the Users table.
 5)	Items that users can buy are stored in the Items table.
-6)	User’s carts are stored in the Cart table. (ONE-TO-ONE RELATIONSHIP BETWEEN USERS AND CARTS)
+6)	User’s carts are stored in the Cart table. (ONE-TO-ONE RELATIONSHIP BETWEEN USERS AND CARTS PROBABLY)
 7)	User’s orders are stored in the Orders table.
 
 Features to be Implemented:
-1)	Register – register new users CAN DO
+1)	Register – register new users
 2)	Login/Logout – login and logout users
 3)	Get Users/Cart items – get all users and their cart items
-4)	Get Items – get all items that are available in the store CAN DO
+4)	Get Items – get all items that are available in the store
 5)	Add Item to Cart – adds selected item to the cart
 
 How to implement features:
