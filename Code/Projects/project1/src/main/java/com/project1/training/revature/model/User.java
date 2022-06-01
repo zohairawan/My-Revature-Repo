@@ -16,7 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Component
 @Entity
-@Table(name = "Users", schema = "projectone")
+@Table(name = "users", schema = "projectone")
 public class User {
     @Id
     @SequenceGenerator(name="mysequenceUser", initialValue=1)
