@@ -19,7 +19,8 @@ import javax.persistence.*;
 @Table(name = "Users", schema = "projectone")
 public class User {
     @Id
-
+    @SequenceGenerator(name="mysequenceUser", initialValue=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequenceUser")
     private int userId;
     private String email;
     private String password;

@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService{
         }
         else {
             itemDAO.save(item);
-            return new ResponseEntity<String>("Item added successfully", HttpStatus.OK);
+            return new ResponseEntity<String>("Item: " + item + " added successfully", HttpStatus.OK);
         }
     }
 
