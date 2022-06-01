@@ -20,9 +20,10 @@ import javax.persistence.*;
 public class User {
     @Id
     @SequenceGenerator(name="mysequenceUser", initialValue=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequenceUser")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequenceUser") //HE HAS GENTYPE IDENTITY
     private int userId;
-    private String email;
+    private String username;
     private String password;
+    private Role role;
     //private Cart cart;
 }
