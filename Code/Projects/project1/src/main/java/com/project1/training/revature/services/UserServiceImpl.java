@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService{
     }
 
     // Delete user
-
     public ResponseEntity<String> deleteUser(int userId) {
         ResponseEntity responseEntity;
         if(userExists(userId)) {

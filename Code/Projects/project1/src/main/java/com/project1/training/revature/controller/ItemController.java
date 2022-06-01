@@ -28,6 +28,13 @@ public class ItemController {
         return itemService.addItem(item);
     }
 
+    // Delete existing item
+    // http://localhost:8089/items/deleteItem
+    @DeleteMapping("/deleteItem/{itemId}")
+    public ResponseEntity<String> deleteItem(@PathVariable("itemId") int itemId) {
+        return itemService.deleteItem(itemId);
+    }
+
     // 4.Get all items
     // http://localhost:8089/items/getItems
     @GetMapping("/getItems")

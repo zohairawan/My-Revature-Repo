@@ -8,10 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 //Generates @ToString, @EqualsAndHashCode, @Getter, @Setter
 @Data
@@ -22,6 +19,7 @@ import javax.persistence.Table;
 @Table(name = "Items", schema = "projectone")
 public class Item {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int itemId;
     private String itemName;
     private double itemPrice;
