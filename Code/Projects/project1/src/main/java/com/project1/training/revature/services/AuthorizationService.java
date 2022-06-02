@@ -2,8 +2,8 @@ package com.project1.training.revature.services;
 
 import com.project1.training.revature.exceptions.NotAuthorizedException;
 import com.project1.training.revature.exceptions.NotLoggedInException;
-import com.project1.training.revature.models.Role;
-import com.project1.training.revature.models.User;
+import com.project1.training.revature.model.Role;
+import com.project1.training.revature.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ public class AuthorizationService {
 		
 		User currentUser = (User) session.getAttribute("currentUser");
 		
-		if(userId != currentUser.getId()) {
+		if(userId != currentUser.getUserId()) {
 			// The resource that is being manipulated does not belong to the currently
 			// logged in User
 			

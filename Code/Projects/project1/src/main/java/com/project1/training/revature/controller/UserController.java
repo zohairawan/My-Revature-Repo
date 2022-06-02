@@ -7,6 +7,7 @@
 
 package com.project1.training.revature.controller;
 
+import com.project1.training.revature.model.LoginTemplate;
 import com.project1.training.revature.model.User;
 import com.project1.training.revature.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,69 +42,85 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    //TUFAIL
     @Autowired
     private AuthorizationService authorizationService;
 
     // 1.Register new users
-    // http://localhost:8089/users/registerUser
+    // localhost:8089/users/registerUser
     @PostMapping("/registerUser")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         return userService.registerUser(user);
     }
 
-    // Delete existing user
-    // http://localhost:8089/users/deleteUser
-    @DeleteMapping("/deleteUser/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable("userId") int userId) {
-        return userService.deleteUser(userId);
+    // 2. Login users
+    // localhost:8089/users/login
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody LoginTemplate loginTemplate) {
+        return ResponseEntity.ok(userService.login(loginTemplate.getUsername(), loginTemplate.getPassword()));
+    }
+
+    // 2. Logout users
+    // localhost:8089/users/logout
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        userService.logout();
+        return ResponseEntity.accepted().build();
     }
 
     // 3.Get all users
-    // http://localhost:8089/users/getUsers
+    // localhost:8089/users/getUsers
     @GetMapping("/getUsers")
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
+    // Delete existing user
+    // localhost:8089/users/deleteUser
+    @Authorized(allowedRoles = {Role.ADMIN})
+    @DeleteMapping("/deleteUser/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable("userId") int userId) {
+        return userService.deleteUser(userId);
+    }
+
     //TUFAIL
-    @Authorized(allowedRoles = {Role.ADMIN})
-    @GetMapping
-    public ResponseEntity<List<User>> findAll() {
-
-        return ResponseEntity.ok(userService.findAll());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable("id") int id) {
-        authorizationService.guardByUserId(id);
-
-        return ResponseEntity.ok(userService.findById(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<User> insert(@RequestBody User u) {
-
-        return ResponseEntity.accepted().body(userService.insert(u));
-    }
-
-
-    @PutMapping
-    @Authorized(allowedRoles = {Role.ADMIN, Role.CUSTOMER, Role.CUSTOMER})
-    public ResponseEntity<User> update(@RequestBody User u) {
-        authorizationService.guardByUserId(u.getUserId());
-        // We will also check if this resource belongs to the User, even if they pass the @Authorized annotation
-
-        return ResponseEntity.accepted().body(userService.update(u));
-    }
-
-    @Authorized(allowedRoles = {Role.ADMIN})
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
-        if(userService.delete(id)) {
-            return ResponseEntity.accepted().build();
-        }
-
-        return ResponseEntity.noContent().build();
-    }
+//    @Authorized(allowedRoles = {Role.ADMIN})
+//    @GetMapping
+//    public ResponseEntity<List<User>> findAll() {
+//
+//        return ResponseEntity.ok(userService.findAll());
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<User> findById(@PathVariable("id") int id) {
+//        authorizationService.guardByUserId(id);
+//
+//        return ResponseEntity.ok(userService.findById(id));
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity<User> insert(@RequestBody User u) {
+//
+//        return ResponseEntity.accepted().body(userService.insert(u));
+//    }
+//
+//
+//    @PutMapping
+//    @Authorized(allowedRoles = {Role.ADMIN, Role.CUSTOMER})
+//    public ResponseEntity<User> update(@RequestBody User u) {
+//        authorizationService.guardByUserId(u.getUserId());
+//        // We will also check if this resource belongs to the User, even if they pass the @Authorized annotation
+//
+//        return ResponseEntity.accepted().body(userService.update(u));
+//    }
+//
+//    // localhost:8089/users/tufail/deleteUser/
+//    @Authorized(allowedRoles = {Role.ADMIN})
+//    @DeleteMapping("/tufail/deleteUser/{id}")
+//    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+//        if(userService.delete(id)) {
+//            return ResponseEntity.accepted().build();
+//        }
+//
+//        return ResponseEntity.noContent().build();
+//    }
 }

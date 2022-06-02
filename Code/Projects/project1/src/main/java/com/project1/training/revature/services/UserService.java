@@ -16,11 +16,11 @@ public interface UserService {
     public List<User> getUsers();
 
     //TUFAIL
-    Object findAll();
-    Object login(String username, String password);
+    List<User> findAll();
+    User login(String username, String password);
     void logout();
-    Object findById(int id);
-    Object insert(User u);
+    User findById(int id);
+    User insert(User u);
     User update(User u);
-    ResponseEntity<Void> delete(int id);
+    boolean delete(int id);
 }

@@ -44,10 +44,10 @@ public class UserServiceImpl implements UserService{
         ResponseEntity responseEntity;
         if(userExists(userId)) {
             userDAO.deleteById(userId);
-            return new ResponseEntity<String>("User deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<String>("User: " + userId + " deleted successfully", HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<String> ("User does not exist, delete unsuccessful", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<String> ("User: " + userId + " does not exist, delete unsuccessful", HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -121,15 +121,11 @@ public class UserServiceImpl implements UserService{
     }
 
     public void logout() {
-
         HttpSession session = req.getSession(false);
-
         if(session == null) {
             // No one was logged in
-
             return;
         }
-
         session.invalidate();
     }
 }

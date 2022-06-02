@@ -21,8 +21,8 @@ import java.util.List;
 public class AuthAspect {
     @Autowired
     private HttpServletRequest req;
-    @Around("@annotation(authorized")
-    public Object authenticate(ProceedingJoinPoint pjp, Authorized authorized) throws Throwable) {
+    @Around("@annotation(authorized)")
+    public Object authenticate(ProceedingJoinPoint pjp, Authorized authorized) throws Throwable {
         HttpSession session = req.getSession(false);
         if(session == null || session.getAttribute("currentUser") == null) {
             throw new NotLoggedInException("Must be logged in to perform this action");
