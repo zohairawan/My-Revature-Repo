@@ -69,6 +69,7 @@ public class UserController {
 
     // 3.Get all users
     // localhost:8089/users/getUsers
+    @Authorized(allowedRoles = {Role.ADMIN})
     @GetMapping("/getUsers")
     public List<User> getUsers() {
         return userService.getUsers();
@@ -77,7 +78,7 @@ public class UserController {
     // Delete existing user
     // localhost:8089/users/deleteUser
     @Authorized(allowedRoles = {Role.ADMIN})
-    @DeleteMapping("/deleteUser/{userId}")
+    @DeleteMapping("/delete/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable("userId") int userId) {
         return userService.deleteUser(userId);
     }

@@ -7,7 +7,9 @@
 
 package com.project1.training.revature.controller;
 
+import com.project1.training.revature.annotations.Authorized;
 import com.project1.training.revature.model.Item;
+import com.project1.training.revature.model.Role;
 import com.project1.training.revature.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class ItemController {
 
     // Adds an item
     // http://localhost:8089/items/addItem/
+    @Authorized(allowedRoles = {Role.ADMIN})
     @PostMapping("/addItem")
     public ResponseEntity<String> addItem(@RequestBody Item item) {
         return itemService.addItem(item);
@@ -30,6 +33,7 @@ public class ItemController {
 
     // Delete existing item
     // http://localhost:8089/items/deleteItem
+    @Authorized(allowedRoles = {Role.ADMIN})
     @DeleteMapping("/deleteItem/{itemId}")
     public ResponseEntity<String> deleteItem(@PathVariable("itemId") int itemId) {
         return itemService.deleteItem(itemId);

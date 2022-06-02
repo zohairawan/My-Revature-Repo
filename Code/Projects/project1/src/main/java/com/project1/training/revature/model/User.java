@@ -19,8 +19,8 @@ import javax.persistence.*;
 @Table(name = "users", schema = "projectone")
 public class User {
     @Id
-    @SequenceGenerator(name="mysequenceUser", initialValue=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequenceUser") //HE HAS GENTYPE IDENTITY
+    //@SequenceGenerator(name="mysequenceUser", initialValue=1)
+    //@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequenceUser") //HE HAS GENTYPE IDENTITY
     private int userId;
     private String username;
     private String password;

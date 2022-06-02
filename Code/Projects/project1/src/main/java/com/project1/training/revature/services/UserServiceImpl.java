@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -25,6 +26,19 @@ public class UserServiceImpl implements UserService{
 
     public boolean userExists(int userId) {
         return userDAO.existsById(userId);
+    }
+
+    public User login(String username, String password) {
+        User exists = userDAO.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(String.format("No User with username = %s", username)));
+        // Maybe change the above exception to instead be a UnsuccessfulLoginException
+
+        // Check that the given password matches the password in the User object
+        // Pretend that they were successful
+        HttpSession session = req.getSession();
+        session.setAttribute("currentUser", exists);
+
+        return exists;
     }
 
     // 1.Register new users
@@ -105,20 +119,7 @@ public class UserServiceImpl implements UserService{
         return true;
     }
 
-    public User login(String username, String password) {
-        User exists = userDAO.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(String.format("No User with username = %s", username)));
-        // Maybe change the above exception to instead be a UnsuccessfulLoginException
 
-        // Check that the given password matches the password in the User object
-        // Pretend that they were successful
-
-
-        HttpSession session = req.getSession();
-        session.setAttribute("currentUser", exists);
-
-        return exists;
-    }
 
     public void logout() {
         HttpSession session = req.getSession(false);

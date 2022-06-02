@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface UserService {
+    User login(String username, String password);
+    void logout();
     public boolean userExists(int userId);
     public ResponseEntity<String> registerUser(User user);
     public ResponseEntity<String> deleteUser(int userId);
@@ -17,8 +19,6 @@ public interface UserService {
 
     //TUFAIL
     List<User> findAll();
-    User login(String username, String password);
-    void logout();
     User findById(int id);
     User insert(User u);
     User update(User u);
