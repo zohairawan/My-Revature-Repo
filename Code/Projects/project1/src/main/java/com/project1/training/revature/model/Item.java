@@ -19,8 +19,8 @@ import javax.persistence.*;
 @Table(name = "items", schema = "projectone")
 public class Item {
     @Id
-    //@SequenceGenerator(name="mysequenceItem", initialValue=1)
-    //@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequenceItem")
+    @SequenceGenerator(name="mysequenceItem", initialValue=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequenceItem")
     private int itemId;
     private String itemName;
     private double itemPrice;
