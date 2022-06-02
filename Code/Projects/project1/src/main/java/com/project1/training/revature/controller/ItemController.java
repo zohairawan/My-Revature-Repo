@@ -21,11 +21,11 @@ import java.util.List;
 @RequestMapping("items")
 public class ItemController {
     @Autowired
-    ItemService itemService;
+    private ItemService itemService;
 
     // Adds an item
     // http://localhost:8089/items/addItem/
-    @Authorized(allowedRoles = {Role.ADMIN})
+    //@Authorized(allowedRoles = {Role.ADMIN})
     @PostMapping("/addItem")
     public ResponseEntity<String> addItem(@RequestBody Item item) {
         return itemService.addItem(item);
@@ -33,7 +33,7 @@ public class ItemController {
 
     // Delete existing item
     // http://localhost:8089/items/deleteItem
-    @Authorized(allowedRoles = {Role.ADMIN})
+    //@Authorized(allowedRoles = {Role.ADMIN})
     @DeleteMapping("/deleteItem/{itemId}")
     public ResponseEntity<String> deleteItem(@PathVariable("itemId") int itemId) {
         return itemService.deleteItem(itemId);

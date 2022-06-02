@@ -22,5 +22,6 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int cartId;
+    private String cartName;
 
 }
