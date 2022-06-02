@@ -18,12 +18,14 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users", schema = "projectone")
 public class User {
-    @Id
     //@SequenceGenerator(name="mysequenceUser", initialValue=1)
-    //@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequenceUser") //HE HAS GENTYPE IDENTITY
+    //@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequenceUser")
+    @Id
     private int userId;
     private String username;
     private String password;
     private Role role;
-    //private Cart cart;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 }
