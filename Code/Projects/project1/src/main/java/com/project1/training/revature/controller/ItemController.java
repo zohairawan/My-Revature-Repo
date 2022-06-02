@@ -51,5 +51,4 @@ public class ItemController {
     public Item addStock(@RequestBody Item item) {
         return itemService.addStock(item);
     }
-
 }
