@@ -1,6 +1,8 @@
 package com.project1.training.revature.controller;
 
+import com.project1.training.revature.annotations.Authorized;
 import com.project1.training.revature.model.Cart;
+import com.project1.training.revature.model.Role;
 import com.project1.training.revature.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ public class CartController {
 
     // Get all carts
     // http://localhost:8089/carts/getCarts
+    @Authorized(allowedRoles = {Role.ADMIN, Role.CUSTOMER})
     @GetMapping("/getCarts")
     public List<Cart> getCarts(){return cartService.getCarts();}
 }

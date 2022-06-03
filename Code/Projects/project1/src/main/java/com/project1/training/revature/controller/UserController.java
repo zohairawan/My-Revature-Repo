@@ -47,6 +47,7 @@ public class UserController {
 
     // 1.Register new users
     // localhost:8089/users/registerUser
+    @Authorized(allowedRoles = {Role.ADMIN})
     @PostMapping("/registerUser")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         return userService.registerUser(user);
@@ -69,12 +70,13 @@ public class UserController {
 
     // 3.Get all users
     // localhost:8089/users/getUsers
-    // @Authorized(allowedRoles = {Role.ADMIN})
+    @Authorized(allowedRoles = {Role.ADMIN})
     @GetMapping("/getUsers")
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
+    // Add item(s) to cart
     // localhost:8089/users/addItemToCart/
     @PutMapping("/addItemToCart/{id}")
     public boolean updateUser(@RequestBody User newUser, @PathVariable("id") int id) {
@@ -85,13 +87,12 @@ public class UserController {
         else {
             return false;
         }
-
     }
 
     // Delete existing user
     // localhost:8089/users/deleteUser
     @Authorized(allowedRoles = {Role.ADMIN})
-    //@DeleteMapping("/delete/{userId}")
+    @DeleteMapping("/delete/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable("userId") int userId) {
         return userService.deleteUser(userId);
     }
