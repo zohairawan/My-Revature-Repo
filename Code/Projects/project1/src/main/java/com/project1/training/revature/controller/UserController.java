@@ -75,7 +75,8 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @PutMapping("/updateUser/{id}")
+    // localhost:8089/users/addItemToCart/
+    @PutMapping("/addItemToCart/{id}")
     public boolean updateUser(@RequestBody User newUser, @PathVariable("id") int id) {
         if(userService.userExists(id)) {
             userService.updateUser(newUser, id);
