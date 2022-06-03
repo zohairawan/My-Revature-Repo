@@ -18,7 +18,6 @@ public interface UserService {
     public ResponseEntity<String> deleteUser(int userId);
     public List<User> getUsers();
 
-    //TUFAIL
     List<User> findAll();
     User findById(int id);
     User insert(User u);

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 public class LoginTemplate {
-
 	private String username;
 	private String password;
 }

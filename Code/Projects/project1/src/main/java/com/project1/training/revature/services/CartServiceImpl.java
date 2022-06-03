@@ -17,7 +17,6 @@ public class CartServiceImpl implements CartService{
     public List<Cart> getCarts() {
         return cartDAO.findAll();
     }
-
     //additemtocart setting cart to user
     //createCart(can do in user)
 }

@@ -31,14 +31,18 @@ public class UserServiceImpl implements UserService{
     public User login(String username, String password) {
         User exists = userDAO.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(String.format("No User with username = %s", username)));
-        // Maybe change the above exception to instead be a UnsuccessfulLoginException
-
-        // Check that the given password matches the password in the User object
-        // Pretend that they were successful
         HttpSession session = req.getSession();
         session.setAttribute("currentUser", exists);
-
         return exists;
+    }
+
+    public void logout() {
+        HttpSession session = req.getSession(false);
+        if(session == null) {
+            // No one was logged in
+            return;
+        }
+        session.invalidate();
     }
 
     // 1.Register new users
@@ -84,7 +88,6 @@ public class UserServiceImpl implements UserService{
         return userDAO.findAll();
     }
 
-    //TUFAIL
     public List<User> findAll() {
         return userDAO.findAll();
     }
@@ -99,9 +102,7 @@ public class UserServiceImpl implements UserService{
             // This should be a custom exception class instead
             throw new RuntimeException("User ID must be zero to create a new User");
         }
-
         userDAO.save(u); // Modify the user with the new ID
-
         return u;
     }
 
@@ -109,18 +110,14 @@ public class UserServiceImpl implements UserService{
         if(!userDAO.existsById(u.getUserId())) {
             throw new RuntimeException("User must already exist to update");
         }
-
         userDAO.save(u);
-
         HttpSession session = req.getSession(false); // They must have already been logged in, because we had our guard method
-
         User sessionUser = (User) session.getAttribute("currentUser");
 
         // If a User updated themselves, update the information in the session
         if(sessionUser.getUserId() == u.getUserId()) {
             session.setAttribute("currentUser", u);
         }
-
         return u;
     }
 
@@ -128,20 +125,7 @@ public class UserServiceImpl implements UserService{
         if(!userDAO.existsById(id)) {
             return false;
         }
-
         userDAO.deleteById(id);
-
         return true;
-    }
-
-
-
-    public void logout() {
-        HttpSession session = req.getSession(false);
-        if(session == null) {
-            // No one was logged in
-            return;
-        }
-        session.invalidate();
     }
 }

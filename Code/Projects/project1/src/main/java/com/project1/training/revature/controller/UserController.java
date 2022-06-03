@@ -96,9 +96,6 @@ public class UserController {
         return userService.deleteUser(userId);
     }
 
-
-
-    //TUFAIL
 //    @Authorized(allowedRoles = {Role.ADMIN})
 //    @GetMapping
 //    public ResponseEntity<List<User>> findAll() {
