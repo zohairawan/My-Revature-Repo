@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService{
 
     public boolean updateUser(User updatedUser, int id) {
         User currentUser = userDAO.getReferenceById(id);
-        if(userDAO.existsById(id)) {
+        if(userExists(currentUser.getUserId())) {
             System.out.println("Updating user");
             currentUser.setUsername(updatedUser.getUsername());
             currentUser.setCart(updatedUser.getCart());
