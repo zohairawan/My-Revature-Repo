@@ -21,12 +21,12 @@ import java.util.List;
 @Table(name = "carts", schema = "projectone")
 public class Cart {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int cartId;
 
     @ManyToMany
-    @JoinTable(name = "from_cart", schema = "projectone",
-        joinColumns = @JoinColumn(name = "carteyed", referencedColumnName = "cartId"),
-        inverseJoinColumns = @JoinColumn(name = "itemeyed", referencedColumnName = "itemId"))
+    @JoinTable(name = "cart_item", schema = "projectone",
+        joinColumns = @JoinColumn(name = "cart_id", referencedColumnName = "cartId"),
+        inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "itemId"))
     private List<Item> itemList;
 }

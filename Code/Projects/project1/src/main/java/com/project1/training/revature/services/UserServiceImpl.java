@@ -53,6 +53,21 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    public boolean updateUser(User updatedUser, int id) {
+        User currentUser = userDAO.getReferenceById(id);
+        if(userDAO.existsById(id)) {
+            System.out.println("Updating user");
+            currentUser.setUsername(updatedUser.getUsername());
+            currentUser.setCart(updatedUser.getCart());
+            userDAO.save(currentUser);
+            return true;
+        }
+        else {
+            System.out.println("Can't update user");
+            return false;
+        }
+    }
+
     // Delete user
     public ResponseEntity<String> deleteUser(int userId) {
         ResponseEntity responseEntity;

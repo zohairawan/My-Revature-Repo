@@ -18,8 +18,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users", schema = "projectone")
 public class User {
-    @SequenceGenerator(name="mysequenceUser", initialValue=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequenceUser")
+    //@SequenceGenerator(name="mysequenceUser", initialValue=1)
+    //@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequenceUser")
     @Id
     private int userId;
     private String username;

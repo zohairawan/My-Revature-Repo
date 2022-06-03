@@ -75,6 +75,18 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @PutMapping("/updateUser/{id}")
+    public boolean updateUser(@RequestBody User newUser, @PathVariable("id") int id) {
+        if(userService.userExists(id)) {
+            userService.updateUser(newUser, id);
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
     // Delete existing user
     // localhost:8089/users/deleteUser
     @Authorized(allowedRoles = {Role.ADMIN})
@@ -82,6 +94,8 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable("userId") int userId) {
         return userService.deleteUser(userId);
     }
+
+
 
     //TUFAIL
 //    @Authorized(allowedRoles = {Role.ADMIN})
