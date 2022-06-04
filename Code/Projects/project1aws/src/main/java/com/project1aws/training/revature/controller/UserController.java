@@ -5,16 +5,16 @@
  * Postman ---> Controller
  */
 
-package com.project1.training.revature.controller;
+package com.project1aws.training.revature.controller;
 
-import com.project1.training.revature.model.LoginTemplate;
-import com.project1.training.revature.model.User;
-import com.project1.training.revature.services.UserService;
-import com.project1.training.revature.annotations.Authorized;
-import com.project1.training.revature.model.Role;
-import com.project1.training.revature.model.User;
-import com.project1.training.revature.services.AuthorizationService;
-import com.project1.training.revature.services.UserService;
+import com.project1aws.training.revature.annotations.Authorized;
+import com.project1aws.training.revature.model.Role;
+import com.project1aws.training.revature.model.User;
+import com.project1aws.training.revature.services.AuthorizationService;
+import com.project1aws.training.revature.services.UserService;
+import com.project1aws.training.revature.model.LoginTemplate;
+import com.project1aws.training.revature.model.User;
+import com.project1aws.training.revature.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +30,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-
-
-
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -44,22 +40,22 @@ public class UserController {
     private AuthorizationService authorizationService;
 
     // 1.Register new users
-    // localhost:8089/users/registerUser
-    @Authorized(allowedRoles = {Role.ADMIN})
+    // localhost:8090/users/registerUser
+    //@Authorized(allowedRoles = {Role.ADMIN})
     @PostMapping("/registerUser")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         return userService.registerUser(user);
     }
 
     // 2. Login users
-    // localhost:8089/users/login
+    // localhost:8090/users/login
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginTemplate loginTemplate) {
         return ResponseEntity.ok(userService.login(loginTemplate.getUsername(), loginTemplate.getPassword()));
     }
 
     // 2. Logout users
-    // localhost:8089/users/logout
+    // localhost:8090/users/logout
     @PostMapping("/logout")
     public ResponseEntity<Void> logout() {
         userService.logout();
@@ -67,7 +63,7 @@ public class UserController {
     }
 
     // 3.Get all users
-    // localhost:8089/users/getUsers
+    // localhost:8090/users/getUsers
     @Authorized(allowedRoles = {Role.ADMIN})
     @GetMapping("/getUsers")
     public List<User> getUsers() {
@@ -75,7 +71,7 @@ public class UserController {
     }
 
     // Add item(s) to cart
-    // localhost:8089/users/addItemToCart/
+    // localhost:8090/users/addItemToCart/
     @PutMapping("/addItemToCart/{id}")
     public boolean updateUser(@RequestBody User newUser, @PathVariable("id") int id) {
         if(userService.userExists(id)) {
@@ -88,7 +84,7 @@ public class UserController {
     }
 
     // Delete existing user
-    // localhost:8089/users/deleteUser
+    // localhost:8090/users/deleteUser
     @Authorized(allowedRoles = {Role.ADMIN})
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable("userId") int userId) {
