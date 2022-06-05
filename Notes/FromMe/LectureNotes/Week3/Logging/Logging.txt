@@ -1,0 +1,83 @@
+*****HOW TO ADD LOGGING TO YOUR PROGRAM*****
+Step 1.)
+Add dependencies in your pom.xml file
+	<!-- SLF4J - API -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+
+		<!-- logback -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		
+Step 2.)
+Declare and initialize Logger object in class you want to use it in(as global variable)
+	private static final Logger LOGGER = LoggerFactory.getLogger(NameOfClass.class);
+You can now use LOGGER.trace(), LOGGER.debug(), LOGGER.info(), LOGGER.warn(), and LOGGER.error()
+Make sure you import Logger from org.slf4j.Logger;
+Make sure you import LoggerFactory from import org.slf4j.LoggerFactory;
+
+Step 3.)
+Start using your Logger object in the methods that you want
+
+The problem right now is that it's not saving your logs to a file
+
+*****SAVING LOGS IN A FILE*****
+The following allows you to control log levels(trace, debug, infor, warn, and error) and save in a file
+Create a file in the resources folder called logback.xml
+Paste this into it:
+	<?xml version="1.0" encoding="UTF-16" ?>
+<configuration>
+
+    <!-- Send debug messages to System.out -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- By default, encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- Send debug messages to a file at "c:/jcg.log" -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs//FILENAMEYOUWANT.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>c://jcg.%i.log.zip</FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>10</MaxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>2MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <logger name="packagename.ClassName" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="packagename.ClassName" level="INFO" additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <!-- By default, the level of the root level is set to DEBUG -->
+	<!-- By specifying the root level you decide what gets logged(trace,debug,info,warn, and error -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
