@@ -16,6 +16,8 @@ import com.project1.training.revature.model.User;
 import com.project1.training.revature.services.AuthorizationService;
 import com.project1.training.revature.services.UserService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,16 +32,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-
-
-
 @RestController
 @RequestMapping("users")
 public class UserController {
     @Autowired
     private UserService userService;
-
     @Autowired
     private AuthorizationService authorizationService;
 
@@ -77,23 +74,15 @@ public class UserController {
     // Add item(s) to cart
     // localhost:8089/users/addItemToCart/
     @PutMapping("/addItemToCart/{id}")
-    public boolean updateUser(@RequestBody User newUser, @PathVariable("id") int id) {
-        if(userService.userExists(id)) {
-            userService.updateUser(newUser, id);
-            return true;
-        }
-        else {
-            return false;
-        }
+    public ResponseEntity<String> addItemToCart(@RequestBody User newUser, @PathVariable("id") int id) {
+        return userService.addItemToCart(newUser, id);
     }
 
     // Delete existing user
     // localhost:8089/users/deleteUser
     @Authorized(allowedRoles = {Role.ADMIN})
     @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable("userId") int userId) {
-        return userService.deleteUser(userId);
-    }
+    public ResponseEntity<String> deleteUser(@PathVariable("userId") int userId) {return userService.deleteUser(userId);}
 
 //    @Authorized(allowedRoles = {Role.ADMIN})
 //    @GetMapping

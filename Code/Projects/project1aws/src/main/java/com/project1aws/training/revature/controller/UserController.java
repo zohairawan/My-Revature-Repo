@@ -16,6 +16,8 @@ import com.project1aws.training.revature.model.LoginTemplate;
 import com.project1aws.training.revature.model.User;
 import com.project1aws.training.revature.services.UserService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +35,8 @@ import java.util.List;
 @RestController
 @RequestMapping("users")
 public class UserController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
@@ -73,9 +77,9 @@ public class UserController {
     // Add item(s) to cart
     // localhost:8090/users/addItemToCart/
     @PutMapping("/addItemToCart/{id}")
-    public boolean updateUser(@RequestBody User newUser, @PathVariable("id") int id) {
+    public boolean addItemToCart(@RequestBody User newUser, @PathVariable("id") int id) {
         if(userService.userExists(id)) {
-            userService.updateUser(newUser, id);
+            userService.addItemToCart(newUser, id);
             return true;
         }
         else {
