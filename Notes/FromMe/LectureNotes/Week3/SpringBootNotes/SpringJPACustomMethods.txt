@@ -1,0 +1,19 @@
+*****SPRING JPA CUSTOM METHODS WITH FOLLOWING CONVENTIONS*****
+1.) Go to DAO class and create methods there
+2.) Must follow conventions though
+		Must use supported keywords inside method 
+		https://docs.spring.io/spring-data/data-jpa/docs/1.4.x/reference/htmlsingle/ (Table 2.3. Supported keywords inside method names)
+		Example:
+			public List<Product> findByQohLessThan(int qoh)
+				using "findBy" in the method name is required because I think you have to use method names that are already defined by JPA but
+				then can add additional filters like "LessThan" in this case
+3.) 
+		
+
+*****SPRING JPA COMPLETELY CUSTOM METHODS*****
+1.) Use @Query annotation in DAO interface
+	Example:
+		@Query("select p from Product p where productName = ?1") NOTE: Product is the POJO(model) name not the table name
+		public List<Product> getProductByName(String ProductName)
+			Can name the method anything you want, don't have to use JPA method names
+2.) This is JPQL(Java Persistence Query Language) not SQL
