@@ -106,11 +106,11 @@ public class UserServiceImpl implements UserService{
     }
 
     public List<User> getUsers() {
-        LOGGER.trace("TRACE - Get item started execution");
-        LOGGER.debug("DEBUG - Get item started execution");
-        LOGGER.info("INFO - Get item started execution");
-        LOGGER.warn("WARN - Get item started execution");
-        LOGGER.error("ERROR - Get item started execution");
+        LOGGER.trace("TRACE - Get users started execution");
+        LOGGER.debug("DEBUG - Get users started execution");
+        LOGGER.info("INFO - Get users started execution");
+        LOGGER.warn("WARN - Get users started execution");
+        LOGGER.error("ERROR - Get users started execution");
         return userDAO.findAll();
     }
 
