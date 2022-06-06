@@ -29,10 +29,17 @@ docker image rm 'imagename'
 	Can only remove an image if a container is not running it
 
 *****WORKING WITH POSTGRES IN DOCKER*****
-docker run --name zopostgres -e POSTGRES_USER=zo -e POSTGRES_PASSWORD=zohair -p 5432:5432 -d postgres
+docker run --name zopostgres -e POSTGRES_USER=zo -e POSTGRES_PASSWORD=zohair -p 5433:5432 -d postgres
 	-e specifies username for postgres
 	-e specifies password for postgres
 	-p specifies the port numbers
-		the first one is the one we want to expose, but since I already created a postgres connection using 5432 this won't work(the one that has projectone in it)
+		the first one is the one we want to expose, don't use a port that's already being used(in our case 5432 for projectone)
 		second one is the underlying port for postgres which default is 5432 
 	-d specifies which database to use
+Now go to dbeaver and create a new postgreSQL connection and give it the appropriate username, password, and portnumber that you specified above
+	Note: --name will specify the container name in docker not in dbeaver, so even though we called our container zopostgres in dbeaver it might show up as postgres2 or something
+	
+*****HOW TO DOCKERIZE YOUR APPLICATION*****
+You will create an image and then run that image inside a container
+Will need the help of Maven
+	Generate the JAR file
