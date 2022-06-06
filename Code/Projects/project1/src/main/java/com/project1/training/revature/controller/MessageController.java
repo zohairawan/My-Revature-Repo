@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
 
 	private static final Logger log = LoggerFactory.getLogger(MessageController.class);
-	
+
 	@PostMapping
 //	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<String> receiveMessage(@RequestBody String message) {
-		
+
 		MDC.put("event", "message-submit");
-		
+
 //		log.info("{}, {}, {}, {}", message, "String one", "String two", "String three");
 //		log.info("{}", message);
 		log.info(message);
-		
+
 		log.warn(message, new RuntimeException("Something went wrong!"));
-		
+
 		MDC.clear();
-		
+
 		return ResponseEntity.ok("Message received and logged");
 	}
 }

@@ -15,30 +15,30 @@ import java.util.UUID;
 
 @Component
 public class DurationFilter extends OncePerRequestFilter {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(DurationFilter.class);
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
+
 		long startTime = System.currentTimeMillis();
-		
+
 		try {
-			
+
 			MDC.put("requestId", UUID.randomUUID().toString());
-			
+
 			// Continue on to the next filter
 			filterChain.doFilter(request, response);
 		} finally {
-			
+
 			long endTime = System.currentTimeMillis();
 			String duration = String.format("%d", endTime - startTime);
-			
+
 			MDC.put("duration", duration);
-			
+
 			log.info("Request has finished processing and took {} ms", duration);
-			
+
 			MDC.clear();
 		}
 	}

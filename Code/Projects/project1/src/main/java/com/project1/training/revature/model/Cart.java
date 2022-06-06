@@ -26,7 +26,7 @@ public class Cart {
 
     @ManyToMany
     @JoinTable(name = "cart_item", schema = "projectone",
-        joinColumns = @JoinColumn(name = "cart_id", referencedColumnName = "cartId"),
-        inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "itemId"))
+            joinColumns = @JoinColumn(name = "cart_id", referencedColumnName = "cartId"),
+            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "itemId"))
     private List<Item> itemList;
 }
