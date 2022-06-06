@@ -1,0 +1,38 @@
+*****DOCKER COMMANDS*****
+docker images
+	Shows you how many images you have
+docker ps
+	Shows you how many containers(processes) you have running
+docker ps -a
+	Shows all the containers(processes)
+docker pull 'imagename'
+	Will pull the specified image but won't run it
+docker run 'imagename'
+	Runs image as a container
+	If you don't have image on your local system it will download it and run the container all with this one command
+	It will give the container a random name if not specified
+	You can check this in your docker desktop app
+	Example:
+		docker run nginx
+docker run --name 'nameofcontainer' -p 8080:80 'imagename'
+	--name specifies the name of a container and prevent docker from giving it a random name
+	-p specifies the port, the first is the local port and the second is the image port
+	Example:
+		docker run --name nginxcontainer -p 8080:80 nginx
+		To check to see if this is running go to your browser and type 'localhost:8080'
+docker stop 'containername'
+	Stops running the specified container
+docker rm 'containername'
+	Removes specified container
+docker image rm 'imagename'
+	Removes specified docker image
+	Can only remove an image if a container is not running it
+
+*****WORKING WITH POSTGRES IN DOCKER*****
+docker run --name zopostgres -e POSTGRES_USER=zo -e POSTGRES_PASSWORD=zohair -p 5432:5432 -d postgres
+	-e specifies username for postgres
+	-e specifies password for postgres
+	-p specifies the port numbers
+		the first one is the one we want to expose, but since I already created a postgres connection using 5432 this won't work(the one that has projectone in it)
+		second one is the underlying port for postgres which default is 5432 
+	-d specifies which database to use
