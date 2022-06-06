@@ -14,7 +14,7 @@ docker run 'imagename'
 	You can check this in your docker desktop app
 	Example:
 		docker run nginx
-docker run --name 'nameofcontainer' -p 8080:80 'imagename'
+docker run --name 'nameofcontaineryouwant' -p 8080:80 'imagename'
 	--name specifies the name of a container and prevent docker from giving it a random name
 	-p specifies the port, the first is the local port and the second is the image port
 	Example:
@@ -43,3 +43,46 @@ Now go to dbeaver and create a new postgreSQL connection and give it the appropr
 You will create an image and then run that image inside a container
 Will need the help of Maven
 	Generate the JAR file
+Maven Lifecycle:
+	Validate
+	Compile
+	Test
+	Package				-will generate JAR file inside target folder
+	Integration test
+	Verify
+	Install
+	Deploy
+To use maven package you must run command 'mvn package'
+	NOTE:
+	This will complete all the phases up to and including package(DOES IT THOUGH)(Validate,Compile,Test, and Package)
+	You must run this command in the same place where you have pom.xml
+	If you want to run the other commands just type 'mvn test' or whichever one you want to run
+Create a new SpringBoot Project
+	Add devtools, web, and lombok dependencies
+For our puropose I created a simple project in which I created a class that had one method that printed "Hello, this is a docker demo"
+	Method was public String
+1.) Generate a JAR file
+		Click on maven on the right side of intelliJ
+		Click on LifeCycle
+		Right click package and select Run Maven Build
+		Your JAR file will now be in the target folder
+		You will notice that the default name for the JAR file will be the artifactId followed by the version(can be seen in your pom.xml file)
+		If you want to change this then just go to pom.xml and AFTER </plugins> and BEFORE </build> add <finalName>namethatyouwant</finalName>
+2.) Create image of application(dockerize it)
+		Create dockerfile
+			This needs to be in your root folder, so right click on the project name > new > File > Dockerfile
+		This file will specify the steps that you want docker to follow
+		Inside this file write:
+			FROM openjdk:8
+			EXPOSE 8080
+			ADD target/nameofjarfile.jar aliasname.jar
+			ENTRYPOINT ["java", "-jar", "/aliasname.jar"]
+				 
+		In terminal inside IntelliJ we will give commands to create an image and run the image in a container(make sure you're in the root folder)
+			Build the image:
+				docker build -t name-of-image-that-you-want .
+					This creates an image of your app
+					. specifies where you want to create the image so the . says create it in the current directory
+			Run the image in a container:
+				docker run --name 'nameofcontainer' -p 8080:8080 'imagename'
+					Note: 'imagename' is the one you specified when you ran the build command
