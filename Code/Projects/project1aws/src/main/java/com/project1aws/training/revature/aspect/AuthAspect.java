@@ -1,10 +1,10 @@
-package com.project1.training.revature.advice;
+package com.project1aws.training.revature.aspect;
 
-import com.project1.training.revature.annotations.Authorized;
-import com.project1.training.revature.exceptions.NotAuthorizedException;
-import com.project1.training.revature.exceptions.NotLoggedInException;
-import com.project1.training.revature.model.Role;
-import com.project1.training.revature.model.User;
+import com.project1aws.training.revature.annotations.Authorized;
+import com.project1aws.training.revature.exceptions.NotAuthorizedException;
+import com.project1aws.training.revature.exceptions.NotLoggedInException;
+import com.project1aws.training.revature.model.Role;
+import com.project1aws.training.revature.model.User;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

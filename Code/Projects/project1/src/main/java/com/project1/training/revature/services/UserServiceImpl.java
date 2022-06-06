@@ -22,19 +22,19 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    //private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private HttpServletRequest req;
     @Autowired
     private UserDAO userDAO;
 
     public boolean userExists(int userId) {
-        LOGGER.info("Checking if user exists started");
+        //LOGGER.info("Checking if user exists started");
         if(userDAO.existsById(userId)) {
-            LOGGER.info("User: " + userId + " does exist");
+            //LOGGER.info("User: " + userId + " does exist");
         }
         else {
-            LOGGER.warn("User: " + userId + " does not exist");
+            //LOGGER.warn("User: " + userId + " does not exist");
         }
         return userDAO.existsById(userId);
     }
@@ -58,61 +58,61 @@ public class UserServiceImpl implements UserService{
 
     // 1.Register new users
     public ResponseEntity<String> registerUser(User user) {
-        LOGGER.trace("TRACE - Register user started execution");
-        LOGGER.debug("DEBUG - Register user started execution");
-        LOGGER.info("INFO - Register user started execution");
-        LOGGER.warn("WARN - Register user started execution");
-        LOGGER.error("ERROR - Register user started execution");
+        //LOGGER.trace("TRACE - Register user started execution");
+        //LOGGER.debug("DEBUG - Register user started execution");
+        //LOGGER.info("INFO - Register user started execution");
+        //LOGGER.warn("WARN - Register user started execution");
+        //LOGGER.error("ERROR - Register user started execution");
         ResponseEntity responseEntity;
         if(userExists(user.getUserId())) {
-            LOGGER.warn("User: " + user.getUserId() + " already exists");
+            //LOGGER.warn("User: " + user.getUserId() + " already exists");
             return new ResponseEntity<String>("Can't register user because they're already registered", HttpStatus.CONFLICT);
         }
         else {
             userDAO.save(user);
-            LOGGER.info("User: " + user.getUserId() + " saved successfully");
+            //LOGGER.info("User: " + user.getUserId() + " saved successfully");
             return new ResponseEntity<String>("Registered user: " + user + " successfully", HttpStatus.OK);
         }
     }
 
     public ResponseEntity<String> addItemToCart(User updatedUser, int id) {
-        LOGGER.info("Adding item(s) to cart started execution");
+        //LOGGER.info("Adding item(s) to cart started execution");
         ResponseEntity responseEntity;
         User currentUser = userDAO.getReferenceById(id);
         if(userExists(currentUser.getUserId())) {
             currentUser.setUsername(updatedUser.getUsername());
             currentUser.setCart(updatedUser.getCart());
             userDAO.save(currentUser);
-            LOGGER.info("Item(s) added to cart successfully");
+            //LOGGER.info("Item(s) added to cart successfully");
             return new ResponseEntity<String>("Item(s) added to cart successfully", HttpStatus.OK);
         }
         else {
-            LOGGER.warn("User: " + currentUser.getUserId() + " does not exist");
+            //LOGGER.warn("User: " + currentUser.getUserId() + " does not exist");
             return new ResponseEntity<String>("User: " + currentUser.getUserId() + " does not exist", HttpStatus.NOT_FOUND);
         }
     }
 
     // Delete user
     public ResponseEntity<String> deleteUser(int userId) {
-        LOGGER.info("Delete user started execution");
+        //LOGGER.info("Delete user started execution");
         ResponseEntity responseEntity;
         if(userExists(userId)) {
             userDAO.deleteById(userId);
-            LOGGER.info("User: " + userId + " deleted successfully");
+            //LOGGER.info("User: " + userId + " deleted successfully");
             return new ResponseEntity<String>("User: " + userId + " deleted successfully", HttpStatus.OK);
         }
         else {
-            LOGGER.warn("User: " + userId + " does not exist, delete unsuccessful");
+            //LOGGER.warn("User: " + userId + " does not exist, delete unsuccessful");
             return new ResponseEntity<String> ("User: " + userId + " does not exist, delete unsuccessful", HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     public List<User> getUsers() {
-        LOGGER.trace("TRACE - Get users started execution");
-        LOGGER.debug("DEBUG - Get users user started execution");
-        LOGGER.info("INFO - Get users user started execution");
-        LOGGER.warn("WARN - Get users user started execution");
-        LOGGER.error("ERROR - Get users user started execution");
+        //LOGGER.trace("TRACE - Get users started execution");
+        //LOGGER.debug("DEBUG - Get users user started execution");
+        //LOGGER.info("INFO - Get users user started execution");
+        //LOGGER.warn("WARN - Get users user started execution");
+        //LOGGER.error("ERROR - Get users user started execution");
         return userDAO.findAll();
     }
 

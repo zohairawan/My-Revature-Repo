@@ -23,9 +23,9 @@ Add dependencies in your pom.xml file
 Step 2.)
 Declare and initialize Logger object in class you want to use it in(as global variable)
 	private static final Logger LOGGER = LoggerFactory.getLogger(NameOfClass.class);
-You can now use LOGGER.trace(), LOGGER.debug(), LOGGER.info(), LOGGER.warn(), and LOGGER.error()
-Make sure you import Logger from org.slf4j.Logger;
-Make sure you import LoggerFactory from import org.slf4j.LoggerFactory;
+	You can now use LOGGER.trace(), LOGGER.debug(), LOGGER.info(), LOGGER.warn(), and LOGGER.error()
+	Make sure you import Logger from org.slf4j.Logger;
+	Make sure you import LoggerFactory from import org.slf4j.LoggerFactory;
 
 Step 3.)
 Start using your Logger object in the methods that you want
@@ -81,3 +81,22 @@ Paste this into it:
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>
+
+*****USING LOGGING FROM ONLY ONE CLASS*****
+Previously we saw that in order to use the logging function we would have to call it from every method that we wanted to use it from, this is cumbersome
+Instead we can create a class and call it from there on any class we want without having to rewrite it for each method
+Step 1.) Go to main class and add @EnableAutoJProxy above class name
+Step 2.) Create a package called aspect and create a class inside that package called LoggingAspect
+Step 3.) Add @Aspect above class name
+Step 4.) Add @Component above class name
+Example:
+	@Aspect
+@Component
+public class LoggingAspect {
+    private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
+
+    @Before("execution(* com.project1.training.revature.services.ItemServiceImpl.*(..))")
+    public void doLog() {
+        logger.info("********INFO logging*************");
+    }
+}

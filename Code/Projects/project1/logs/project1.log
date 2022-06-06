@@ -34,3 +34,19 @@
 2022-06-05_16:10:16.130 [http-nio-8089-exec-7] INFO  c.p.t.r.services.UserServiceImpl - INFO - Get users user started execution
 2022-06-05_16:10:16.130 [http-nio-8089-exec-7] WARN  c.p.t.r.services.UserServiceImpl - WARN - Get users user started execution
 2022-06-05_16:10:16.130 [http-nio-8089-exec-7] ERROR c.p.t.r.services.UserServiceImpl - ERROR - Get users user started execution
+2022-06-05_16:19:51.883 [http-nio-8089-exec-4] INFO  c.p.t.r.services.UserServiceImpl - INFO - Get users user started execution
+2022-06-05_16:19:51.883 [http-nio-8089-exec-4] WARN  c.p.t.r.services.UserServiceImpl - WARN - Get users user started execution
+2022-06-05_16:19:51.891 [http-nio-8089-exec-4] ERROR c.p.t.r.services.UserServiceImpl - ERROR - Get users user started execution
+2022-06-05_16:20:08.288 [http-nio-8089-exec-2] INFO  c.p.t.r.services.UserServiceImpl - Delete user started execution
+2022-06-05_16:20:08.288 [http-nio-8089-exec-2] INFO  c.p.t.r.services.UserServiceImpl - Checking if user exists started
+2022-06-05_16:20:08.297 [http-nio-8089-exec-2] INFO  c.p.t.r.services.UserServiceImpl - User: 8 does exist
+2022-06-05_16:20:08.369 [http-nio-8089-exec-2] INFO  c.p.t.r.services.UserServiceImpl - User: 8 deleted successfully
+2022-06-05_16:20:16.899 [http-nio-8089-exec-5] INFO  c.p.t.r.services.UserServiceImpl - INFO - Get users user started execution
+2022-06-05_16:20:16.899 [http-nio-8089-exec-5] WARN  c.p.t.r.services.UserServiceImpl - WARN - Get users user started execution
+2022-06-05_16:20:16.899 [http-nio-8089-exec-5] ERROR c.p.t.r.services.UserServiceImpl - ERROR - Get users user started execution
+2022-06-05_16:37:18.218 [http-nio-8089-exec-1] INFO  c.p.t.r.services.UserServiceImpl - INFO - Get users user started execution
+2022-06-05_16:37:18.218 [http-nio-8089-exec-1] WARN  c.p.t.r.services.UserServiceImpl - WARN - Get users user started execution
+2022-06-05_16:37:18.218 [http-nio-8089-exec-1] ERROR c.p.t.r.services.UserServiceImpl - ERROR - Get users user started execution
+2022-06-05_16:38:38.439 [http-nio-8089-exec-3] INFO  c.p.t.r.services.UserServiceImpl - INFO - Get users user started execution
+2022-06-05_16:38:38.439 [http-nio-8089-exec-3] WARN  c.p.t.r.services.UserServiceImpl - WARN - Get users user started execution
+2022-06-05_16:38:38.439 [http-nio-8089-exec-3] ERROR c.p.t.r.services.UserServiceImpl - ERROR - Get users user started execution
