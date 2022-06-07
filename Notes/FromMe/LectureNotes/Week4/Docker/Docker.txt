@@ -90,3 +90,47 @@ Create a class that accepts HTTP requests
 				docker run --name 'nameofcontainer' -p 8080:8080 'imagename'
 					Note: 'imagename' is the one you specified when you ran the build command
 *****DOCKER COMPOSE*****
+Tool that makes creating/managing multi-container applications easier
+Achieved by creating a docker-compose file that has extension yaml/yml
+yaml/yml files are written with syntax on indentation
+You can write the same things that were in the application.properties file in the yaml/yml
+1.) Go to pom.xml and AFTER </plugins> and BEFORE </build> add <finalName>namethatyouwant</finalName>
+2.) Generate the JAR file
+		Go to package in maven lifecyle but before running build make sure to "Toogle skip tests mode"
+		Run maven build package
+2.) Create Dockerfile 
+	Add necessary information, for ours we added:
+		FROM openjdk:8
+		EXPOSE 8084
+		ADD target/product-app-devops.jar app.jar
+		ENTRYPOINT [ "java" , "-jar" , "/app.jar"]
+3.) Create docker-compose file
+	Create it in the root folder of your project
+	Add necessary information, for ours we added:
+		version: '2'
+
+		services:
+		  product-app:
+			image: 'spring-boot-devops-product-app:latest'
+			build:    #reads DockerFile
+			  context: ./
+			container_name: product-devops-app
+			ports:
+			  - 8084:8084
+			depends_on:
+			  - db
+			environment:
+			  - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+			  - SPRING_DATASOURCE_USERNAME=compose-postgres
+			  - SPRING_DATASOURCE_PASSWORD=compose-postgres
+			  - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+		  db:
+			image: 'postgres:13.1-alpine'
+			container_name: db
+			ports:
+			  - 5432:5432
+			environment:
+			  - POSTGRES_USER=compose-postgres
+			  - POSTGRES_PASSWORD=compose-postgres
+5.) In terminal run 'docker-compose up'
