@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService{
     }
 
     public User login(String username, String password) {
-        User exists = userDAO.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(String.format("No User with username = %s", username)));
+        User exists = userDAO.findByUsernameAndPassword(username, password)
+                .orElseThrow(() -> new UserNotFoundException(String.format("Either username or password is incorrect")));
         HttpSession session = req.getSession();
         session.setAttribute("currentUser", exists);
         return exists;
