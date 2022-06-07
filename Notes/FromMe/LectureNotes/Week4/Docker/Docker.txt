@@ -53,13 +53,15 @@ Maven Lifecycle:
 	Install
 	Deploy
 To use maven package you must run command 'mvn package'
-	NOTE:
+	NOTE: Because we downloaded maven locally(in addition to the one in intelliJ) when we run this command it won't work because there's an issue with linking local maven with JDK8
 	This will complete all the phases up to and including package(DOES IT THOUGH)(Validate,Compile,Test, and Package)
 	You must run this command in the same place where you have pom.xml
 	If you want to run the other commands just type 'mvn test' or whichever one you want to run
 Create a new SpringBoot Project
 	Add devtools, web, and lombok dependencies
-For our puropose I created a simple project in which I created a class that had one method that printed "Hello, this is a docker demo"
+Create a class that accepts HTTP requests
+	Good practice to create a controller package and inside that the controller class
+	Controller class had one method that printed "Hello, this is a docker demo"
 	Method was public String
 1.) Generate a JAR file
 		Click on maven on the right side of intelliJ
@@ -70,6 +72,7 @@ For our puropose I created a simple project in which I created a class that had 
 		If you want to change this then just go to pom.xml and AFTER </plugins> and BEFORE </build> add <finalName>namethatyouwant</finalName>
 2.) Create image of application(dockerize it)
 		Create dockerfile
+			Text document that contains all the commands a user could call on the command line to assemble an image
 			This needs to be in your root folder, so right click on the project name > new > File > Dockerfile
 		This file will specify the steps that you want docker to follow
 		Inside this file write:
@@ -86,3 +89,4 @@ For our puropose I created a simple project in which I created a class that had 
 			Run the image in a container:
 				docker run --name 'nameofcontainer' -p 8080:8080 'imagename'
 					Note: 'imagename' is the one you specified when you ran the build command
+*****DOCKER COMPOSE*****
