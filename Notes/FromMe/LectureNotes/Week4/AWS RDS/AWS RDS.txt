@@ -29,3 +29,40 @@ Now there's another way we can run postgres:
 	You can't have a local database and deploy it on AWS
 First step towards putting your app in the cloud:
 	Need database to be moved from local to cloud
+*****DEPLOYING APP IN A CLOUD*****
+1.) Log into AWS
+2.) Services > Databases > RDS > Create Database > Standard Create > PostgreSQL
+3.) Version - 10.17-R1
+4.) Templates - Free Tier
+5.) Master Username: postgres / Password: rootroot
+6.) Instance configuration: db.t3.micro
+7.) Uncheck Enable storage autoscaling
+8.) Public Access click Yes
+9.) Create Database - wait until you get the "Successfully created database" banner
+	Now we have to change the security settings
+10.) Services > EC2
+11.) Click on Security groups
+12.) Under "Security group name" find "default" > Click on the "Security group ID" associated with that
+13.) Inbound Rules > Edit inbound rules > Add rule
+14.) Type: PostgreSQL / Source: Custom / 0.0.0.0/0 > Save rules
+We have username and password but we still need our URL
+15.) RDS > Databases > Click circle next to database you just created and then click on database name
+16.) Connectivity & security > url is located underneath "Endpoint" database-1.cnzaphtm51gc.us-west-1.rds.amazonaws.com
+17.) You have to add prepend jdbc:postgresql:// and append :5432/postgres to the URL (5432 is the port number and i think postgres is either master username or database)
+18.) Should look like jdbc:postgresql://database-1.cnzaphtm51gc.us-west-1.rds.amazonaws.com:5432/postgres
+19.) We will implement this in pms-springboot application
+20.) The new URL will go into our projects application.properties file
+21.) Before we had spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+	 but now we will change it to spring.datasource.url=jdbc:postgresql://database-1.cnzaphtm51gc.us-west-1.rds.amazonaws.com:5432/postgres
+22.) We will also have to change our password too,
+	 before we had spring.datasource.password=root
+	 but now it we will change it to spring.datasource.password=rootroot
+23.) We can change the username the same since it hasn't changed
+	 it will still be spring.datasource.username=postgres
+24.) Now if we run the application and it doesn't give any error that means we're successfully connected to RDS
+25.) Run application the way we normally do, go to main class and click run
+26.) Our pms-springboot application ran successfully!
+27.) We have now moved our database into the cloud
+*****CONNECTING TO DBEAVER ALSO*****
+1.) Create > Connection > PostgreSQL > Host: database-1.cnzaphtm51gc.us-west-1.rds.amazonaws.com / Database: postgres / username: postgres / password: rootroot > Test Connection
+	Note that for the URL we took off the jdbc:postgresql:// and :5432/postgres
