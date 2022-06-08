@@ -1,0 +1,16 @@
+*****SPRING BOOT ACTUATOR*****
+Mainly used to expose oprational information about the running application - health, metrics, info, dump, env, etc.
+3rd party dependency that will expose certain URL's that will help you monitor your app better
+	Example:
+	You want to know how many beans there are or if their status is up and running
+*****HOW TO GET ACTUATOR*****
+In your pom.xml you must have the dependency
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-actuator</artifactId>
+		<version>2.7.0</version>
+	</dependency>
+Also in your application.properties file include this:
+	# Actuator Settings
+	management.endpoint.health.show-details=always
+	management.endpoints.web.exposure.include=*
