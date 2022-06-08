@@ -1,0 +1,31 @@
+*****AWS RDS******
+So far we have ran postgres in two ways:
+	local postgres:
+		We downloaded postgresql locally to our machine
+		Add the postgresql dependency
+			<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>42.3.5</version>
+			</dependency>
+		Add information in the application.properties file
+			server.port=8084 (Port number can be whatever you want)
+			#Local postgres
+			spring.datasource.driver-class-name=org.postgresql.Driver
+			spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+			spring.datasource.username=postgres
+			spring.datasource.password=root
+	docker postgres:
+		Postgresql will not be running locally but rather as a dockerized image
+		Generate the JAR file
+		Create Dockerfile
+		Create docker-compose file
+		In terminal run 'docker-compose up'
+Now there's another way we can run postgres:
+	cloud postgres
+	AWS RDS allows for this
+	Opens the door for an application to be fully deployed in a cloud
+	You can't have a local database and deploy it on AWS
+First step towards putting your app in the cloud:
+	Need database to be moved from local to cloud

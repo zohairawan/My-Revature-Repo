@@ -14,4 +14,4 @@ Also in your application.properties file include this:
 	# Actuator Settings
 	management.endpoint.health.show-details=always
 	management.endpoints.web.exposure.include=*
-In Postman run the comman localhost:portnumber/actuator to get more information about your project
+In Postman run the command localhost:portnumber/actuator to get more information about your project
