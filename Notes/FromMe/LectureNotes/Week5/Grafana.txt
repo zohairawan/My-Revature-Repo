@@ -1,0 +1,14 @@
+*****GRAFANA*****
+Grafana is visualization and analytics software that allows you to understand your metrics no matter where they are stored
+Can visualize data through graphs
+Grafana EXTRACTS the data from different sources(postgresql, loki, prometheus), it has no data of its own
+*****HOW TO GET STARTED WITH GRAFANA*****
+Multiple ways:
+	Can user Docker
+	Can use AWS
+*****HOW TO RUN GRAFANA*****
+Go to your browser and type localhost:3000
+Login with your credentials
+*****ADDING DATA SOURCE TO GRAFANA*****
+As stated before Grafana doesn't have any data of its own so we need to add a data source
+Configuration > Data Source > Add the desired data source
