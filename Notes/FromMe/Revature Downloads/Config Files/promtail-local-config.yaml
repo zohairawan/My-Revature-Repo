@@ -15,7 +15,7 @@ scrape_configs:
       - localhost
     labels:
       job: varlogs
-      __path__: h:/var/log/*log
+      __path__: c:/var/log/*log
 - job_name: grafanalogs
   static_configs:
   - targets:
