@@ -1,0 +1,26 @@
+#This is promtail-local-config.yaml 
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://localhost:3100/loki/api/v1/push
+
+scrape_configs:
+- job_name: system
+  pipeline_stages:
+  
+  - output:
+      source: message
+ 
+      action_on_failure: skip
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: test
+      agent: promtail
+      __path__: C:/Program Files/GrafanaLokiNssm/promtail/test/*
