@@ -46,6 +46,17 @@ We will be using it to run our apps like:
 	promtail
 	prometheus
 
+*****HOW DOES GRAFANA LOKI WORK*****
+Loki will display the logs but you need a collector which is responsible for collecting the logs from different sources to give to loki so it can display it in Grafana
+So who is the collector?
+	Promtail - a collector specifically for Grafana
+So the flowchars is:
+	Pull in any logs with promtail -> Store the logs in loki -> display visualized charts in Grafana
+Features of Grafana loki include:
+	Alert on your logs
+		Set up alerting for loki to evaluate you incoming log data
+		Configure loki to send teh resulting alerts to a Prometheus Alertmanager so they can get routed to the right team
+
 *****RUNNING A SERVICE WITH NSSM*****
 Be sure to add nssm to your PATH
 Open CMD with Admin privelages
@@ -57,8 +68,47 @@ For example:
 			NOTE: -config.file must be typed before putting the config file in
 
 *****LOKI*****
-Tool for log aggregation
+Tool that is a log aggregation system designed to store and query logs from all your applications and infrastructure
+Like Prometheus but for logs
 Used in conjunction with Grafana it takes the data and represents it in a graphical way
 
 *****CONNECTING GRAFANA TO LOKI*****
 Before starting the loki service (nssm start loki) go to Grafana website (localhost:3000)
+Configuration > Data Source > Add Data Source > Loki > Give it a name > set the URL (we gave it http://127.0.0.1:3100 - this is IP address of a local system) > Save and Test
+	The reason we gave it 3100 is because that's what we specified in the configuration file
+It won't get connected yet because we've only installed it but not started it yet with nssm
+Go to CMD with Admin privelages and type:
+	nssm start loki
+Now when you click on Save and Test it will say "Data source connected and tables found"
+Grafana is now successfully integrated with loki
+
+*****CHECKING METRICS WITH LOKI*****
+Open your browser
+Type localhost: and the last four numbers in the URL you set for loki (in our case 3100) /metrics
+	localhost:3100/metrics
+The metrics you'll be seeing are that of loki
+If you want to change the listening port (3100) you can do so in the configuration file, just be sure to restart the loki service (nssm restart loki) to reflect the changes
+I'm guessing you would also have the change the URL you set for loki as well in Grafana website
+
+*****EXPLORING LOKI*****
+From the Grafana website:
+	Explore > Select Loki
+You'll notice it says "No Logs Found"
+	That's what we expected because it doesn't collect any data itself, it's an aggregation tool
+	We need a collector to give us data
+	
+*****WHO WILL GIVE LOKI LOGS*****
+Promtail
+
+*****PROMTAIL*****
+An agent which ships the contents of a local log to a private Grafana loki instance
+Usually deployed to every machine that has applications needed to be monitored
+Promtail will ship the data to loki
+It primarily:
+	Discovers targets
+	Attaches labels to log streams
+Currently it can tail logs from two sources:
+	local log files
+	systemd journal(on AMD64 machines only)
+	pushes them to loki instance
+
