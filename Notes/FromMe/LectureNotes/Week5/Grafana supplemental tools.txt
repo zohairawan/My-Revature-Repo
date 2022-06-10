@@ -57,7 +57,7 @@ Features of Grafana loki include:
 		Set up alerting for loki to evaluate you incoming log data
 		Configure loki to send teh resulting alerts to a Prometheus Alertmanager so they can get routed to the right team
 
-*****RUNNING A SERVICE WITH NSSM*****
+*****RUNNING A SERVICE WITH NSSM / INSTALLING LOKI*****
 Be sure to add nssm to your PATH
 Open CMD with Admin privelages
 For example:
@@ -97,7 +97,7 @@ You'll notice it says "No Logs Found"
 	That's what we expected because it doesn't collect any data itself, it's an aggregation tool
 	We need a collector to give us data
 	
-*****WHO WILL GIVE LOKI LOGS*****
+*****WHAT COLLECTOR WILL GIVE LOKI LOGS*****
 Promtail
 
 *****PROMTAIL*****
@@ -110,5 +110,40 @@ It primarily:
 Currently it can tail logs from two sources:
 	local log files
 	systemd journal(on AMD64 machines only)
-	pushes them to loki instance
+	pushes logs to loki instance
+Can also be run on AWS EC2 instances
 
+*****INSTALLING/CONFIGURING PROMTAIL*****
+Install with nssm like we did for loki
+Configuring the yaml file:
+	Open VS Code
+	File > New Text File > ctrl + s > save it in same folder as promtail exe (promtail-windows-amd64) > name it "promtail-local-config.yaml" (include "") > save it
+	#This is promtail-local-config.yaml 
+	server:															(This is where promtail will be running on)
+	  http_listen_port: 9080
+	  grpc_listen_port: 0
+
+	positions:
+	  filename: /tmp/positions.yaml
+
+	clients:
+	  - url: http://localhost:3100/loki/api/v1/push		(Our client is loki, 3100 is the http_listen_port we specified in the loki config file, this exposes a URL to which promtail can push logs to)
+
+	scrape_configs:										
+	- job_name: system
+	  pipeline_stages:
+	  
+	  - output:
+		  source: message
+	 
+		  action_on_failure: skip
+	  static_configs:
+	  - targets:
+		  - localhost
+		labels:
+		  job: test
+		  agent: promtail
+		  __path__: C:/Program Files/GrafanaLokiNssm/promtail/test/*	(This specifies where our logs are. Promtail will push these logs to loki automatically, the log file is located in the test folder so the * says get everything inside the test folder)
+
+*****GETTING PROMTAIL TO PUSH LOGS*****
+Start promtail with nssm (nssm start promtail)
