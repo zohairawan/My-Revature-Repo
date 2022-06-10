@@ -64,7 +64,7 @@ For example:
 	nssm install loki (the name can be anything you want but since we are installing loki it makes sense to name it that)
 	This will give you a pop up where you will:
 		add loki-windows-amd64 ti "Application Path"
-		add the -config.file loki-local-config to "Arguments"
+		add the -config.file loki-local-config.yaml to "Arguments"
 			NOTE: -config.file must be typed before putting the config file in
 
 *****LOKI*****
