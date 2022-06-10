@@ -37,14 +37,28 @@ Utility that manages background and foreground services and processes
 Run it through the CLI
 	nssm start <service>
 	nssm stop <service>
-	nssm delete <service>
+	nssm remove <service>
 	nssm restart <service>
-	
+	nssm install <nameYouWantToGiveService>
+	nssm edit <nameYouGaveToService>
 We will be using it to run our apps like:
 	loki
 	promtail
 	prometheus
 
+*****RUNNING A SERVICE WITH NSSM*****
+Be sure to add nssm to your PATH
+Open CMD with Admin privelages
+For example:
+	nssm install loki (the name can be anything you want but since we are installing loki it makes sense to name it that)
+	This will give you a pop up where you will:
+		add loki-windows-amd64 ti "Application Path"
+		add the -config.file loki-local-config to "Arguments"
+			NOTE: -config.file must be typed before putting the config file in
+
 *****LOKI*****
 Tool for log aggregation
 Used in conjunction with Grafana it takes the data and represents it in a graphical way
+
+*****CONNECTING GRAFANA TO LOKI*****
+Before starting the loki service (nssm start loki) go to Grafana website (localhost:3000)
