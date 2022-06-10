@@ -35,10 +35,11 @@ If you have both files present in your application it will choose application.pr
 Stands for Non-Sucking Service Manager
 Utility that manages background and foreground services and processes
 Run it through the CLI
-	nssm start service
-	nssm stop service
-	nssm delete service
-	nssm restart service
+	nssm start <service>
+	nssm stop <service>
+	nssm delete <service>
+	nssm restart <service>
+	
 We will be using it to run our apps like:
 	loki
 	promtail
