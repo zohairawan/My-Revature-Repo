@@ -89,6 +89,7 @@ Create a class that accepts HTTP requests
 			Run the image in a container:
 				docker run --name 'nameofcontainer' -p 8080:8080 'imagename'
 					Note: 'imagename' is the one you specified when you ran the build command
+					
 *****DOCKER COMPOSE*****
 Tool that makes creating/managing multi-container applications easier
 Achieved by creating a docker-compose file that has extension yaml/yml

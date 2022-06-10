@@ -27,9 +27,10 @@ Now there's another way we can run postgres:
 	AWS RDS allows for this
 	Opens the door for an application to be fully deployed in a cloud
 	You can't have a local database and deploy it on AWS
-First step towards putting your app in the cloud:
+First step towards putting your database in the cloud:
 	Need database to be moved from local to cloud
-*****DEPLOYING APP IN A CLOUD*****
+	
+*****DEPLOYING DATABASE IN A CLOUD(RDS)*****
 1.) Log into AWS
 2.) Services > Databases > RDS > Create Database > Standard Create > PostgreSQL
 3.) Version - 10.17-R1
@@ -63,6 +64,7 @@ We have username and password but we still need our URL
 25.) Run application the way we normally do, go to main class and click run
 26.) Our pms-springboot application ran successfully!
 27.) We have now moved our database into the cloud
+
 *****CONNECTING TO DBEAVER ALSO*****
 1.) Create > Connection > PostgreSQL > Host: database-1.cnzaphtm51gc.us-west-1.rds.amazonaws.com / Database: postgres / username: postgres / password: rootroot > Test Connection
 	Note that for the URL we took off the jdbc:postgresql:// and :5432/postgres

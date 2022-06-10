@@ -6,19 +6,24 @@ Grafana EXTRACTS the data from different sources(postgresql, loki, prometheus), 
 Multiple ways:
 	Can user Docker
 	Can use AWS
+	
 *****HOW TO RUN GRAFANA*****
 Go to your browser and type localhost:3000
 Login with your credentials
+
 *****ADDING DATA SOURCE TO GRAFANA*****
 As stated before Grafana doesn't have any data of its own so we need to add a data source
 Configuration > Data Source > Add the desired data source
 I added "TestData DB"
 There is no dashboard associated with it yet so I clicked on the data source I just chose > Dashboards(top right) > import(right corner)
+
 *****HOW TO VIEW DASHBOARD*****
 Dashboards > Browse > Select dashboard
  Once you are viewing your dashboard you can edit it by clicking on the top of the dashboard and selecting edit
+ 
  *****SAVING YOUR DASHBOARD*****
  ctrl + s
+ 
  *****DASHBOARD VERSIONING*****
  Allows you to revert back to previous dashboards
  Navigate to your dashboard > Dashboard Settings > Versions > Select which one you want to restore

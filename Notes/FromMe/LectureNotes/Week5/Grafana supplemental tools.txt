@@ -1,0 +1,49 @@
+*****YAML/YML*****
+Stands for Yet Another Markup Language
+In project1 we have a file called application.properties that stores information regarding our database
+It's a configuration file for your application
+We can store this same information in another file called application.yaml
+	The only difference is the way in which it is arranged
+	Yaml files follow a strict spacing/indentation rule
+	Deals with parent/child/sibling relation to determine indentation
+	The benefit is that you don't have to rewrite alot of stuff
+	For example:
+		In application.properties:
+			server.port=8084
+			spring.datasource.driver-class-name=org.postgresql.Driver
+			spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+			spring.datasource.schema=postgres
+			spring.datasource.username=postgres
+			spring.datasource.password=root
+		In application.yaml:
+			spring:
+			  datasource:
+				driver-class-name: org.postgresql.Driver
+				url: jdbc:postgresql://localhost:5432/postgres
+				username: postgres
+				password: rootroot
+			  jpa:
+			    properties:
+			     hibernate:
+				  dialect: org.hibernate.dialect.PostgreSQLDialect
+				  format_sql: true
+			    generate-ddl: true
+NOTE: Everything underneath datasource is considered to be a child of datasource(parent) and anything that is flush is considered to be siblings
+If you have both files present in your application it will choose application.properties by default.
+
+*****NSSM*****
+Stands for Non-Sucking Service Manager
+Utility that manages background and foreground services and processes
+Run it through the CLI
+	nssm start service
+	nssm stop service
+	nssm delete service
+	nssm restart service
+We will be using it to run our apps like:
+	loki
+	promtail
+	prometheus
+
+*****LOKI*****
+Tool for log aggregation
+Used in conjunction with Grafana it takes the data and represents it in a graphical way
