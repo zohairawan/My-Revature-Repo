@@ -184,8 +184,15 @@ Configuration > Data Source > Add Data Source > Prometheus > Give it a name > se
 From the Grafana website:
 	Explore > Metrics browser
 	You can click on instance to see which instance has been exposed
-	You can also select a metric from here to get a graphical/table representation of it
+	You can also select a metric from here and click Use query to get a graphical/table representation of it
 	There's many other things you can look at too
+
+*****IMPORTING A DASHBOARD*****
+Configuration > Data source > Prometheus > Dashboards
+
+*****VIEWING A DASHBOARD*****
+After importing a dashboard:
+	Dashboard > Browse > Select dashboard you want to view
 
 *****LOKI VS PROMETHEUS*****
 Loki is all about reading log files only
