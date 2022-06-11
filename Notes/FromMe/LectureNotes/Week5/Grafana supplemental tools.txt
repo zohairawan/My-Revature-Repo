@@ -67,14 +67,17 @@ For example:
 		add the -config.file loki-local-config.yaml to "Arguments"
 			NOTE: -config.file must be typed before putting the config file in
 
+*****ACCESSING GRAFANA VIA WEB*****
+localhost:3000
+
 *****LOKI*****
 Tool that is a log aggregation system designed to store and query logs from all your applications and infrastructure
 Like Prometheus but for logs
 Used in conjunction with Grafana it takes the data and represents it in a graphical way
 
-*****CONNECTING GRAFANA TO LOKI*****
+*****CONNECTING LOKI TO GRAFANA*****
 Before starting the loki service (nssm start loki) go to Grafana website (localhost:3000)
-Configuration > Data Source > Add Data Source > Loki > Give it a name > set the URL (we gave it http://127.0.0.1:3100 - this is IP address of a local system) > Save and Test
+Configuration > Data Source > Add Data Source > Loki > Give it a name > set the URL (we gave it http://127.0.0.1:3100 - this is IP address of a local system) > Save and Test (loki must be running when you save and test)
 	The reason we gave it 3100 is because that's what we specified in the configuration file
 It won't get connected yet because we've only installed it but not started it yet with nssm
 Go to CMD with Admin privelages and type:
@@ -99,6 +102,9 @@ You'll notice it says "No Logs Found"
 	
 *****WHAT COLLECTOR WILL GIVE LOKI LOGS*****
 Promtail
+
+*****ACCESSING LOKI VIA WEB*****
+http://localhost:3100/metrics		(The port numbers may change depending on what you specified in your configuration file I think)
 
 *****PROMTAIL*****
 An agent which ships the contents of a local log to a private Grafana loki instance
@@ -141,3 +147,52 @@ Configuring the yaml file:
 
 *****GETTING PROMTAIL TO PUSH LOGS*****
 Start promtail with nssm (nssm start promtail)
+If you have your configuration file set up correctly then when you start promtail it will push the logs to Grafana
+
+*****ACCESSING PROMTAIL VIA WEB*****
+localhost:9080		(The port numbers may change depending on what you specified in your configuration file I think)
+
+*****PROMETHEUS*****
+Systems monitoring and alerting toolkit
+Prometheus "scrapes" metrics from other sources at configured intervals
+Default path that Prometheus looks for is /metrics unlessed configured otherwise
+Unlike Grafana Prometheus has a built in database to store data
+
+*****USE CASE*****
+Let's say you want to see how many types of http requests(GET,POST,etc...) have been made, you can target that
+	Do this by typing http_requests_total(method="get")
+	(http_requests_total is metric name, method is key, and get is value)
+
+*****HOW TO USE PROMETHEUS*****
+After downloading you have the option of just double clicking on the exe file or using it with nssm
+It will come with a pre-configured Yaml file so no need to create your own
+If you install using nssm you just have to add the executable file, no need to add the config file in the pop up window
+After launching it will you will get some information on the command prompt letting you know it started
+Navigate to the prometheus UI webpage(see below we URL)
+On the home page you can execute commands
+
+*****SOME PROMETHEUS COMMANDS*****
+Useful feature of Prometheus UI is that it suggests and autocompletes your requests
+up - shows you which instance is running and what is its job
+prometheus_api_remote_read_queries - current number of remote read queries being executed or waiting
+prometheus_http_requests_total - counter of http requests
+
+*****CONNECTING PROMETHEUS TO GRAFANA*****
+Configuration > Data Source > Add Data Source > Prometheus > Give it a name > set the URL (we gave it http://127.0.0.1:9090) > Save and Test (prometheus must be running when you save and test)
+
+*****EXPLORING PROMETHEUS*****
+From the Grafana website:
+	Explore > Metrics browser
+	You can click on instance to see which instance has been exposed
+	You can also select a metric from here to get a graphical/table representation of it
+	There's many other things you can look at too
+
+*****LOKI VS PROMETHEUS*****
+Loki is all about reading log files only
+Prometheus is geared more towards reading metrics/numbers
+Loki relies on promtail for getting(collecting) the data
+Prometheus requests (pulls) the data from node exporter
+Grafana allows you to integrate both loki and prometheus
+
+*****ACCESSING PROMETHEUS VIA WEB*****
+localhost:9090		(The port numbers may change depending on what you specified in your configuration file I think)
