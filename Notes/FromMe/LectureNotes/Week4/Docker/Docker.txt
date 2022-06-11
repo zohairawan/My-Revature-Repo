@@ -25,6 +25,8 @@ docker stop 'containername'
 docker rm 'containername'
 	Removes specified container
 docker image rm 'imagename'
+			OR
+docker image rm 'imageID'
 	Removes specified docker image
 	Can only remove an image if a container is not running it
 
