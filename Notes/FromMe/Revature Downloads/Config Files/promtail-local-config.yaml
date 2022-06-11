@@ -1,25 +1,20 @@
+#This is promtail-local-config.yaml
 server:
   http_listen_port: 9080
   grpc_listen_port: 0
 
 positions:
-  filename: /data/promtail/positions.yaml
+  filename: /tmp/postitions.yaml
 
 clients:
-  - url: http://127.0.0.1:3100/loki/api/v1/push
+  - url: http://localhost:3100/loki/api/v1/push
 
 scrape_configs:
-- job_name: system
-  static_configs:
-  - targets:
-      - localhost
-    labels:
-      job: varlogs
-      __path__: c:/var/log/*log
 - job_name: grafanalogs
   static_configs:
   - targets:
       - localhost
     labels:
       job: grafana
+      agent: promtail
       __path__: C:/Users/Zohair/Desktop/test/*

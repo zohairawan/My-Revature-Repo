@@ -131,12 +131,6 @@ Configuring the yaml file:
 
 	scrape_configs:										
 	- job_name: system
-	  pipeline_stages:
-	  
-	  - output:
-		  source: message
-	 
-		  action_on_failure: skip
 	  static_configs:
 	  - targets:
 		  - localhost
