@@ -60,5 +60,12 @@ Docker Containers
 	To better understand lets look at the structure of it all
 		Hardware, Host OS, Docker, Container1, Container2, etc...
 		Think of these as stacked one on top the other with Hardware being at the very bottom (the applications are not stacked one on top the other but rather are side by side)
-		Each container will be running its own instance of the application + framework + libraries/dependencies without the need for a Guest OS for each instance
-		The containers will be sharing the same OS
+		Each container will be running its own instance of the application + framework + libraries/dependencies without the need for a Guest OS for each application
+		The containers will be sharing the kernel within the host OS
+	Each container is created from in image
+
+Docker Images
+	An image is the template/blueprint and the container is the instance of that image
+	Similar to classes and objects in Java
+	Image is the class and container is the object
+	One image can create multiple containers

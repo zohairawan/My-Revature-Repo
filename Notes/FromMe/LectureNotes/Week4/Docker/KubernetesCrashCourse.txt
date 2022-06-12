@@ -1,0 +1,82 @@
+*****INTRODUCTION TO KUBERNETES*****
+Container orchestration tool
+Meant to manage containers whether that be containers from docker or elsewhere
+Helps manage containerized applications in different deployment environments(physical machines, virtual machines, or cloud)
+Kubernetes is also referred to as K8s
+
+*****WHAT PROBLEM DOES KUBERNETES SOLVE*****
+Trend from Monolith to Microservices
+Rise of microservices caused increased usage of container technologies becuase containers offer the perfect host for small independent applications like microservices
+This naturally caused an increased usage of containers
+This caused a demand for a proper way of managing those hundreds of containers
+
+*****FEATURES OF ORCHESTRATION TOOLS*****
+High availability or no downtime
+	Your application is always accessible by users
+Scalability or high performance
+	Allows application to be more flexible to adjust to increase/decrease load
+Disaster recovery - backup and restore
+	Containerized application can run from the latest state after recovery
+
+*****KUBERNETES ARCHITECTURE*****
+First lets define about some key terms and then talk about how they function
+	Cluster = a set of nodes that run containerized applications
+	Node = virtual or physical machine
+	Master Node = Contains K8s processes that are absolutely necessary to run/manage the cluster properly
+	Worker Nodes = Mostly referred to as Nodes, this is where you applications are running
+	Pod = The smallest unit of execution in Kubernetes. A group of one or more containers
+	Kubelet = Primary "node agent" which runs on each node and allows cluster to talk to each another
+	API Server = Entrypoint to K8s cluster
+	Controller Manager = Keeps track of what's happening in the cluster
+	Scheduler = Ensures pod placement / decides on which worker Node new Pod should be scheduled
+	etcd = K8s backing store
+	Virtual Network = Creates one unified machine
+	
+What does all this mean though?
+	The cluster is made up of one master node
+	Connected to the master node are worker nodes
+	Each worker node has containers of different applications deployed on it
+
+Lets look at the master node closer
+	As stated earlier the master node runs/manages the cluster properly
+	How does it do this?
+	With the help of K8s processes
+	These processes include:
+		API Server
+			This itself is a container
+			Entrypoint to K8s cluster
+			This is the process that the different K8s clients will talk to
+			Different K8s clients include:
+				UI
+					If you're using K8s dashboard
+				API
+					If you're using some scripts/automating technologies
+				CLI
+		Controller Manager
+			This itself is a container
+			Keeps an overview of what is happening in the cluster
+			Monitors whether something needs to be repaired
+			Monitors if a container dies and needs to be restarted
+		Scheduler
+			This itself is a container
+			Responsible for scheduling containers on different nodes based on workload and available server resources on each node
+				For example if 60% of node1 is being used and only 30% of node2 is being used it makes more sense to deploy containers on node2
+		etcd
+			Key-Value database store
+			Holds the current state of the K8s cluster
+			Has all the configuration data and all the status data of each node and each container inside of those nodes
+			Allows you to recover the whole cluster state using etcd snapshot
+	The above processes all occur within the master node
+
+One important component of K8s that doesn't occur within the master node is the Virtual Network
+	Virtual Network enables the worker nodes and master node to talk to one another
+	Spans all the nodes that are part of the cluster
+	Basically turns all the nodes inside of a cluster into one powerful unified machine that has the sum of all the resources of the individual nodes
+	
+Worker node vs Master node
+	Worker nodes have higher workloads because they are the ones running the containers and as a result are much bigger and have more resources
+	Master node only runs a handful of containers(the master processes we mentioned above) but it is much more important than individual worker nodes because if you
+	lose a master node you won't be able to access the cluster anymore because it houses the API Server which is the entrypoint into the K8s cluster
+	You absolutely have to have a backup of your Master node inside the K8s cluster
+	
+*****MAIN KUBERNETES COMPONENTS*****
