@@ -1,0 +1,64 @@
+*****WHAT IS DOCKER*****
+An ecosystem where you can build images and run containers
+What are images and containers?
+	Before we explain that let's first talk about why we need Docker and in doing so the definition of images and containers will become clear
+
+*****WHY DO WE NEED DOCKER*****
+To understand why we need it we need to first understand the SDLC(Software Development LifeCycle) in broad terms:
+	Developer: Develops an application
+	Tester: Tests the application
+	Operation Team: Deploys the application on a server
+
+Lets look at the Developers role in the SDLC a bit closer
+	When a developer develops the application they might be using some framework(Spring Framework perhaps)
+	This framework will require certain libraries/dependencies
+	So, in order for the application to run properly it must have:
+		Required framework
+		Required libraries/dependencies
+	Which means anyone who wants to now run this application will also need these same requirements
+	This is where problems start to arise
+
+Shipping your application in one neat little package
+	The developers have all the necessary requirements downloaded/installed on their local machines but what about when they hand the application off to the testing team?
+	Will the testing team have to download/install all the same requirements?
+	As it stands now, yes
+	So the testers local machines will have to have:
+		Framework
+		Application
+		libraries/dependencies
+	What if the testing team forgets to add a library or dependency, or what if they download/install the wrong version?
+	As you can see this opens the door for errors to occurr
+	Ideally the developers would like to be able to ship the application + framework + libraries/dependencies all in one package but is it possible?
+		Quick note: The thing is, some libraries/dependencies are dependent on the OS meaning you have to give the entire OS, which is not possible, but there's a workaround
+	The solution comes in the form of Hypervisor
+	
+What is Hypervisor?
+	Think about virtual machines/vmware
+	To better understand lets look at the structure of it all
+		Hardware, Host OS, Hypervisor(vmware), Guest OS
+		Think of these as stacked one on top the other with Hardware being at the very bottom
+	What the hypervisor(vmware) allows you to do is install a Guest OS
+	Why would we want to install a Guest OS?
+	Rememeber earlier when we talked about ideally being able to ship the application + framework + libraries/dependencies + libraries/dependencies are dependent on the OS in one package?
+	Well when you develop your application and install all of those things on the Guest OS you can create an image of the Guest OS and ship that to the testers
+	So everything that the testers need (application + framework + libraries/dependencies) will be packed on the image of the Guest OS
+	When the testers receive the image of the Gues OS they can create an instance of it and run the instance
+	The testing team no longer has to worry about the pre-requisites required for running your application because the Guest OS image contains all the pre-requisites
+	The testing team can now run their tests and once they are done and made the necessary changes they can create a new image which includes the changes they've made and send it to the operations team
+	So if Hypervisor takes care of our problem then where does Docker fit in the picture?
+	
+How Docker fits in the picture
+	The problem with Hypervisor comes when you want to run multiple instances of that applictation
+	The way Hypervisor is set up is that each application comes bundled in the Guest OS
+	So in order to run mutliple instance of your application you'll also be running multiple instances of Guest OS too
+	When running multiple applications this will consume alot of CPU, RAM, and memory
+	There are also licensing issues, will you buy new licenses for each instance of the Guest OS?
+	Docker offers a solution in the form of containers
+
+Docker Containers
+	You can think of containers as Hypervisors but the key difference is that where with Hypervisors each application required its own Guest OS, in docker it doesn't
+	To better understand lets look at the structure of it all
+		Hardware, Host OS, Docker, Container1, Container2, etc...
+		Think of these as stacked one on top the other with Hardware being at the very bottom (the applications are not stacked one on top the other but rather are side by side)
+		Each container will be running its own instance of the application + framework + libraries/dependencies without the need for a Guest OS for each instance
+		The containers will be sharing the same OS
