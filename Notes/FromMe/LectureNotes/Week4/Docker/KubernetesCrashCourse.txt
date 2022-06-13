@@ -191,3 +191,46 @@ Secret components are meant to be encrypted using 3rd party tools
 You can use the data inside of ConfigMap inside of your pod by:
 		Using environmental variables
 		Using a properties file
+
+*****VOLUME*****
+How does data storage work in K8s?
+In our example we have a db pod and it has some data and in our current set up if the pod gets restarted the data would be gone
+This is a problem because you want your db data to be persistent
+In order to acheive this you can use a K8s component called volumes
+How does it work?
+It basically attaches a physical storage on a hard drive to your pod
+The storage can either be on:
+	local machine(meaning on the same server node where the pod is running)
+	remote storage(meaning outside of the K8s cluster) like cloud storage or your own premise storage
+	Now if the pod gets restarted all the data will still be there
+	So because K8s doesn't manage data persistence it's on you to do so
+	Think of the storage as an external hard drive plug in into the K8s cluster
+
+*****DEPLOYMENT AND STATEFULSET*****
+Lets say for whatever reason your pod dies, this would result in downtime which means that the user can no longer reach my-app
+This is where distributed systems comes into play
+Instead of relying on just one my-app pod and one db pod you can replicate everything on multiple nodes
+The replica is connected to the same Service(we talked about Service earlier - the permanent IP address)
+Service will also act like a load balancer meaning it will catch the request and forward it to whichever pod is least busy
+In order to create a second replica of my-app pod you wouldn't create a second my-app pod but rather you would define a blueprint for my-app pod and specify how many replicas of that pod you want to have
+The blueprint is called Deployment
+So in practice you would not be working with/creating pods but rather you would be creating deployments because there you can specify how many replicas you want
+In addition to that you can also scale up/down the number of replicas of pods
+So earlier we said that pods are a layer of abstraction on top of containers
+Deployment is another layer of abstraction on top of pods which makes it more easier to interact with the pods, replicate them, and do other configurations
+So in practice you would mostly work with deployments and not pods
+Now if one of the replica pods of my-app were to die the Service will forward the request to another my-app replica
+
+However the same does not apply to the db pod
+DB can't be replicated via Deployment
+DB pod has a 'state' which is its data meaning if we have replicas of the db they would all need to access the same shared data storage and there you would need some mechanism
+that manages which pods are currently writing to that storage or which pods are reading from that storage in order to avoid data inconsistencies
+That mechanism in addition to replicating feature is offered by another K8s component called StatefulSet
+This component is meant specifically for applications like db's
+So db's should be created using StatefulSet's and not Deployments
+StatefulSets would take care of replicating the pods and scaling them up/down as well as making sure the db read/writes are synchronized so no db inconsistencies are present
+Deploying StatefulSets is not easy
+Because of this it is common practice to host db applications outside of the K8s cluster and just have the stateLESS apps inside the K8s cluster
+
+Deployment - for stateLESS apps
+StatefulSets = for stateFUL apps or databases
