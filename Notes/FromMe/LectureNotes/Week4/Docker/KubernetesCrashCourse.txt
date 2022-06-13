@@ -139,3 +139,55 @@ Pod
 	New IP address on re-creation
 
 *****SERVICE AND INGRESS*****
+Service is a permanent IP address that can be attached to each pod
+The lifecycle of the pod and service are not connected so even if the pod dies the IP address will remain the same
+You want your application to be accessible through the browser and in order to achieve this you will want to create an external service
+	External Service is a service that opens the communication from your app to external sources
+	It's the way in which users can access your app via a web browser
+But you wouldn't want you db to be open to external sources, so for that you would create an internal service
+	Internal Service is the default type
+You specify the type of Service on creation
+
+The URL of the external service(my-app) is not very practical, it follows the format of http://node-ip:port#OfService
+For example it could look something like this:
+	http://124.89.101.2:8080
+	The first set of numbers(124.89.101.2) represents the node IP address - not the service IP address but the node
+	The second number(8080) is of the port number of the service
+	This is not a good look for the end product, you can't expect users to remember these sets of numbers
+	Ideally it should look something like http://my-app.com
+	To acheive this there is a component called ingress
+
+Ingress
+So instead of the request first going to service it will go to ingress which will then forward the request to service
+	Ingress receives the request and forwards it to the service
+
+*****ConfigMap & Secret*****
+As we stated earlier pods communicate with one another using a service
+So how would my-app communicate with db
+My-app would have a db endpoint(URL) that it uses to communicate with the db but where do you actually configure this db endpoint(URL)
+Usually you would do it in application.properties file, usually it's inside the built image of the application
+Lets say the endpoint of the db is called mongo-db-service, then that's what my-app would use to communicate with the db
+But what happens if the name of the db changes from mongo-db-service to mongo-db?
+You would have to adjust the URL in the application
+This means re-building the application with the new version -> push it to the repo -> pull that new image into your pod
+There is a solution though in the form of a K8s component called ConfigMap
+	ConfigMap is the external configuration of your application
+	ConfigMap usually contains configuration data like URL's of the db or other services that you use
+	In order to use it you just connect it to the pod(in our case my-app) by referencing Secret in deployment/pod
+	ConfigMap stores its data in plain text format
+	Now if you change the name(endpoint) of the service you just adjust the ConfigMap and that's it, no need to go through the aforementioned steps
+	You can use the data inside of ConfigMap inside of your pod by:
+		Using environmental variables
+		Using a properties file
+	Usernames and passwords are also subject to change so your inclination might be to put that information in the ConfigMap also but ConfigMap is for non-confidential data only
+	For this purpose K8s has another component called Secret
+
+Secret
+Is just like ConfigMap but it's used to store secret data(credentials)
+In order to use it you just connect it to your pod by referencing Secret in deployment/pod
+Secret stores its data in base-64 encoded format
+This doesn't necessarily make it very secure though
+Secret components are meant to be encrypted using 3rd party tools
+You can use the data inside of ConfigMap inside of your pod by:
+		Using environmental variables
+		Using a properties file
