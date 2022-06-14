@@ -52,6 +52,7 @@ Lets look at the master node closer
 				API
 					If you're using some scripts/automating technologies
 				CLI
+					kubectl get service
 		Controller Manager
 			This itself is a container
 			Keeps an overview of what is happening in the cluster
@@ -245,3 +246,110 @@ Secrets - external configuration
 Volume - data persistence
 Deployment - replication for stateLESS apps
 StatefulSets - replication for stateFUL apps
+
+All K8s clients(UI, API, or CLI) send their configuration requests to the API server
+Requests have to be either in YAML or JSON format
+API server is the only entrypoint into the cluster
+Example configuration in YAML format:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  labels:
+    app: my-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+	  app: my-app
+  template:
+    metadata:
+	  labels:
+	    app: my-app
+	spec:
+	  container:
+	    - name: my-app
+		  image: my-image
+		  env:
+		    - name: SOME_ENV
+			  value: $SOME_ENV
+		  ports:
+		    - containerPort: 8080
+This example shows us sending a request to K8s to configure the component called Deployment
+	Deployment = a template for creating pods
+In this example we tell K8s to create two replica pods of my-app with each pod replica having a container based on my-image running inside
+Also we configure what the environment variables and the port configuration of this container inside of the pod should be
+
+*****3 PARTS OF A K8S CONFIGURATION FILE*****
+Configuration files are used to create components
+Every configuration file in K8s has 3 parts:
+	metadata
+	specification
+	status
+
+Lets look at a deployment and service yaml file to see it in action
+	apiVersion: apps/v1													apiVersion: v1
+	kind: Deployment													kind: Service
+	metadata:															metadata:
+	  name: nginx-deployment				  	  						  name: nginx-service
+	  labels: ...(this represents info we won't bother typing)
+	spec:																spec:
+	  replicas: 2														  selector:
+	  selector:	...														  ports:
+	  template: ...
+The first two lines just specifies what you want to create
+	In our example we are creating deployment and service
+Metadata - the metadata of the componenet that you're creating resides
+		   one of the metadata is name of the component itself
+Specification - Each components config file will have a specification where you put every kind of configuration that you want to apply for that component
+				Attributes of specification are specific to the kind(i.e. attributes of deployment will be specific to deployment, attributes of service will be specific to service, etc...)
+Status - Automatically generated and added by K8S
+		 K8S will compare the desired state(i.e. 2 replicas, etc) vs the actual state
+		 If the desired state and the actual state don't match then K8S will try and fix it
+		 The etcd provides information that K8s uses to compare the desired vs actual status
+		 So etcd holds the current status of any K8S component
+
+*****FORMAT OF K8S CONFIGURATION FILE*****
+"Human friendly" data serialization standard for all programming languages
+Syntax: strict indentation (Code Editors have plugins for YAML syntax validation)
+Usual practice is to store configuration files with your code because since deployment and service is going to be applied to your application it's good practice to store
+these config files in your application code
+Or you could have your own git repo for config files
+
+*****WHAT IS MINIKUBE*****
+Usually in K8S when you're setting up a production cluster it will look something like this:
+	Multiple master and multiple worker nodes
+	Each node(master or worker) would be set up on its own physical or virtual server
+What about if you are working in your local environment or want to test something on your local environment and you don't have access to physical or virtual servers?
+This is where minikube comes into play
+Minikube is one node cluster but within that node is both the master and worker node processes both running on that one node
+	Whereas usually one node is reserved for the master and another node reserved for the worker
+This node will also have a docker container pre-installed
+Minikube is just for start up/deleting the cluster
+
+*****WHAT IS KUBECTL*****
+Now that you have a virtual node on your local machine thanks to minikube you need a way to interact with the cluster
+	You need a way to create pods and other K8S components on that node
+You can achieve this by using kubectl
+Kubectl is a command like tool for K8S cluster
+As stated earlier the way you communicate with the cluster is through API server
+	communication can occurr with 1 of 3 clients (UI, API, CLI)
+	kubectl is a CLI
+Once kubectl submites commands to the API server(Master processes) to create components, delete components, etc... the Worker processes actually make it happen(i.e executing
+the command to create pods, delete pods, create services, etc...)
+Kubectl isn't just for minkube cluster, if you have a cloud cluster or hybrid cluster, etc... kubectl is the tool used to interact with any type of K8s cluster setup
+Kubectl us for configuring the minikube cluster
+
+*****MINIKUBE/KUBECTL COMMANDS*****
+Install minikube - minikube start --driver=virtualbox --no-vtx-check
+	You have to download it first then install
+	Also, minikube is very janky, I noticed that everytime I stopped it and tried using it again it wouldn't work
+	One method to get it to work again is go to your VM and stop it and remove it from there
+	Then delete minikube and run the install command again, you may have to do this multiple times as the install command may not work the first time
+	
+Delete minikube - minikube delete
+	It's good practice to remove it from your VM before you run the delete command
+	
+Check minikube status - minkube status
+
+Get status of nodes - kubectl get node
