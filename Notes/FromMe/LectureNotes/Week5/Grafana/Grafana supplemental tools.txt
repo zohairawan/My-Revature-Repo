@@ -201,5 +201,97 @@ Loki relies on promtail for getting(collecting) the data
 Prometheus requests (pulls) the data from node exporter
 Grafana allows you to integrate both loki and prometheus
 
+*****HOW TO ADD METRICS*****
+We are going to add a job that monitors a windows machine(RAM size, memory, etc...)
+Steps:
+1.) Download the wmi
+2.) Configure the prometheus.yaml
+3.) Restart prometheus
+
+To check that windows exporter has been successfully installed go to:
+	localhost:9182 and localhost:9182/metrics
+
+Open the prometheus.yaml file
+	If you want to create a job you can copy and paste everything underneath scrape configs:
+		- job_name: "wmi_exporter"
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+		  static_configs:
+			- targets: ["localhost:9182"]
+	We defined the port number as 9182 because that's the port that windows exporter runs on(as seen above)
+	Once you've made the changes save the .yaml file
+	Restart prometheus
+	Now when you go to the prometheus UI and restart it you should see the name of the job you just created when you run the 'up' command
+	Because of the job you added new metrics have been added to the prometheus UI
+	For example if you type windows_logical_disk_free_bytes that metric came from windows exporter
+	The query(windows_logical_disk_free_bytes) that you executed is PromQL
+
+*****PROMQL IN PROMETHEUS*****
+Prometheus supports PromQL(Prometheus Query Language) that allows highly customized queries to select metrics to visualize
+Has 4 primary data types:
+	Instant Vectors
+	Range Vectors
+	Scalars
+	Strings -very rarely used
+Has 4 metric types:
+	Gauge
+	Summary
+	Counter
+	Histogram
+
+If we type in the query prometheus_http_requests_total this is an example of Instant Vectors
+If we type in the query prometheus_http_requests_total[1m] this is an example of Range Vectors
+
+*****ACCESSING WINDOWS EXPORTER VIA WEB*****
+localhost:9182 and localhost:9182/metrics
+
+*****CONFIGURING ALERT MANAGERS IN PROMETHEUS*****
+Currently we have Prometheus set up to where we have to go to the UI and type in the metric we want to check for
+This is cumbersome
+We want to set it up where there are specific metrics we are monitoring and we want alerts when those metrics fall out of our desired threshold
+To achieve this we should set up alerts that come to our email
+Steps:
+1.) Create Rules that will fire alerts
+		Go to where your prometheus folder is(same one where your prometheus-config.yaml file is)
+		Create a folder and give it a name(I called it rules)
+2.) Create a file inside the folder
+		Inside the folder create a new file and name it whatever you want(I called it myRules1.yml although you might want to think of a name that's specific to the rule your making)
+			Be sure to make a yml file
+		This is a good resource for getting rules: https://awesome-prometheus-alerts.grep.to/rules.html (The spacing might be off when you copy it but just refer to myRules1 for spacing and get the jobs from this website)
+		Example:
+			groups:
+			  - name: custom_rules
+				rules:
+				  - alert: DiskSpaceFree10Percent
+					expr: node_filesystem_avail_bytes{mountpoint="/", fstype="xfs"} <= 6519140359
+					labels:
+					  severity: warning
+					annotations:
+					  summary: "Instance [{{ $labels.instance }}] has 10% or less free disk space"
+					  description: "[{{ $labels.instance }}] has only {{ $value }}% or less free"
+3.) Make changes in prometheus-config.yaml file
+		# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+		rule_files:
+		  - "rules/myRules1.yml"
+		  # - "second_rules.yml"
+4.) Save your yaml/yml files and Restart your prometheus with nssm restart
+5.) Go to prometheus UI and go to Alerts 
+	
+
 *****ACCESSING PROMETHEUS VIA WEB*****
 localhost:9090		(The port numbers may change depending on what you specified in your configuration file I think)
+
+
+
+*****ACCESSING GRAFANA VIA WEB*****
+localhost:3000
+*****ACCESSING LOKI VIA WEB*****
+http://localhost:3100/metrics		(The port numbers may change depending on what you specified in your configuration file I think)
+*****ACCESSING PROMTAIL VIA WEB*****
+localhost:9080		(The port numbers may change depending on what you specified in your configuration file I think)
+*****ACCESSING PROMETHEUS VIA WEB*****
+localhost:9090		(The port numbers may change depending on what you specified in your configuration file I think)
+*****ACCESSING WINDOWS EXPORTER VIA WEB*****
+localhost:9182 and localhost:9182/metrics

@@ -148,6 +148,7 @@ You want your application to be accessible through the browser and in order to a
 But you wouldn't want you db to be open to external sources, so for that you would create an internal service
 	Internal Service is the default type
 You specify the type of Service on creation
+Service will also act like a load balancer meaning it will catch the request and forward it to whichever pod is least busy
 
 The URL of the external service(my-app) is not very practical, it follows the format of http://node-ip:port#OfService
 For example it could look something like this:
@@ -353,3 +354,9 @@ Delete minikube - minikube delete
 Check minikube status - minkube status
 
 Get status of nodes - kubectl get node
+
+Get all components in the cluster - kubectl get all
+
+Get service - kubectl get svc
+
+Creating whatever is defined inside file - kubectl apply -f <file-name.yaml>
