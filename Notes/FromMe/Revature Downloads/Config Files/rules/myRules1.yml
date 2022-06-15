@@ -1,0 +1,10 @@
+groups:
+  - name: custom_rules
+    rules:
+      - alert: DiskSpaceFree10Percent
+        expr: node_filesystem_avail_bytes{mountpoint="/", fstype="xfs"} <= 6519140359
+        labels:
+          severity: warning
+        annotations:
+          summary: "Instance [{{ $labels.instance }}] has 10% or less free disk space"
+          description: "[{{ $labels.instance }}] has only {{ $value }}% or less free"
