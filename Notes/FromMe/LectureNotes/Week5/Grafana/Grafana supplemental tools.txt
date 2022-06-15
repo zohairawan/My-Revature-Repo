@@ -247,7 +247,7 @@ If we type in the query prometheus_http_requests_total[1m] this is an example of
 *****ACCESSING WINDOWS EXPORTER VIA WEB*****
 localhost:9182 and localhost:9182/metrics
 
-*****CONFIGURING ALERT MANAGERS IN PROMETHEUS*****
+*****ALERT MANAGER IN PROMETHEUS*****
 Currently we have Prometheus set up to where we have to go to the UI and type in the metric we want to check for
 This is cumbersome
 We want to set it up where there are specific metrics we are monitoring and we want alerts when those metrics fall out of our desired threshold
@@ -277,8 +277,49 @@ Steps:
 		  - "rules/myRules1.yml"
 		  # - "second_rules.yml"
 4.) Save your yaml/yml files and Restart your prometheus with nssm restart
-5.) Go to prometheus UI and go to Alerts 
+5.) Go to prometheus UI and go to Alerts, your alert should show up there
+
+*****ALERT MANAGER*****
+Now we want to send these notifications to our email:
+Prometheus is responsible for generating the alerts but sending them to your email or slack is done by Alert Manager
+Steps:
+1.) Download Alert Manager
+2.) Install with nssm, no need to add the config file in the pop-up window, it already comes with one created
+Right now the issue is there's no link between alert manager and prometheus
+
+*****LINKING ALERT MANAGERS WITH PROMETHEUS*****
+We want prometheus to send any alerts to alert manager and we want alert manager to send those to our email/slack
+We need to link alert manager and prometheus in order for that to happen
+Steps:
+1.) Put this in prometheus-config.yaml file
+		# Alertmanager configuration
+		alerting:
+		  alertmanagers:
+			- static_configs:
+				- targets:
+				  - localhost:9093 (we changed this line from alertmanager to localhost)
+By making this change you have now linked up prometheus and alert manager
+
+*****FIRING EMAIL ALERT*****
+You're going to need two emails:
+	One to send the alert 'from' and one 'to' send it to
+	We will have to make some changes in the setting for our from email account(SMTP enabled as well as some other stuff we will look at)
+You will also need to make some changes in the alert manager yml file
+
+Generating SMTP password:
+Enabling 2-Step verification
+Steps:
+1.) Go to your 'from' email id
+	Go to manage your google account > Security > 2-Step Verification > Get Started > Type in phone number > Text Message > Enter code that was sent through text > Turn On
+2.) Go to manage your google account > Security > App passwords > Select App > Other(custom name) > Prometheus(name can be anything) > Generate > Copy password > Go to alertmanager.yml file and paste it in auth_password:
+	Go to prometheus UI and make sure an alert is firing as well as going to alertmanager UI and make sure the alert shows up there
+	Then go to your 'from' email and make sure that the alert has been sent to your 'to' email
+	emgeufeumomiymng
+
 	
+
+*****ACCESSING ALERT MANAGER VIA WEB*****
+localhost:9093 (Default port number)
 
 *****ACCESSING PROMETHEUS VIA WEB*****
 localhost:9090		(The port numbers may change depending on what you specified in your configuration file I think)
@@ -295,3 +336,5 @@ localhost:9080		(The port numbers may change depending on what you specified in 
 localhost:9090		(The port numbers may change depending on what you specified in your configuration file I think)
 *****ACCESSING WINDOWS EXPORTER VIA WEB*****
 localhost:9182 and localhost:9182/metrics
+*****ACCESSING ALERT MANAGER VIA WEB*****
+localhost:9093 (Default port number)
