@@ -312,9 +312,23 @@ Steps:
 1.) Go to your 'from' email id
 	Go to manage your google account > Security > 2-Step Verification > Get Started > Type in phone number > Text Message > Enter code that was sent through text > Turn On
 2.) Go to manage your google account > Security > App passwords > Select App > Other(custom name) > Prometheus(name can be anything) > Generate > Copy password > Go to alertmanager.yml file and paste it in auth_password:
-	Go to prometheus UI and make sure an alert is firing as well as going to alertmanager UI and make sure the alert shows up there
-	Then go to your 'from' email and make sure that the alert has been sent to your 'to' email
-	emgeufeumomiymng
+3.) Properly configure that alertmanager.yml file:
+	route:
+	  receiver: admin
+
+	receivers:
+	- name: admin
+	  email_configs:
+	  - to: ''
+		from: ''
+		smarthost: smtp.gmail.com:587
+		auth_username: ''
+		auth_identity: ''
+		auth_password: ''
+		Once you get the password from the Select App section > Generate make sure you paste it into auth_password, once you close the window in gmail you won't be able to view your password again
+4.)Go to prometheus UI and make sure an alert is firing as well as going to alertmanager UI and make sure the alert shows up there
+5.)Then go to your 'from' email and make sure that the alert has been sent to your 'to' email
+
 
 	
 
