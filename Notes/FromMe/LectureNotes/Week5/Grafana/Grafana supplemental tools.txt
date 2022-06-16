@@ -50,12 +50,12 @@ We will be using it to run our apps like:
 Loki will display the logs but you need a collector which is responsible for collecting the logs from different sources to give to loki so it can display it in Grafana
 So who is the collector?
 	Promtail - a collector specifically for Grafana
-So the flowchars is:
+So the flowchart is:
 	Pull in any logs with promtail -> Store the logs in loki -> display visualized charts in Grafana
 Features of Grafana loki include:
 	Alert on your logs
 		Set up alerting for loki to evaluate you incoming log data
-		Configure loki to send teh resulting alerts to a Prometheus Alertmanager so they can get routed to the right team
+		Configure loki to send the resulting alerts to a Prometheus Alertmanager so they can get routed to the right team
 
 *****RUNNING A SERVICE WITH NSSM / INSTALLING LOKI*****
 Be sure to add nssm to your PATH
@@ -328,9 +328,6 @@ Steps:
 		Once you get the password from the Select App section > Generate make sure you paste it into auth_password, once you close the window in gmail you won't be able to view your password again
 4.)Go to prometheus UI and make sure an alert is firing as well as going to alertmanager UI and make sure the alert shows up there
 5.)Then go to your 'from' email and make sure that the alert has been sent to your 'to' email
-
-
-	
 
 *****ACCESSING ALERT MANAGER VIA WEB*****
 localhost:9093 (Default port number)

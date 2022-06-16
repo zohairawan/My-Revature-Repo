@@ -1,21 +1,30 @@
 # Aspect Oriented Programming
 Different paradigm of programming, where we deal with "Aspects", which are "cross-cutting concerns".
 
+Use case 
+UserController	- 10 methods
+ProductController	- 10 methods
+
+logging
+security
+transaction
+
+
 Generally, AOP is used alongside Object Oriented Programming. And these "cross-cutting concerns" are cutting across different packages or layers of our OOP design.
 
 There are certain issues that we must account for in an application that are implemented across many different classes/objects. They are not centralized.
 Ex:
 - Logging
 - Security
-
-Instead of repeating our code in every single class/object, we create "Advice" which will be injected at corresponding "JoinPoints", described as "PointCuts".
+peice 
+Instead of repeating our code in every single class/object, we create "Advice"(piece of code) which will be injected at corresponding "JoinPoints", described as "PointCuts".
 
 An "Aspect" is one of these cross-cutting concerns, such as logging.
 "Advice" is the code/functionality/logic that will be injected to address the concern.
 "JoinPoints" are the locations that can be injected at. The potential targets for injection.
 "PointCuts" are expressions (like Regular Expressions) that describe some subset of the targets, or JoinPoints.
 
-Specifically, the JoinPoints are methods. We can inject functionality before, after, throws, or around methods being invoked.
+Specifically, the JoinPoints are methods. We can inject functionality before, after, or around , throws methods being invoked.
 
 PointCuts will be some expression to define some collection of method signatures that will be target for some specific scenario of injection.
 

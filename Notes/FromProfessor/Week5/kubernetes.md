@@ -73,9 +73,9 @@ We use the RESTful API (or the kubectl commands) to change the "Desired State".
             - Server Side Load Balancer
             - Primarily for small amounts of traffic
         - It is possible to configure a Service object with an external load balancer
-- Volume
+-*** Volume
     - Permanent data storage that can attach to one or more pods
-- Namespace
+-*** Namespace
     - Kind of like DB Schema, but for Kubernetes
     - Different objects in different namespaces don't often interact (but they can)
     - Generally it is to achieve multi-tenancy
@@ -86,7 +86,7 @@ We use the RESTful API (or the kubectl commands) to change the "Desired State".
         - Rules for replicas
         - Rules to create each pod, and will create identical pods to reach # replicas
     - Will have a name
-- Ingress
+-*** Ingress
     - Another controller object
     - Will act as the entrypoint for all services in our cluster (or namespace)
         - Not load balancing

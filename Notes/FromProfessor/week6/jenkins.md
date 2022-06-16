@@ -101,18 +101,3 @@ pipeline {
     }
 }
 ```
-
-Poll SCM:
-(* * * * * ) represents (minute, hour, day_of_month, week, day_of_week)
-range (0–59, 0–23, 1–31, 1–12, 0–7)
-sunday -0, monday-1, tuesday-2 ,…,saturday-6
-January-1, Feb-2, …,Dec-12
-Example :
-/15 * * * * — every 15 min
-0 * * * * — every hour
-0 0 * * * — every 00:00 hours
-00 14 10 3,6,9,12 * — at 2:00 PM on 10th of March, June, September and December
-25,50 1 15 * 2 — at 1:25 AM, 1:50 AM every Tuesday and on 15th of every month.
-00 21 * * Mon,Wed,Fri — at 9.00 PM every Monday, Wednesday, Friday
-*/5 * * * 1–5 — every 5 minutes during the 5 working days (Monday — Friday), every week and month
-* */4 * * Sun — every minute past every 4th hour on Sunday

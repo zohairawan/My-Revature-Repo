@@ -166,6 +166,9 @@ These scopes determine how many instances of a particular bean we create. This d
 - Now deprecated as of Spring 5
     - Global Session: This was used for Portlets for Global sessions
 
+========================================================
+
+
 ## Autowiring
 - Let Spring decide which instances to use
 - The dependencies are wired "automagically"
