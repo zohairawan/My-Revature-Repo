@@ -1,5 +1,6 @@
 *****MONITORING AN APPLICATION USING PROMETHEUS*****
 Information can be found in project2aws
+I believe this should be done in a spring boot application
 Use case: See how many times localhost:8091/users/getUsers is invoked 
 Steps:
 1.) Adding dependency
@@ -15,8 +16,46 @@ You need to add the actuator dependency in the pom.xml file if it's not there al
 	After adding dependencies always make sure to Maven reload your project
 4.) Exposing endpoints
 	Next you have to expose the endpoints of health, info, and prometheus
-	Achieve this by going to application.properties and writing
-	management.endpoints.web.exposure.include=health,info,prometheus
+	Achieve this by going to application.properties or application.yaml and writing:
+	management.endpoints.web.exposure.include=health,info,prometheus (.properties format)
 	OR
-	management.endpoints.web.exposure.include=*
-5.) Configure in prometheus
+	management.endpoints.web.exposure.include=* (.properties format)
+	OR
+	management:
+	  endpoints:
+		web:
+		  exposure:
+			include: "prometheus" (.yaml format)
+5.) Testing endpoints
+	Use postman to test that the endpoints are exposed
+	For our example we would write in postman:
+	http://localhost:8091/actuator/prometheus
+	
+6.) Add as a job in prometheus
+	We want to create this as a job in prometheus
+	As of now we are performing this in postman
+	Go to where your prometheus folder is
+	Open that folder in VS Code
+	Navigate to prometheus.yml file
+	Underneath scrape_configs: create a job by typing:
+	- job_name: "project2_metrics"
+	  static_configs:
+		- targets: ["localhost:8091"]
+	Note: metrics_path defaults to '/metrics'
+	but we don't have /metrics, we have /actuator/prometheus
+	To fix this we should paste:
+	metrics_path: '/actuator/prometheus' in the job creation
+	It should now look like this:
+	- job_name: "project2_metrics"
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+        - targets: ["localhost:8091"]
+7.) Restart your prometheus with nssm(or start it if it wasn't already)
+8.) Navigate to prometheus UI (localhost:9090)
+9.) Type 'up' to verify the job is there
+10.) Type in a query, for example:
+	 http_server_requests_seconds_count
+	 (In order for this query to work you must:
+	  Have your project running
+	  Use postman to send a request(getUsers, getItems, etc...)
+	 (I'm not sure what other queries you can type to get metrics on the project 2 application)
