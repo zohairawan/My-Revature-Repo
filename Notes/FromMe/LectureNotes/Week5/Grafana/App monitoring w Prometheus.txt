@@ -2,16 +2,21 @@
 Information can be found in project2aws
 Use case: See how many times localhost:8091/users/getUsers is invoked 
 Steps:
-1.) We will need to include actuator dependency which will expose the health/metrics of the application
+1.) Adding dependency
+	We will need to include actuator dependency which will expose the health/metrics of the application
 	When you add actuator dependency you will automatically get micrometer
 		Micrometer helps take measurements of your application
 		It's also responsible for collecting the metrics of your application and then publishing those metrics to prometheus
 You need to add the actuator dependency in the pom.xml file if it's not there already
-2.) We want to add another dependency, micrometer-registry-prometheus
+2.) Adding dependency
+	We want to add another dependency, micrometer-registry-prometheus
 	This allows you to register micrometer with prometheus
-3.) After adding dependencies always make sure to Maven reload your project
-4.) Next you have to expose the endpoints(endpoints of what though?)
+3.) Maven reload project
+	After adding dependencies always make sure to Maven reload your project
+4.) Exposing endpoints
+	Next you have to expose the endpoints of health, info, and prometheus
 	Achieve this by going to application.properties and writing
 	management.endpoints.web.exposure.include=health,info,prometheus
 	OR
 	management.endpoints.web.exposure.include=*
+5.) Configure in prometheus

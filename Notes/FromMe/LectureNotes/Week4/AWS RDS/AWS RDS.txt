@@ -1,5 +1,5 @@
 *****AWS RDS******
-So far we have ran postgres in two ways:
+So far we have ran our database in two ways:
 	local postgres:
 		We downloaded postgresql locally to our machine
 		Add the postgresql dependency
@@ -22,7 +22,7 @@ So far we have ran postgres in two ways:
 		Create Dockerfile
 		Create docker-compose file
 		In terminal run 'docker-compose up'
-Now there's another way we can run postgres:
+Now there's another way we can run our database:
 	cloud postgres
 	AWS RDS allows for this
 	Opens the door for an application to be fully deployed in a cloud
@@ -58,7 +58,7 @@ We have username and password but we still need our URL
 22.) We will also have to change our password too,
 	 before we had spring.datasource.password=root
 	 but now it we will change it to spring.datasource.password=rootroot
-23.) We can change the username the same since it hasn't changed
+23.) We can keep the username the same since it hasn't changed
 	 it will still be spring.datasource.username=postgres
 24.) Now if we run the application and it doesn't give any error that means we're successfully connected to RDS
 25.) Run application the way we normally do, go to main class and click run
