@@ -1,0 +1,25 @@
+*****MINIKUBE/KUBERNETES COMMANDS*****
+Create a minikube instance - minikube start --driver=virtualbox --no-vtx-check
+
+Delete minikube - minikube delete
+
+Get minikube status - minikube status
+
+View nodes - kubectl get nodes
+
+Create a deployment - kubectl create deployment --image=<imageName>	(can create a deployment from a file also)
+
+View deployment - kubectl get deployments
+
+Expose deployment on a port - kubectl expose deployment <deploymentName> --type=NodePort --port=8080
+	This creates a service
+	Type can be different ones(i.e. LoadBalancer, ClusterIP, ExternalName, NodePort)
+	
+Access exposed deployment - minikube service <serviceName> --url
+	This will give you a URL, if you paste the URL in the browser and get a response this means that your setup is working
+
+Delete service - kubectl delete service <serviceName>
+
+Delete deployment - kubectl delete deployment <deploymentName>
+
+View pods - kubectl get pods
