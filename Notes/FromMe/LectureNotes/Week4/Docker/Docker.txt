@@ -42,8 +42,9 @@ Now go to dbeaver and create a new postgreSQL connection and give it the appropr
 	Note: --name will specify the container name in docker not in dbeaver, so even though we called our container zopostgres in dbeaver it might show up as postgres2 or something
 	
 *****HOW TO DOCKERIZE YOUR APPLICATION*****
+This was done in C:\Users\Zohair\IdeaProjects\Revature\Code\LectureCode\Week4\DockerizingApp\dockerdemo
 You will create an image and then run that image inside a container
-Will need the help of Maven
+Will need the help of Maven to:
 	Generate the JAR file
 Maven Lifecycle:
 	Validate
@@ -73,7 +74,7 @@ Create a class that accepts HTTP requests
 		You will notice that the default name for the JAR file will be the artifactId followed by the version(can be seen in your pom.xml file)
 		If you want to change this then just go to pom.xml and AFTER </plugins> and BEFORE </build> add <finalName>namethatyouwant</finalName>
 2.) Create image of application(dockerize it)
-		Create dockerfile
+		Create Dockerfile
 			Text document that contains all the commands a user could call on the command line to assemble an image
 			This needs to be in your root folder, so right click on the project name > new > File > Dockerfile
 		This file will specify the steps that you want docker to follow
@@ -91,11 +92,19 @@ Create a class that accepts HTTP requests
 			Run the image in a container:
 				docker run --name 'nameofcontainer' -p 8080:8080 'imagename'
 					Note: 'imagename' is the one you specified when you ran the build command
-					
+3.) Run your application via a Docker container
+	Go to postman and type in the necessary information:
+	Our example was the dockerdemo application so we typed in postman:
+	localhost:8080/dockerdemo/message
+4.) Stopping your Docker app:
+	The terminal in intelliJ that you used to execute the build and run command will be busy so
+	go to another terminal(you can open a cmd) and type in docker stop <containerName>
+	
 *****DOCKER COMPOSE*****
+This example is using the application in C:\Users\Zohair\IdeaProjects\Revature\Code\LectureCode\Week3\SpringBoot\pms-springboot
 Tool that makes creating/managing multi-container applications easier
 Achieved by creating a docker-compose file that has extension yaml/yml
-yaml/yml files are written with syntax on indentation
+yaml/yml files are written with emphasis on indentation
 You can write the same things that were in the application.properties file in the yaml/yml
 1.) Go to pom.xml and AFTER </plugins> and BEFORE </build> add <finalName>namethatyouwant</finalName>
 2.) Generate the JAR file
@@ -137,3 +146,9 @@ You can write the same things that were in the application.properties file in th
 			  - POSTGRES_USER=compose-postgres
 			  - POSTGRES_PASSWORD=compose-postgres
 5.) In terminal run 'docker-compose up'
+	This will create an image of the application
+	It will also create a docker container and run the application from the container
+	
+*****DOCKERFILE VS DOCKER-COMPOSE*****
+The key difference between the Dockerfile and docker-compose is that the Dockerfile describes how to build Docker images,
+while docker-compose is used to run multi-container Docker applications

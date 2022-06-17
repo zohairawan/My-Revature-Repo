@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 //This is at the class level so if you want to enter into this controller then you have to use localhost:8084/product
 //Mapping at the class level
-@RequestMapping
+@RequestMapping()
 public class ProductController {
 
     @Autowired
@@ -34,12 +34,12 @@ public class ProductController {
      */
 
     //Mapping for the method level
-    @GetMapping("/home") //localhost:8084/product/home
+    @GetMapping("/home") //localhost:8084/home
     public String home() {
         return "Welcome to Home Product App page";
     }
 
-    @GetMapping() //localhost:8084/product
+    @GetMapping() //localhost:8084
     public String getProducts() {
         return "Displaying all products";
     }
