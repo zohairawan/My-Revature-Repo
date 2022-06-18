@@ -1,0 +1,98 @@
+*****WHY HOST YOUR APPLICATION IN AWS*****
+For this we will be using C:\Users\Zohair\IdeaProjects\Revature\Code\LectureCode\Week3\SpringBoot\pms-springboot
+Why deploy your app to AWS?
+Because if it's on your local machine then only you can access it
+When you deploy it to AWS anyone should be able to access it
+
+*****WHAT YOU'LL NEED TO DEPLOY YOUR APPLICATION IN AWS*****
+RDS
+EC2
+S3 Bucket
+
+*****RDS*****
+Go to AWS and create an RDS in order to use that in our application
+Create your db (Can be found in AWS RDS notes)
+Now we have to change our secuirty settings if you haven't done so before (Can be found in AWS RDS notes)
+Get the URL (Can be found in AWS RDS notes)
+	jdbc:postgresql://pms-springboot-demo-db.cnzaphtm51gc.us-west-1.rds.amazonaws.com:5432/he worte postgres but is mine pms-springboot-demo-db
+Go to dbeaver to ensure that you can connect to your db
+
+*****UPDATING DB DETAILS IN YOUR APPLICATION*****
+Update the db details in your app
+	Go to your application.properties file and for:
+	spring.datasource.url= add the URL you got from AWS
+	spring.datasource.username give the username you put in AWS
+	spring.datasource.password give the password you gave in AWS
+
+*****GENERATE JAR FILE*****
+Generate a JAR file:
+	Click on Maven > Skip Tests Mode > Package > Run Maven Build
+	
+*****CREATE S3 BUCKET IN AWS*****
+S3 Bucket is a bucket in your cloud where you can store your JAR files/images/videos/etc...
+Go to AWS > Services > S3 > Create Bucket >
+Sections you must change are:
+Bucket name: Type in name of bucket you want
+Click on ACLs enabled
+Bucket Owner preferred
+Block all public access: Uncheck this box
+	Click box next to acknowledge
+Now click Create Bucket
+Click the bucket you just created
+You will see an option for Upload
+	We will be uploading our JAR file to this bucket
+
+*****UPLOAD JAR FILE TO S3 BUCKET*****
+Go to your application > Right click on the JAR file(not the one that says jar.original-the other one) > Open In > Explorer
+	You now have the location of you JAR file
+Back on AWS - after you clicked on the bucket you created - you can drag and drop on the JAR file where it says Upload
+Once uploaded click on the JAR file in AWS
+Also copy the link underneath "Object URL"
+	If you're accessing outside AWS you need this(Not sure if that's true???)
+	This is the link that you'll paste in your EC2 instance
+	https://pms-springboot-aws-bucket.s3.us-west-1.amazonaws.com/pms-sb-aws.jar
+Copy the link underneath "S3 URI"
+	If you're accessing inside AWS you need this(Not sure if that's true???)
+	s3://pms-springboot-aws-bucket/pms-sb-aws.jar
+
+*****MAKING IT PUBLIC*****
+This is if you didn't do it while creating the bucket, if you did then you don't have to worry about this step
+Navigate to your bucket and:
+click on it > Go to permissions > Block public access (bucket settings) Click Edit > Make sure Block all public access is unchecked
+Navigate to your JAR file in your bucket and:
+Click on JAR file > Permissions > Click on bucket owner enforced > Click on ACLs enabled > Click I acknowledge > Save changes
+Navigate back to your JAR file and:
+Check mark box next to it > Actions > Make public using ACL > Click Make Public
+
+
+*****CREATE EC2 INSTANCE*****
+Create an Ubuntu EC2 instance
+	Note: Under Network Settings > Edit > Type: All traffic
+Copy IPv4 public address
+	18.144.68.207
+Connect via putty
+	Copy public IP address in Host Name(or IP address)
+	SSH > Auth > Put in private key in "Privte key file for authentication"
+Click Accept
+Login as Ubuntu
+
+*****DOWNLOAD JAR FILE ON EC2 INSTANCE AND EXECUTE*****
+If you want to download any software you have to update your machine
+	sudo apt-get update
+	
+Install JDK
+	sudo apt install openjdk-8-jre-headless
+	
+Command to get any file from the cloud
+	wget <paste the link you got underneath "Object URL">
+	
+Run your jar file
+	java -jar <nameOfJARfile.jar>
+	
+*****GETTING IP ADDRESS TO RUN IN POSTMAN*****
+EC2 > Instance running > Click box next to instance > Copy "Public DNS (IPv4)
+
+*****RUNNING QUERY IN POSTMAN*****
+Copy the "Public DNS (IPv4)
+Follow it with a :
+End with the server.port number
