@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 //This is at the class level so if you want to enter into this controller then you have to use localhost:8084/product
 //Mapping at the class level
-@RequestMapping()
+@RequestMapping("product")
 public class ProductController {
 
     @Autowired
