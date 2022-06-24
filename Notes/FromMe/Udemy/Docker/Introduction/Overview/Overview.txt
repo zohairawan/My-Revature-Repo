@@ -1,0 +1,133 @@
+*****Docker Introduction*****
+Why do you need it?
+	Imagine you have an end to end application that uses different technologies like:
+		Web server (Node JS)
+		Database (mongoDB)
+		Messaging (redis)
+		Orchestration (Ansible)
+	
+	IMAGE(How Docker Looks)
+	You may have a lot of issues developing this application with all the different componenents
+	Issues like:
+		Compatibility between services and underlying OS
+			Must ensure that all these different services were compatible with the version of OS you're planning to use
+		Compatibility between services and libraries/dependencies on OS
+			One service may require one version of a dependent library whereas another service requires another version
+		The issues above will inevitably change the architecture of your application
+			Everytime something changes you'll have to go through the same process of checking for Compatibility between services and underlying OS/Compatibility between services and libraries/dependencies on OS
+		This compatibility matrix issue is usually known as "The matrix from Hell"
+			
+	Without Docker you may run into:
+		Compatibility/Dependency issues
+		Long setup time
+		Different Dev/Test/Prod environments
+	
+	With Docker you can:
+		Avoid the compatibility issue
+		Modify/change the components without affecting the other components
+		Modify/change the components without having to modify the underlying OS
+		Run each component in a seperate container with its own libraries and dependencies
+		Containerize applications
+		Run each service with its own dependencies in seperate containers
+
+What are containers?
+	IMAGE(Containers)
+	
+	Containers are completely isolated environments that can have their own:
+		processes(services)
+		network interfaces
+		mounts
+	They all share the same OS Kernel
+		We will look at what this means in a bit
+	
+	Setting up these containers is hard because they are very low level and that's where docker offers a high level tool that makes it very easy to set up containers
+	
+	To understand how Docker works lets revisit some basic concepts of OS's
+		IMAGE(OS)
+		If you look at operating systems like, Ubuntu, Fedora, Suse, or Centos - they all consist of two things:
+			OS Kernel
+				Responsible for interacting with the underlying hardware
+				OS kernel remains the same - which is Linux in this case
+			Software
+				This is what makes the OS's different from one another
+				May consist of different:
+					user interface
+					drivers
+					compilers
+					file managers
+					developer tools
+					etc
+		So you have a common Linux kernel shared across all OS's and some custom software that differentiate OS's from each other
+	
+	What does it mean that Docker containers share the underlying kernel?
+		IMAGE(Sharing Kernel)
+		Lets say we have a system with an Ubuntu OS with Docker installed on it, Docker can run any OS(Ubuntu, Fedora, etc...) on top of it as long as they're all based on the same kernel - in this case Linux
+		If the underlying OS is Ubuntu, Docker can run a container based on another distribution like Debian, Fedora, etc...
+		Each Docker container only has the additional software that we mentioned earlier
+		
+Virtual Machines vs Containers
+	IMAGE(Containers vs Virtual Machines)
+	Virtual Machines:
+		Has underlying hardware infrastructure, Hypervisor on top of that, and then the Virtual Machines on them which run the application with the OS, libraries, and dependencies
+		Higher overhead due to higher utilization of underlying resources as there are multiple OS's and kernels running
+		Consume higher disk space as each VM is heavy
+		Faster boot up
+		Complete isolation because VM's because VM's don't rely on the underlying kernel or OS
+		Can run different type of apps built on different OS's such as Linux or Windows
+	Containers:
+		Has underlying hardware infrastructure, OS on top of that, Docker installed on the OS, and then Docker manages the containers that run the application with the libraries and dependencies
+		Lower overhead due to lower utilization of underlying resources as there is only one OS running
+		Consume lower disk space as each container is lightweight
+		Slower boot up
+		Less isolation because more resources are shared between the containers - like the kernel
+		Can only run apps built on the same OS kernel(Linux OS can only run apps of Linux distro's, Windows can only run apps based on Windows distro's, etc...)
+
+Virtual Machines & Containers
+	Large environments that have thousands of applications running thousands of containers usually have a mix of Virtual Machines and Containers
+	Allows you to utilize the advantages of both technologies
+	Benefits of virtualization is to easily provision or decommision docker hosts
+	Benefits of containers is to easily provision applications and quickly scale them as needed
+
+How is it done?
+	IMAGE(Using docker images)
+	There are lots of containerized versions of applications readily available today
+	Most organizations have their products containerized and available in a public docker repository - called docker hub/docker store
+		For example you can find images of:
+			common OS's
+			databases
+			servicing tools
+			etc
+	Once you have docker installed on your computer and identify the image you need you simply run some commands:
+		docker run <image_name>
+			docker run ubuntu
+			docker run mongodb
+
+Container vs Image
+	IMAGE(Container vs Image)
+	Image:
+		A package/template
+		Used to create one or more containers
+		Need this in order to run a container
+	Container:
+		Running instance of image that are isolated and have their own environments and set of processes
+	
+	You can create your own image and push it to Docker Hub Repo, making it available for the public
+	
+Docker in DevOps
+	Without Docker:
+		IMAGE(Docker in DevOps 1)
+		Traditionally, Developers developed applications
+		Then they hand it over to Ops team to deploy/manage it in production environments
+		They do that by providing a set of instructions such as information about how the host must be set up, prerequisites must be installed on host, how dependencies should be configured, etc..
+		Since the Ops team didn't develop the application they struggle with setting it up
+		When an issue arises they work with the Developers to resolve it
+	
+	With Docker:
+		IMAGE(Docker in DevOps 2)
+		The Developers and Operations team work hand in hand
+		They transform the 'Guide' into a 'Dockerfile' which contains both of their requirements
+		IMAGE(Docker in DevOps 3)
+		The Dockerfile is then used to create an image of their application
+		This image can now run on any host with Docker installed on it and is guaranteed to run the same way everywhere
+		Now the Ops team can use the image to deploy the application since the image is already working when the Developer built it and Ops have not modified it, it continues to work the same way in production
+	
