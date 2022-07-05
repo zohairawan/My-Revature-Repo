@@ -1,0 +1,327 @@
+Terraform
+	Allows us to create/destroy resources in AWS
+		Every object that terraform manages is called a resource
+			file, EC2, S3 bucket, RDS, roles, policies, etc
+		Can be used across multiple platforms(AWS, gcp, azure, etc)
+		Can be used on physical machines and virtual
+	Follows idea of "Infrastructure as code"
+	Uses HCL(Hashicorp Configuration Language) which is simple declarative language used to define the infrastructure
+	
+Type of IAC tools
+	Configuration Management
+		Designed to install and manage software
+		Maintains standard structure
+		Version control
+		Ansible, Puppet, Saltstack
+		
+	Server Templating
+		Pre installed software and dependencies
+		Virtual machine or docker images
+		Docker, Pagent, Vagrant
+		
+	Provisioning Tools
+		Deploy immutable infrastructure resources
+		Servers, databases, network components, etc
+		Terraform, CloudFormation
+
+HCL
+	Consists of file blocks and arguments
+	A block is defined withing curly braces and it contains set of arguments in the form of key value pairs
+		<block> <parameters> {
+			key1 = value1
+			key2 = value2
+		}
+	
+	Block in terraform contains information about the infrastructure platform and a set of resources within the platform that you want to create
+	For example: We want to create a file in the local system where terraform is installed
+		Create a directory terraform-local-file
+		Create local.tf
+		
+		local.tf
+			resource "local_file""app"{
+				filename = "C:\tdemo\app.txt"
+				content = "My favorite app!"
+			}
+			
+			resource is a block
+			local_file is the local-provider
+			app is the name of the file
+			filename is the location where the file will be created 
+			content is what will be inside the file
+			
+	Here's an example of a resource file created for provisioning an AWS EC2 instance
+		resource "aws_instance" "webserver" {
+			ami = "ami-817252525"
+			instance_type = "t2.micro"
+		}
+	
+	Here's an example of a resource file created for provisioning an AWS S3 bucket instance
+		resource "aws_s3_bucket" "data" {
+			ami = "webser-bucket-ord-189272
+			acl = "private"
+		}
+		
+Terraform workflow consists of 5 steps
+	1.) Write the configuration file
+	2.) init
+			Run the terraform init command
+	3.) plan (show the plan)
+			Review the execution plan using the terraform plan command
+	4.) apply (make the changes)
+			Once you're ready, apply the changes using the terraform apply command
+	5.) show
+			Terraform will show you what has happened
+			
+Hands on w/ terraform
+	Create a folder on your desktop(or wherever) and name it terraform demo
+	Open VS Code and open the folder you just created in VS Code
+	Inside VS Code create a new file called local.tf (the file name is not important but the extension is)
+	Download the Hashicorp Terraform plugin to help with syntax/autocompletion
+	Write this in the local.tf file
+		resource "local_file" "app" {
+			filename = "C:/Users/Zohair/Desktop/terraformdemo/app.txt"
+			content = "Revature DevOps batch"
+		}
+		filename is mandatory
+		content is optional
+		How do you know what you're supposed to write inside of resources?
+			https://registry.terraform.io/browse/providers
+			For example type in local_file in the search bar
+			Click on hashicorp/local
+			On the right side of the screen click on "Use Provider"
+			It will show you some code
+			Next to "Use Provider" there is "Documentation"
+			If you click on that you can select between "Resources" or "Data Sources"
+			This will give you examples of how to use stuff like "local_file" which we used in our demo
+				Documentation > Resources > local_file
+					If you scroll down a bit this is where we can see that filename is required and that content is optional
+			
+	Now go to your command prompt and cd into the directory that has the local.tf file
+	Once in the correct directory issue these following commands:
+		terraform init
+		terraform plan
+		terraform apply
+			Type in yes
+		terraform show
+			To look over what terraform has done
+	Now if you look inside the folder where you ran these commands you will see an app.txt file created with the words Revature DevOps batch inside it
+	Terraform has successfully created a file in your local system
+	
+	Let's say you want to update the content of the local.tf file
+	Go to content and make the changes you want > Save it
+	Go back to the terminal and now you just have to type:
+		terraform plan
+			You don't have to type this command, it just shows you what changes have been made and what will happen when you run the apply command
+		terraform apply
+			Type yes
+	If you open the app.txt file again you will see the changes you made reflected in the file
+	
+	If you want to delete this infrastructure type:
+		terraform destroy
+			Type yes
+		This will destroy all the .tf files though so be careful
+			
+	You can also create multiple files in addition to local.tf if you want
+	To create this new file type:
+		terraform apply
+			This will create the new file
+		terraform plan
+			You can type this before apply to see what actions terraform will take
+			
+Deleting a specific .tf file
+	terraform destroy -target RESOURCE_TYPE.FILENAME
+	For example if we wanted to destroy our app.txt resource we would type:
+		terraform destroy -target local_file.app
+		Type "yes"
+		
+Using variables
+	Create a file in VS Code called "variables.tf"
+	Write this inside it:
+		variable "filename" {
+		  default = "C:/Users/Zohair/Desktop/terraformdemo/app.txt"
+		}
+
+		variable "content" {
+		  default = "It's Friday, you ain't got no job and you ain't got nothin' to do"
+		}
+		
+	Change your local.tf file to this:
+		resource "local_file" "app" {
+			filename = var.filename
+			content = var.content
+		}
+	The advantage of using the variable concept is that you can use it in a number of places in your code without having to rewrite it
+	
+States in terraform
+	If you look in the directory where we did our terraform demo you will see a file with the word "state" at the end of it, it's extension is also TFSTATE
+	I think these get created when you run the init command for the first time
+		These files hold the state of your infrastructure
+		Primary purpose of Terraform state is to store bindings between objects in a remote system and resource instances declared in your configuration
+	When you run the terraform plan command you will notice it says "Refreshing state"
+
+Other terraform commands
+	terraform validate
+	terraform fmt
+		This will format your files automatically
+		The files that get formatted will be listed out after you run the command
+	terraform show -json
+	terraform providers
+		Shows the providers that you've used
+
+Hands on w/o terraform in AWS
+	Log into AWS
+	
+	Create user in AWS w/o terraform
+		IAM
+			Allows you to create users/roles/policies
+			Manages access to AWS resources
+		
+		Type IAM in the search bar
+		Click Users on the right hand side > Add Users
+		Fill out "User name"
+		Select AWS credential type > Click Password - AWS Management Console Access
+		Select Custom password
+			Type in password
+		Leave Require Password reset checked(it's checked by default)
+		Click Next: Permissions
+		Set Permissions > Attach existing policies directly > Check AdministratorAccess
+		Click Next: Tags > You can leave this blank
+		Click Next: Review
+		Click Create user
+		
+	Create policy in AWS w/o terraform
+		Type IAM in the search bar
+		Click Policies on the right hand side > Create Policy
+		Select a service > Service > Click Choose a service > type in S3 > Check List and Read
+		Click Resources > Check All resources
+		Click Next: Tags > You can leave this blank
+		Click Next: Review > Type in Name(S3 policy or whatever name you want) > Add description if you want
+		Click Create policy
+	
+	Now if you want to delete these users/policies you'll have to do it one by one but w/ terraform you can do it all at once
+	
+Hands on w/ terraform in AWS
+	Pre req:
+		Download and install AWS CLI
+		
+	Configuring your AWS CLI
+		We will need to access our:
+			access key
+			secret key
+			region
+			
+		Getting our region/access key/secret key
+			region
+				Can be found in the top right corner by clicking on the drop down menu next to the state name(us-east-1, us-east-2, etc)
+				
+			access key/secret key
+				Click on your name in top right corner > Security credentials > Access keys (access key ID and secret access key) > Create New Access Key > Download Key File > rootkey file will be downloaded which will contain your access key and secret key
+				
+		Type aws configure
+			This is a one time command
+			It will prompt you to enter your AWS Access Key ID
+				enter your access key
+			It will prompt you to enter your Secret Access Key
+				enter your secret key
+			It will prompt you to enter your region name
+				enter your region name
+			It will prompt you to enter Default output format [json]:
+				enter json
+			We have no successfully connected our system to our AWS account
+			
+	Creating users w/ terraform
+		Open VS Code
+		Create a directory and name it whatever you want
+		Open that directory in VS Code
+		Create a file called aws_user.tf
+		Inside the aws_user.tf file type:
+			provider "aws" {
+			  region = ""
+			  access_key = ""
+			  secret_key = ""
+			}
+
+			resource "aws_iam_user" "admin-user" {
+			  name = "doe"
+			}
+		Open command prompt and type:
+			terraform init
+				Type this again because we are changing our provider to AWS
+			terraform apply
+				enter yes
+			
+		For region/access key/secret key you must provide the proper credentials
+		If you go to your AWS Users section you will see that the user that you specified in the aws_user.tf file will now be created there
+		
+	Creating policy w/ terraform
+		You can create the policy in the same file as aws_user.tf
+		Inside the aws_user.tf file type:
+			resource "aws_iam_policy" "adminUser" {
+			  name = "AdminUsers"
+			  policy = jsonencode(
+				{
+				  "Version": "2012-10-17"
+				  "Statement": [
+					{
+					  "Effect": "Allow",
+					  "Action": "*"
+					  "Resource": "*"
+					}
+				  ]
+				}
+			  )
+			}
+			You have created a policy now but there's no link between the policy and the user
+			
+	Creating link between user and policy w/ terraform
+		You can create the link between the user and the policy in the same file as aws_user.tf
+		Inside the aws_user.tf file type:
+			resource "aws_iam_user_policy_attachment" "doe-admin-access" {
+			  user = aws_iam_user.admin-user.name
+			  policy_arn = aws_iam_policy.adminUser.arn
+			}
+		You have now created an attachment between the user and the policy
+		
+	Creating a bucket w/ terraform
+		You can also create this in the aws_user.tf file
+		Inside the aws_user.tf file type:
+			resource "aws_s3_bucket" "example-bucket" {
+			  bucket = "demo"
+			}
+
+			resource "aws_s3_bucket_object" "file-in-bucket" {
+			  content = "C:/Users/Zohair/Desktop/terraformdemo/app.txt"
+			  key = "app.txt"
+			  bucket = aws_s3_bucket.example-bucket.id
+			}
+		
+	Creating EC2 instance w/ terraform
+		resource "aws_instance" "ec2-instance" {
+		  ami = "ami-0cfa91bdbc3be780c"
+		  instance_type = "t2.micro"
+		}
+		ami can be found by:
+			EC2 > Launch Instance > Application and OS Images(Amazon Machine Images) > and looking for ami, then you just copy the value that's next to ami
+		Note also make sure you have the correct region selected
+		
+	Executing your terraform commands
+		Open command prompt and type:
+			terraform apply
+			
+		There wasn't any need to do terraform init because you already did that earlier
+		
+	Destroying our infrastructure
+		Type terraform destroy and it will destroy all the resources it created
+		Now if you go to your AWS Users you won't see doe
+		If you go to your AWS Policies you won't see AdminUsers
+		
+	Recreating our infrastructure
+		If you want to recreate all the resources you previously had just navigate to the folder where all the .tf files are and type
+			terraform init
+			terraform apply
+			
+Referencing the Documentation
+	Go to https://registry.terraform.io/browse/providers
+	Select the provider you want documentation for (AWS, Azure, Google Cloud Platform, etc)
+	Go to Documentation in top right corner
+	Look for the relevant information

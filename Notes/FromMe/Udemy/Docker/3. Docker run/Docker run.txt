@@ -1,0 +1,93 @@
+Docker run
+	run <username/repo_name>:<tag> OR <image_name>:<tag>
+		Runs the specified version of the image
+		To find information about these versions go to hub.docker.com and look up the image, look for "Tag", and click on it
+	
+	run -i <username/repo_name> OR <image_name>
+		By default docker containers do not listen to STDIN(standard input), meaning it does not read any input from you
+			For example: If you had an application that executed the following:
+				run welcomepromptappimage
+				Welcome! Please enter your name: Zohair
+				Hello and welcome Zohair!
+			This application prints a welcome message, waits for you to type in your name, and then prints another welcome message with your name attached to it
+			However, if you were to dockerize this application and run it as a docker container it would perform the following:
+			
+				Hello and welcome !
+			
+			As you can see it doesn't wait for the prompt, it just prints whatever the application is supposed to print on STDOUT
+			It's not able to read any input from you
+			It's running in a non-interactive mode
+			If you'd like to provide input you must map the STDIN of your host to the docker container using the -i flag
+			It will now run as follows with the command:
+				run -i welcomepromptappimage
+				Zohair
+				Hello and welcome Zohair!
+			If you notice, the prompt is still missing though, this can be solved with the next command
+			
+	run -t <username/repo_name> OR <image_name>
+		This attaches you to the containers terminal
+		So when you run the previous application it will attach you to the terminal
+		
+	run -it <username/repo_name> OR <image_name>
+		This runs in an interactive mode as well as attaching you to the terminal on the container
+		Running this command will make the previous application perform exactly how we want it to
+		For example: It will execute the following:
+			run welcomepromptappimage
+			Welcome! Please enter your name: Zohair
+			Hello and welcome Zohair!
+	
+	run -p <host_port>:<container_port> <image_name>
+		docker run -p 80:5000 kodecloud/simple-webapp
+		docker run -p 8306:3306 mysql
+		
+		Port mapping or port publishing on containers
+		Binds the container port to the host port
+		Once you bind a port it will be accessible to users from the outside
+		Once you run a container you can see which port it's listening to(type ps command)
+		So you can access your application using whatever port it's listening on
+		But what IP do you use to access it from a web browser
+			You have 2 options:
+				Use the IP of the Docker container, every Docker container gets an IP assigned by default
+					But this IP is an internal IP and is only accessibly within the Docker host
+					So if you open a browser you can type 'http://<container_IP>:<container_port>
+					But this won't be accessible to users outside of the Docker host
+					How to find internal IP of the Docker container?
+						docker inspect <container_I.D.>
+						Under "Networks" section you'll see "IPAddress"
+				Use the IP of the Docker host
+					In order for this to work you must mapped the container port to a free port on the Docker host
+					You can do this by running the above command
+					So if you open a browser you can type 'http://<docker_host_IP>:<host_port>
+					This way you can run multiple instances of your application and map them to different ports on the docker host
+					You can also run instances of different applications on different ports
+					You can run as many applications(same or different) and map them to as many ports as you want
+					You cannot map to the same port on the docker host more than once
+	
+	run -v <external_directory>:<container_directory> <image_name>
+		docker run -v /opt/datadir:/var/lib/postgresql postgresql
+		docker run -v C:\Users\SomeUser\Desktop\my-jenkins-data:/var/jenkins_home jenkins/jenkins:latest
+		
+		Data persistence in docker container
+		Lets say you were running a PostgreSQL container
+		Docker containers have their own isolated file systems and any changes to any files happen within the containers
+		Lets assume you dump a lot of data into the PostgreSQL container database
+		What happens if you delete the PostgreSQL container and remove it?
+		All the data would disappear too
+		If you want to persist the data you would want to map a directory outside the container on the docker host to a directory inside the container
+		When the Docker container runs it will implicitly mount the external directory to the container directory
+		This way all your data will be stored in the external directory and will remain even if you delete the docker container
+
+	inspect <container_I.D.> OR <container_name>
+		View additional details about a specific container
+		Returns all details of a container in JSON format such as:
+			state
+			mounts
+			configuration data
+			network settings
+			etc
+	
+	log <container_I.D.> OR <container_name>
+		View logs of a container you ran in the background
+		Logs are the contents written to the STDOUT of that container
+		For example if you ran your container using the -d flag and you want to view the logs
+		

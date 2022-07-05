@@ -96,3 +96,5 @@ EC2 > Instance running > Click box next to instance > Copy "Public DNS (IPv4)
 Copy the "Public DNS (IPv4)
 Follow it with a :
 End with the server.port number
+
+RUNNING SHORTENED VERSION

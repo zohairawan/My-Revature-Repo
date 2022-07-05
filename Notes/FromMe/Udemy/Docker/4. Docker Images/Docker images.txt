@@ -1,0 +1,42 @@
+Docker Images
+	We will see how to create your own image, but before that let us look at why you would need to create your own image
+	
+Why am I containerizing?
+	Reasons for creating your own image:
+		1.) You cannot find a service, on docker hub, that you want to use as part of your application
+		2.) You decided that the application that you're developing will be dockerized for ease of shipping and deployment
+
+How to create my own image
+	Lets look at an example where we containerize an application, a simple web app that was built using the Python Flask framework
+	Steps for containerizing an app:
+		1.) Understand what you are containerizing or what app we are creating an image for and how the app is built
+		2.) Start by thinking what you might do if you want to deploy the app manually
+		3.) Write down the steps, in the right order, if you were to set it up manually
+		4.) Manual set up steps:
+			a.) Start with an OS, in this case, Ubuntu (Starting with an OS might not always apply as we've seen with our hands on demo in Revature which set up openjdk8)
+			b.) Update the source repositories
+			c.) Install dependencies
+			d.) Install python dependencies
+			e.) Copy over source code of the app to another location
+			f.) Run the web server
+		5.) Now that you have the instructions create a Dockerfile using these
+				Your Dockerfile would look like this:
+					FROM Ubuntu
+					RUN apt-get update && apt-get -y install python
+					RUN pip install flask flask-mysql
+					COPY . /opt/source-code
+					ENTRYPOINT FLASK_APP=/opt/source-code/app.py flask run
+				a.) First create a Dockerfile named Dockerfile and write down the instructions for setting up your app in it
+				b.) This includes:
+						Installing dependencies
+						Where to copy the source code from and to
+						What the entrypoint of the application is
+		6.) Build your image using the docker build command and specify the Dockerfile as input as well as a tag name for the image
+				docker build . -f Dockerfile -t zohair89/my-custom-web-app
+				This will create an image locally on your machine
+		7.) Run the docker push command to make it available on the public Docker Hub Registry
+				docker push zohair89/my-custom-web-app
+
+Dockerfile
+	Text file written in a specific format that docker can understand
+				

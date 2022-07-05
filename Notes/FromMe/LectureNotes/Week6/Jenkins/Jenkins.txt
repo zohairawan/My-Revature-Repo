@@ -1,0 +1,280 @@
+Jenkins
+	A build automation server that builds, tests, and deploys code to a mock/production environment, facilitating in the CI/CD pipeline
+
+Jenkins CI/CD pipeline:
+	local machine --commit/push--> Github --webhooks(build triggers)--> jenkins(clone source code repo/build code/test code/generate JAR file/build image) --docker build/push--> docker hub --k8s docker image pull--> k8s
+ 
+
+How to run Jenkins
+	Download the jenkins file
+	Navigate to its location via cmd(open as admin)
+	Once you're in the directory with the jenkins.war file run the command java -jar jenkins.war
+		By default jenkins runs on port 8080 but if that port is already in use by something else just run java -jar jenkins.war --httpPort=9050 (you can type any port you want as long as it's not in use)
+	Open browser and go to URL localhost:8080
+	Sign in or set up account
+
+Uses for jenkins:
+		1.) Generate JAR file/build image/push image to docker hub through the jenkins website
+		2.) Creating a pipeline
+				Declarative pipeline
+					Created in jenkins website
+				Scripted pipeline
+					Created in jenkinsfile
+		
+Generating a JAR file in Jenkins website
+	Pre reqs:
+		Must already be downloaded:
+			Java 1.8
+			Maven
+			Git
+	
+	Go to jenkins webpage
+	Manage Jenkins > Manage plugins > Available
+	Download git parameter
+	Download Maven integration
+	Download CloudBees Docker Build and Publish plugin
+	
+	Now to create the jenkins job
+		New Item > Enter Item Name > Select what kind of project
+		Click on github project > Paste project URL(w/o the .git)
+		Under "Source Management Code" click Git > paste the Respository URL (w/ the .git)
+		Under "Branches to build" > "Branch Specifier (blank for 'any')" type in '*/master' (if you want another branch just type in the branch name)
+		Under "Build Triggers" make sure "Build whenever a SNAPSHOT dependency is built" is checked
+		Under "Build Triggers" make sure "Poll SCM" is also checked > Under "Schedule" type in '* * * * *'
+		Under "Build" > "Root POM" type 'pom.xml'
+		Under "Build" > "Goals and options" type 'package'
+		Apply > Save
+		Click on Build Now if you want to initiate build immediately
+		After this process you will have built a JAR file
+			However, this JAR file will not be present in your IDE source code
+			If you want to find the JAR file jenkins built you can find it at C:\Users\Zohair\.jenkins\workspace\new-jenkins-pipeline-demo1\target
+		Your project is now setup that whenever you make a change in your source code, add/commit/push those changes to github, jenkins will generate a new JAR file
+		
+Generating JAR file/generate docker image/push to docker hub
+	Repeat the same steps as before
+	Make sure your source code has a Dockerfile
+	In addition to that under "Post Steps" select "Docker Build and Publish"
+		Under "Repository Name" type in your usernam/repo name:tag(in this example it is zohair89/jenkins-docker-demo:latest), it does not have to exist beforehand
+		Under "Tag" type in the tag you want to give it(usually 'latest') or leave it empty if you already specified the tag in "Repository Name"
+		Under "Docker Host URI" you can leave it blank(I think it just uses a Docker default)
+		Under "Server credentials" you can leave it blank
+		Under "Docker registry URL"
+		Under "Registry Credentials"
+			"Username" give your docker hub username
+			"Password" give your docker hub password
+			After you've added it make sure you select it as well
+		In order to build the image and push it to the docker hub you only have to do two additional steps:
+			Fill out "Repository Name"
+			Add "Registry Credentials" which is your docker hub username and docker hub password
+		
+Getting E-mail Notifications from Jenkins
+	Pre-req:
+		Download/install email plugin
+		Configure smtp in gmail
+		Configuring Jenkins to send e-mail notifications
+		Configure in the job
+		
+	Download and install the email plugin
+		Go to jenkins website > Manage Jenkins > Manage Plugins > Available > Search for "Email Extension" > 
+		
+	Configure smtp in gmail
+		Go to your gmail account that you want to use to SEND emails
+		Go to your gmail account > manage your google account > security > enable 2 step verification
+		Go to your gmail account > manage your google account > security > App passwords > Select App > Other(Custom name) type "Jenkins" > Click Generate > It will now give you a password(this will be the password that you need to give to jenkins) khwoxktkfdutnfpg joeschmoe98789@gmail.com
+	
+	Configuring Jenkins to send e-mail notifications
+		Go to jenkins website > Manage Jenkins > Configure System
+		Under "E-mail Notification"(it's all the way at the bottom of the page) > Under "SMTP server" type 'smtp.gmail.com'
+		Under "E-mail Notification" click on "Advanced" > Under "Use SMTP Authentication" give the email you set up the smtp for > Under "Password" click "Change Password" and paste the password you got when you connfigured the jenkins smtp in your gmail > Click on "Use SSL" > If you're using SSL the "SMTP Port" will be 465 > You can click on "Test configuration by sending test e-mail" and give the "Test e-mail recipient" as the e-mail you want to use to receive > Click on "Test configuration" > Once you get "Email was successfully sent" message you know it's working > Apply > Save
+		
+	Configure in the job
+		Go to Jenkins website
+		Go to the job you want to enable e-mail notifications for
+		Click on the job > Configure > Under "Build Settings" click on "E-mail Notification" > Under "Recipients" add the e-mail you want to use to receive the e-mail notifications > Click on whichever options you want "Send e-mail for every unstable build" / "Send seperate e-mail to individuals who broke the build" / "Send e-mail for each failed module" > Apply > Save
+
+Key terms in Jenkins pipeline
+	Pipeline
+		A pipeline is a user-defined model of a CD pipeline
+		A pipeline's code defines your entire build process, which typically includes stages for building an application, testing it, and delivering it
+		
+	Node
+		A node is a machine which is part of the jenkins environment and is capable of executing a pipeline
+		
+	Stage
+		A stage block defines a conceptually distinct subset of tasks performed through the entire pipeline(Build, Test, Deploy stages), which is used by many plugins to visualize or present jenkins pipeline status/progress
+	
+	Step
+		A sing task
+		Fundamentally, a step tells jenkins what to do at a particular point in time
+		
+Creating a declarative jenkins pipeline in jenkins website
+	This will generate a JAR file/generate docker image/push the docker image to docker hub
+	
+	Go to Jenkins website
+	Download/install pipeline plugins(we already did this when we did "Intall suggested plugins" when we first ran jenkins)
+	New Item > Enter job name > Select "Pipeline"
+	Under "Pipeline" select "Pipeline script"
+	Under "Script" type in your script, ours looks like this for the first demo:
+		pipeline {
+    agent any
+    environment {
+        FIRST_NAME = "Zohair"
+        LAST_NAME = "Awan"
+        PASSCODE = credentials("TEST_SECRET_TEXT")
+    }
+    
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Build stage step 1'
+                echo 'Build stage step 2'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo 'Test stage step 1'
+                echo 'Test stage step 2'
+                echo 'Test stage step 3'
+                echo 'Test stage step 4'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                echo 'Deploy stage'
+            }
+        }
+        
+        stage ('Display Variables') {
+            steps {
+                echo "My first name is: $FIRST_NAME"
+                echo "My last name is: $LAST_NAME"
+            }
+        }
+        
+    }
+    
+    post {
+        always {
+            echo 'I will always get executed'
+        }
+        success {
+            echo 'I will get executed in case of success'
+        }
+        failure {
+            echo 'I will get executed in case of failure'
+        }
+        unstable {
+            echo 'I will get executed in case of unstable'
+        }
+    }
+}
+	Apply > Save > Build Now
+	Note: You can one steps in a stage but you can have multiple lines in a step
+		  You can use variables by declaring and initializing the variable and then calling it using a $, also be sure to use "" and not ''
+		  You can add post actions as seen above, remember to add it after stages; post is a sibling to stages
+		  
+Using sensitive information in the pipeline
+	Suppose you want to include some sensitive information in your pipeline like a password
+	You don't want to include it in the script because everyone would have access to it so how do you store it in jenkins without hardcoding it in the script?
+		Go to jenkins website > Manage Jenkins > Manage Credentials > Under "Stores scoped to Jenkins" click on "(global)" > "Add Credentials"
+		Under "Kind" select the kind of credentials you want to use(for this demo we'll use "Secret text")
+		Under "Secret" type in the secret text(12345)
+		Under "ID" type in the ID(for this demo we'll type TEST_SECRET_TEXT)
+		Under "Description" you can add a description if you want
+	Now you can access this secret text file in the pipeline without hardcoding the sensitive information in the pipeline itself
+	
+	How do we use this sensitive information?
+		Go to the job you want to use it in and click on "Configure"
+		Give it a variable name and then add credentials("ID")
+			ID is the ID you specified while making the secret text
+			Ours looks like this:
+				PASSCODE = credentials("TEST_SECRET_TEXT")
+				
+Creating a custom pipeline in jenkins website
+	Pre req:
+		Must have an Environment Variable in User variable called "JAVA_HOME" which is set to C:\Program Files\Java\jdk1.8.0_202
+		In your Path variable you need to have maven and git
+		Download/install Docker Pipeline plugin
+	
+	We are going to create a custom pipeline which will:
+		Build
+		Test
+		Deploy to docker hub
+	
+	Go to jenkins website > New Item > Enter job name(custom-pipeline) > Select Pipeline
+	Pipeline > Definition select Pipeline script > Script > Begin writing your custom script
+	Ours looks like this:
+		node{
+			//Declaring and initializing variables
+			def mvnHome = tool 'MyMaven'
+			def dockerImageTag = "zohair89/custom-pipeline{env.BUILD_NUMBER}"
+			
+			stage('Clone repo') {
+				git 'https://github.com/zohairawan/new-jenkins-pipeline-demo1.git'
+				mvnHome = tool 'MyMaven'
+			}
+			
+			stage('Build Project') {
+				//Generate JAR file
+				bat "C:\\Program^ Files\\apache-maven-3.8.5\\bin\\mvn clean install"
+			}
+			
+			stage('Build Docker Image') {
+				dockerImage = docker.build("zohair89/custom-pipeline:${env.BUILD_NUMBER}")
+			}
+			
+			stage('Deploy') {
+				echo "Docker image: ${dockerImageTag}"
+				//docker-hub-credentials - we have to create in jenkins credentials
+				docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+					dockerImage.push("${env.BUILD_NUMBER}")
+					dockerImage.push("latest")
+				}
+			}
+		}
+		The reason we added the full path to the mvn clean install command is because it's good practice
+		We had to add the docker-hub-credentials in our jenkins
+			Manage Jenkins > Manage Credentials > Under "Stores scoped to Jenkins" click on "(global)" > "Add Credentials"
+			Under "Kind" select the kind of credentials you want to use(for this demo we'll use "Username with password")
+			Add your docker hub username and docker hub password
+		We had to include a ^ between Program Files because the space was causing an issue
+		Make sure you add \\ in the file path for mvn clean install
+	
+Creating a scripted pipeline using Jenkinsfile
+	Create a file named Jenkinsfile in the root of your project
+	We can copy and paste the same steps we did in the custom-pipeline above but that contained a lot of extra information that we don't need
+	Our Jenkinsfile will look like this:
+		node{
+			stage('Clone repo') {
+				git 'https://github.com/zohairawan/new-jenkins-pipeline-demo1.git'
+			}
+
+			stage('Build Project') {
+				bat "C:\\Program^ Files\\apache-maven-3.8.5\\bin\\mvn package -DskipTests"
+			}
+
+			stage('Build Docker Image') {
+				dockerImage = docker.build("zohair89/custom-pipeline:${env.BUILD_NUMBER}")
+			}
+
+			stage('Deploy') {
+				docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+					dockerImage.push("${env.BUILD_NUMBER}")
+					dockerImage.push("latest")
+				}
+			}
+		}
+	
+	Note that we deleted alot of extra information from before
+	
+	After adding the Jenkinsfile we will have to create a new job in the jenkins website that corresponds to this
+		New Item > Give job name > Select Pipeline > Click OK
+		Click Github project and give the URL for the github repo that contains this project(w/o git)
+		Under "Build Triggers" click "Poll SCM" and type '* * * * *'
+		Under "Pipeline" > "Definition" select "Pipeline script from SCM"
+			Under "SCM" make sure to select "Git"
+				Under "Repositories URL" give the github repo URL(w/ git)
+				You can leave "Credentials" blank
+			Under "Script Path" Jenkinsfile should come by default

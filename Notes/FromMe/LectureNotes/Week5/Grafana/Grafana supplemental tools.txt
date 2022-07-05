@@ -304,7 +304,7 @@ By making this change you have now linked up prometheus and alert manager
 You're going to need two emails:
 	One to send the alert 'from' and one 'to' send it to
 	We will have to make some changes in the setting for our from email account(SMTP enabled as well as some other stuff we will look at)
-You will also need to make some changes in the alert manager yml file
+	You will also need to make some changes in the alert manager yml file
 
 Generating SMTP password:
 Enabling 2-Step verification

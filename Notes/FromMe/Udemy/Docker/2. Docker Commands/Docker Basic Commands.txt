@@ -1,24 +1,4 @@
 Docker Basic Commands
-	run
-		Start a container(in attached mode)
-		Used to run a container from an image
-		Will run an instance of the application on the docker host if it already exists
-		If the image is not present on the host it will go out to docker hub and pull that image down
-		This is only done for the first time, for subsequent executions the same image will be reused
-		Runs in the foreground or attached mode meaning you will be attached to the console or standard out of the container and you will see the output of the application on your screen
-		You won't be able to do anything on this console other than view the output until this docker container stops, it won't respond to your inputs
-		Press CRRL + C to stop the container and the application hosted on the container exits and you get back to your prompt
-	
-	run -d
-		Start a container in detached mode
-		This will run the container in the background mode and you will be back to your prompt immediately
-		The container will continue to run in the backend
-		Run the 'ps' command to view the running container
-	
-	attach <container_I.D. or container_name>
-		Attaches you back to a running container that you ran in detached mode
-		Note: if you're specifying the container I.D. you can simply provide the first few characters alone just so it differentiates from the other container I.D.
-		
 	ps
 		Lists all running containers
 		Lists some basic information about them such as:
@@ -32,19 +12,7 @@ Docker Basic Commands
 	
 	ps -a
 		Lists all containers, running or not
-	
-	stop
-		Stops a running container
-		Must provide either the container I.D. or the container name
-		If you're not sure of the container name run the 'ps' command to get a list of running containers
-		On success you'll get the name of the container printed out
-		Running the 'ps' command you will now see that the container you stopped has disappeared from the list
-	
-	rm
-		Remove a container that is stopped or exited
-		On success you'll get the name of the container printed out
-		Run the 'ps -a' command to verify it is no longer present
-	
+		
 	images
 		Lists all available images
 		Lists some basic information about them such as:
@@ -52,15 +20,58 @@ Docker Basic Commands
 			tag(we'll talk about this later)
 			image I.D.
 			size
+			
+	pull <username/repo_name> OR <image_name>
+		The <username/repo_name> is used when you're pulling an image, that isn't an official repository supported by docker, that you or someone else created
+		The <image_name> is used when you're pulling an image from an official repository supported by docker
+			These images will have an "Official Docker Image" tag next to them on hub.docker.com
+		Download an image
+		This downloads an image without running it		
+
+	run <username/repo_name> OR <image_name>
+		The <username/repo_name> is used when you're running an instance of an image, that isn't an official repository supported by docker, that you or someone else created
+		The <image_name> is used when you're running an instance of an image from an official repository supported by docker
+			These images will have an "Official Docker Image" tag next to them on hub.docker.com
+		Start a container(in attached mode)
+		Used to run a container from an image
+		By default it runs the latest version
+		First looks for an image locally, if it can't find it it will pull the image
+		Will run an instance of the application on the docker host if it already exists
+		If the image is not present on the host it will go out to docker hub and pull that image down
+		This is only done for the first time, for subsequent executions the same image will be reused
+		Runs in the foreground or attached mode meaning you will be attached to the console or standard out of the container and you will see the output of the application on your screen
+		You won't be able to do anything on this console other than view the output until this docker container stops, it won't respond to your inputs
+		Press CRRL + C to stop the container and the application hosted on the container exits and you get back to your prompt
 	
-	rmi
+	run -d <image_name>
+		Start a container in detached mode
+		This will run the container in the background mode and you will be back to your prompt immediately
+		The container will continue to run in the backend
+		Run the 'ps' command to view the running container
+	
+	attach <container_I.D. or container_name>
+		Attaches you back to a running container that you ran in detached mode
+		Note: if you're specifying the container I.D. you can simply provide the first few characters alone just so it differentiates from the other container I.D.
+	
+	stop <container_I.D. or container_name>
+		Stops a running container
+		Must provide either the container I.D. or the container name
+		If you're not sure of the container name run the 'ps' command to get a list of running containers
+		On success you'll get the name of the container printed out
+		Running the 'ps' command you will now see that the container you stopped has disappeared from the list
+	
+	start <container_I.D. or container_name>
+		Start one or more stopped or exited containers
+	
+	rm <container_I.D. or container_name>
+		Remove a container that is stopped or exited
+		On success you'll get the name of the container printed out
+		Run the 'ps -a' command to verify it is no longer present
+	
+	rmi <image_I.D. or image_name>
 		Remove images
 		Must ensure that no containers are running off of that image before attempting to remove the image
 		Must stop and delete all dependent containers to be able to delete an image
-		
-	pull
-		Download an image
-		This downloads an image without running it
 	
 	sleep 5
 		Example:
@@ -68,10 +79,10 @@ Docker Basic Commands
 		This is an example of how you append a command
 		The sleep command will execute for the specified duration and then the container stop and exit
 	
-	exec
+	exec <container_I.D.> <command>
 		Execute a command on a running container
 		Example:
-			docker exec <container_name> cat <file_name>
+			docker exec my-container cat ps1games.txt
 
 Docker and hosting an OS
 	If you run the 'docker run ubuntu' command it runs an instance of the ubuntu image and exits immediately
@@ -93,5 +104,8 @@ Docker and hosting an OS
 Naming Conventions
 		When running an instance of an image from an official repository supported by docker you can simply use the name directly
 			docker run nginx
-		When running an instance of an image that you or someone else created you need to first specify the user ID followed by a forward slash and the name of the repository
+		When running an instance of an image, that isn't an official repository supported by docker, that you or someone else created you need to first specify the user name followed by a forward slash and the name of the repository
 			baronea90/dockerhub
+
+
+HOW TO RUN THE BASH SHELL IN UBUNTU IMAGE
