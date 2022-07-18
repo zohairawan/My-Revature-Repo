@@ -61,7 +61,7 @@ HCL
 			acl = "private"
 		}
 		
-Terraform workflow consists of 5 steps
+Terraform commands
 	1.) Write the configuration file
 	2.) init
 			Run the terraform init command

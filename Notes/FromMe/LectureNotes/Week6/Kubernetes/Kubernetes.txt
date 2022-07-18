@@ -1,0 +1,316 @@
+Kubernetes
+	Container orchestration that allows for:
+		Scalability
+		Reliability
+		Recoverability
+		
+minikube
+	Allows you to run a kubernetes cluster on your local machine
+	Runs it all through one node instead of master/worker nodes
+
+kubectl
+	Allows you to interact/give commands to the kubernetes cluster running on minikube
+
+Using Kubernetes through minikube and Oracle VM Virtualbox
+	Pre-Reqs
+		Download/install Oracle VM Virtualbox
+		Download/install minikube
+		Download/install kubectl
+		Set the path for minikube
+	
+	Starting minikube
+		Open a cmd prompt
+		Type the command:
+			minikube start --driver=virtualbox --no-vtx-check
+				If you type just  minikube start it will run minikube through docker instead of virtualbox(assuming you have docker installed)
+				Starting minikube usually takes a long time
+	
+	Issues with starting minikube
+		Sometimes minikube has trouble starting and gives you errors
+		If you encounter an error go to your VM Virtualbox and right click on minikube and select close > Power Off
+		Right click minikube again > Remove > Prompt will ask if you want to delete all files > Select Delete all files
+		Then, in a cmd prompt, run the command minikube delete
+		Then type the command:
+			minikube start --driver=virtualbox --no-vtx-check
+		For some reason deleting it from the VM and then deleting it from the cmd prompt and reinstalling it seems to work
+		
+		You can also try typing the command minikube update-context
+			I haven't tried this so I'm not sure how well it works
+			Probably give the command before deleting minikube
+		
+	Once minikube is running
+		Now that minikube is running lets check out our environment
+		In the cmd prompt type:
+			minikube status
+				If everything is running normally you should see:
+					minikube
+					type: Control Plane
+					host: Running
+					kubelet: Running
+					apiserver: Running
+					kubeconfig: Configured
+	
+	Viewing active nodes
+		Type the command:
+			kubectl get nodes
+		We haven't created any of our own nodes but there is a node that is already running by default:
+			NAME       STATUS   ROLES                  AGE     VERSION
+			minikube   Ready    control-plane,master   7m43s   v1.23.3
+	
+	Viewing deployments
+		Type the command:
+			kubectl get deployments
+		We haven't created any deployments so you should see this message:
+			No resources found in default namespace.
+			
+	Viewing services
+		Type the command:
+			kubectl get services
+		There will be a service already there by default:
+			NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+			kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   12m
+			
+	Creating a deployment from an image
+		Type the command:
+			kubectl create deployment <deployment-name> --image=<image-name>
+				For our example we'll use kubectl create deployment demo --image=k8s.gcr.io/echoserver:1.10
+		You have now created a deployment, a message verifying this will appear saying:
+			deployment.apps/<deployment-name> created
+		If you want to verify yourself just run the kubectl get deployments command and you should see your newly created deployment
+			It may take some time for your deployment to be in the 'ready' and 'available' state
+			
+	Accessing(exposing) deployment outside kubernetes / Creating a service
+		We want to access(expose) our deployment outside of kubernetes in our host OS
+		Type the command:
+			kubectl expose deployment <deployment-name> --type=DeploymentType --port <portNumber>
+				There are 3 Deployment Types:
+					ClusterIP
+					NodePort
+					LoadBalancer
+				
+				--port <portNumber>
+					Specifies which port number you want to expose it on
+		
+		What you have just done is created a service
+		Run the command:
+			kubectl get services
+		You will now see your newly created service with the appropriate values that you gave it(Type, Port(s), etc)
+		
+	Viewing URL of a service
+		Type the command:
+			minikube service <service-name> --url
+				If you don't remember the service name just run the kubectl get service command
+			This will give you a URL that you can access in your browser
+		
+	Deleting the service
+		Type the command:
+			kubectl delete services <service-name>
+			
+	Deleting the deployment
+		Type the command:
+			kubectl delete deployments <deployment-name>
+			
+Pods
+	Smallest deployable unit of execution that you can create/manage
+	NPC (Node -> Pod -> Container)
+		A container runs inside a pod which runs inside a node
+		Good practice to only have one container in a pod but you can have multiple containers inside a pod if you want
+		You can have multiple pods in a node
+	When you want to scale up/down you just add/delete a pod
+	Each pod has a unique IP address
+	
+	Creating a pod using cmd prompt
+		To create a pod type the command:
+			kubectl run <pod-name> --image <image-name>
+				You decide the name-of-pod
+				image-name is from pre-existing image(either one you or someone else created)
+				
+	Viewing pod details
+		To get details regarding a certain pod type the command:
+			kubectl describe pod <pod-name>
+			
+	Deleting a pod
+		To delete a pod type the command:
+			kubectl delete pod <pod-name>
+			
+YAML files
+	So far we've been creating kubernetes resources via the cmd prompt
+		Deployments, services, pods, etc...
+		There is a better way to create kubernetes resources and that's with yaml files
+		
+	Usage of YAML files in kubernetes
+		YAML is a file in text format used to specify data related to configuration
+		With it we can create kubernetes resources inside of a file instead of doing it through the cmd prompt
+			Deployments, serrvices, pods, replicas, etc...
+		
+	Stucture of a YAML file
+		Key Value pair
+			The basic type of entry in a YAML file is of a key value pair
+			After the Key and colon there is a space and then the value.
+				Fruit: Apple
+				Vegetable: Radish
+				Liquid: Water
+				Meat: Goat
+		
+		Arrays/Lists
+			Lists would have a number of items listed under the name of the list
+			The elements of the list would start with a -
+			There can be a n of lists, however the indentation of various elements of the array matters a lot
+				Fruits:
+					- Orange
+					- Banana
+					- Mango
+				Vegetables:
+					- Potato
+					- Tomato
+					- Carrot
+					
+		Dictionary/Map
+			A more complex type of YAML file would be a Dictionary and Map
+				Banana:
+					Calories: 200
+					Fat: 0.5g
+					Carbs: 30g
+				Grapes:
+					Calories: 100
+					Fat: 0.4g
+					Carbs: 20g
+					
+	Required fields in a kubernetes YAML file
+		Any YAML file in kubernetes must include the following fields:
+			apiVersion
+			kind
+			metadata
+			spec
+			
+			apiVersion
+				Specifies which version of the kubernetes API you're using to create this object
+				v1 - specifies a service or a pod
+				apps/v1 - specifies a replicaset or deployment
+				Uses Key Value structure
+			
+			kind
+				Specifies what kind of object you want to create
+				Pod, Service, Deployment, etc...
+				Uses Key Value structure
+				
+			metadata
+				Specifies data that uniquely identifies the object
+				The data includes but is not limited to
+					name
+					label
+				The values for the data can then be used by other objects to refer to this object
+				Uses Dictionary/Map structure
+				
+			spec
+				Describes the object in greater detail
+				The precise format of the object spec is different for every Kubernetes object
+				Contains nested fields specific to that object
+				Uses Array/Lists structure
+				
+Creating a pod using a YAML file
+	We created a pod using the cmd prompt but now lets use a YAML file to do it
+	Create a folder and name it k8syamldemo(or whatever you want)
+	Open VS Code and install two plugins(optional)
+		Kubernetes
+		Kubernetes Template
+	Open the folder you just created in VS Code
+	Create another folder inside the k8syamldemo folder and name it pods
+	Create a file inside the pod folder and name it pod.yaml
+	Inside the pod.yaml file type in the following:
+		apiVersion: v1
+		kind: Pod
+		metadata:
+		  name: nginx
+		  labels:
+			app: nginx
+			tier: frontend
+		spec:
+		  containers:
+			- name: nginx-container
+			  image: nginx
+	
+Running your YAML file
+	Open cmd prompt as admin
+	In the cmd prompt navigate to the folder that contains the yaml file
+	Type the command:
+		kubectl apply -f filename.yaml
+	This will create whatever object has been specified in the yaml file
+	
+Replication Controller in kubernetes
+	Replication Controller is responsible for having multiple instances of a single pod
+	Ensures that a specified number of pod replicas are running at any one time
+	Another advantage RC provides is load balancing and scalability
+	
+Replicat Set
+	New way of replication in kubernetes
+	Replica Set has the ability to manage pods that were not created as part of the replica set
+		For example, if you specify 3 replica pods replica set will manage those 3 pods but also has the ability to manage other pods
+	
+Creating a Replicat Set using a yaml file
+	Replica Set will be created in a yaml file
+	Naturally it will contain the mandatory fields(apiVersion, kind, metadata, and spec) along w/ some other fields
+	Create a folder and name it k8syamldemo(or whatever you want)
+	Open VS Code
+	Open the folder you just created in VS Code
+	Create another folder inside the k8syamldemo folder and name it replicasets
+	Create a file inside the pod folder and name it replicaset.yaml
+	Inside the replicaset.yaml file type in the following:
+		apiVersion: apps/v1
+		kind: ReplicaSet
+		metadata:
+		  name: replicasetdemo
+		  labels:
+			app: replicasetdemo
+		spec:
+		  selector:
+			matchLabels:
+			  app: myapp
+		  replicas: 3
+		  template:
+			metadata:
+			  name: nginx-2
+			  labels:
+				app: myapp
+			spec:
+			  containers:
+				- name: nginx
+				  image: nginx
+	The apiVersion will be apps/v1 to specify that it will be a replica set
+	replicas specifies the number of pods that you want
+	selector is used to help replica set identify what pod falls under it
+	Now run your yaml file, as seen earlier, to create this replica set
+		Make sure you are in the folder that has the replica set file
+	To view your replica sets and some information about them type the command:
+		kubectl get replicaset
+	If you try deleting one of these pods it will automatically recreate it because that's the whole point of replica sets
+		If a pod goes down it gets replaced by another one
+		It matches your desired number of pods with the actual number of pods
+		
+minikube/kubectl commands
+	minikube start --driver=virtualbox --no-vtx-check
+	minikube start
+	minikube status
+	minikube service <service-name> --url
+	minikube stop
+	kubectl get nodes
+	kubectl get deployments
+	kubectl get services / kubectl get svc
+	kubectl get pods
+	kubectl create deployment <deployment-name> --image=<image-name>
+	kubectl expose deployment <deployment-name> --type=DeploymentType --port <portNumber>
+	kubectl run <pod-name> --image <image-name>
+	kubectl describe pod <pod-name>
+	kubectl delete pod <pod-name>
+	kubectl delete services <service-name>
+	kubectl apply -f filename.yaml
+	kubectl get replicaset
+	kubectl delete deployments <deployment-name>
+	
+	kubectl config get-contexts
+		Shows you clusters
+	kubectl get namespaces
+		Shows you namespaces on current cluster
+	kubectl config use-context <cluster-name>
+		Switches from current cluster to specified cluster
+	kubectl config rename-context <original-name> <new-name>

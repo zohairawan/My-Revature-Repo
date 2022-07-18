@@ -1,0 +1,427 @@
+Cognizant Lab Practice
+
+	Creating a Dockerfile for the Java app that Cognizant might give
+		Go to root of folder and create a Dockerfile
+		Go to your pom.xml file and add the fnalName tag
+		Dockerfile should look something like this
+			FROM openjdk:8
+			EXPOSE 8080
+			ADD target/demoservice.jar app.jar
+			ENTRYPOINT [ "java" , "-jar" , "/app.jar"]
+		The information in the ADD line will change depending on what you give for your finalName
+		You can change app.jar if you want too
+		
+	Connecting to the cluster
+		kubectl config get-contexts
+			See which cluster you're on
+			
+		kubectl config rename-context <original-name> <new-name>
+			You can rename the cluster because the default ones are very long
+		
+		kubectl config use-context <cluster-name>
+			If you're not on the right cluster switch to the appropriate one
+		
+		aws configure --profile sre-lab
+			Switching to the cluster won't link you with it
+			This will link you to the EKS cluster
+			Because we've already added the credentials(access key, secret key, region) we will just run this command without having to add the credentials again
+			We can verify the credentials by checking them against the ones they gave us
+			By using the --profile flag we can have different profiles associated with different credentials
+			
+		aws eks update-kubeconfig --name <cluster-name> --profile <profile-name>
+		WATCH THE VIDEOS CUZ THIS MIGHT CHANGE
+			
+	Launching an EC2 instance manually
+		EC2 Dashboard > Launch Instance > Select appropriate AMI > Make sure you select t2.large > Create Key Pair(RSA & .ppk)
+		Under Network Settings click Edit > Under Inbound security group rules
+			'Type' from "ssh" to "All traffic"
+			"Add security group rule"(yes you will be adding another security group rule)
+			'Type' is "Custom TCP" and 'Port range' is "8080"
+			'Source type' to "Custom" and 'Source' to 0.0.0.0/0
+			
+	Installing pre-reqs on EC2 instance manually
+		Java
+			sudo apt install openjdk-11-jdk
+		Maven
+		git
+			sudo apt install git
+		Docker
+			sudo apt install docker.io
+		Jenkins
+		
+	Accessing Jenkins
+		Paste the Public IPv4 address and the port that you set jenkins too in the URL
+		For example:
+			http://54.241.134.217:8080
+			
+	Pre-reqs for Jenkins
+		Add plugins
+			docker pipeline
+			kubernetes continuous deployment
+			Kubernetes CLI
+			Kubernetes credentials
+			Kubernetes Client API (cant find)
+			Kubernetes
+			
+		Global Tool configuration and add JDK and Maven
+		
+		K8s Credentials
+			'Kind' Kubernetes Configuration (kubeconfig)
+			Kubeconfig > Enter Directly > Paste config file (C:\Users\Zohair\.kube)
+			
+		Docker credentials
+			'Kind' Username and password
+			Enter docker credentials
+			
+	
+Cheng Instructions
+		0) Install JDK11 (**since sonarqube requires openjdk11)
+sudo apt install openjdk-11-jdk
+
+1) Install maven
+sudo apt update
+
+sudo apt install maven
+
+mvn -version
+
+=========================================================
+2) Install Jenkins
+To configure :
+https://www.digitalocean.com/community/tutorials/how-to-install-jenkins-on-ubuntu-22-04
+
+wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key |sudo gpg --dearmor -o /usr/share/keyrings/jenkins.gpg
+sudo sh -c 'echo deb [signed-by=/usr/share/keyrings/jenkins.gpg] http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt update
+sudo apt install jenkins
+sudo systemctl start jenkins.service
+sudo systemctl status jenkins
+sudo ufw allow 8080
+sudo ufw allow OpenSSH
+sudo ufw enable
+sudo ufw status
+
+
+** Follow these steps to install jenkins in EC2
+
+** Reboot the instance after making the changes in ec2.
+
+In addition to above , add the rule 
+
+Change the Rules of your security group [ which EC2 is using ]
+Edit Inbound rules
+
+Add Rule --> Port : 8080 , 0.0.0.0 
+
+Save
+
+Get the password ::
+
+How to get the jenkins password ::
+ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+The link for the ec2 jenkins will look the below : not exactly the same : [ EC2 public dns]
+http://ec2-34-228-21-147.compute-1.amazonaws.com:8080
+
+**install suggested plugins
+
+
+3) sudo apt install git
+
+git
+
+4) Install Sonar qube
+
+
+**After sonarqube is installed , we have to create a user :
+ubuntu@ip-172-31-26-29:~$ sudo useradd sonarh2s
+ubuntu@ip-172-31-26-29:~$ sudo passwd sonarh2s
+New password:
+Retype new password:
+passwd: password updated successfully
+
+
+https://www.vultr.com/docs/install-sonarqube-on-ubuntu-20-04-lts/
+
+
+
+
+5) Install docker
+https://docs.docker.com/engine/install/ubuntu/
+
+
+------------------You will encounter some error and the solution is here
+** Please create the pipeline after you do this to avoid the errors.
+
+1)  Error:
+
+Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/build?buildargs=%7B%7D&cachefrom=%5B%5D&cgroupparent=&cpuperiod=0&cpuquota=0&cpusetcpus=&cpusetmems=&cpushares=0&dockerfile=Dockerfile&labels=%7B%7D&memory=0&memswap=0&networkmode=default&rm=1&shmsize=0&t=revp3%2Fproject3backend%3A7&target=&ulimits=null&version=1": 
+dial unix /var/run/docker.sock: connect: permission denied
+
+solution:
+cd /var/run
+sudo chmod 777 docker.sock
+
+
+2.  Error:
+
+the path "/home/ubuntu/demo.yml" cannot be accessed: stat /home/ubuntu/demo.yml: permission denied
+
+
+Solution:
+install AWS-CLI on EC2---
+
+a) (Error is coming -- skip ) Install AWS CLI
+sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+sudo unzip awscliv2.zip
+sudo ./aws/install
+
+b) Make the jenkins user password as null
+sudo vi /var/lib/jenkins/config.xml
+
+The line you are looking for should resemble the following.
+
+<useSecurity>true</useSecurity>
+Press i to enter VIM’s insert mode. Modify the value between the <useSecurity> tags and set the value to false.
+
+<useSecurity>false</useSecurity>
+
+Your changes will not take affect until Jenkins is restarted. Restart the service now.
+
+sudo systemctl restart jenkins
+
+
+c) 
+You will have aws credentials and EKS details with you. 
+Be ready with that :
+
+Log into jenkins user: 
+sudo su jenkins
+sudo aws configure --profile personal
+
+AWS access_key
+AWS secret_access_key
+region :  us-east-1
+format : json
+
+
+===================================================
+
+create or get the yaml files in ec2
+
+wget or wscp utlity or simply create it.
+
+wget <url>
+
+Once you have two files in your EC2 , you can proceed with jenkins global tool configuration
+
+
+===================================================
+To do this , access the jenkins home page :
+
+Browser : http://ec2-34-228-21-147.compute-1.amazonaws.com:8080
+
+1) 
+Manage Jenkins --> Global Tool Configuration -->  Add Maven 
+
+** Give the name as : MyMaven
+** Give the path : /usr/share/maven
+
+2)** In your local window machine , you have to open cmd and type
+** Install AWS CLI ( if not installed)
+https://docs.aws.amazon.com/cli/v1/userguide/install-windo
+** If installed , proceed (please understand these are same details that we wrote in step c above
+
+aws configure --profile personal
+
+Access: AKIA4OK5FKIYXHVX4D72
+Secret: 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
+us-east-1
+
+Cluster name : tufail-sre
+
+aws eks --profile personal update-kubeconfig --name tufail-sre --region us-east-1
+
+
+3) Manage Jenkins --> Add Credentials --> Type : Secret File --> 
+Name : k8s
+Upload config stored in C:\Users\tufai\.kube\config 
+
+4) Manage Jenkins --> Add Credentials --> Type ->  Add Username and password
+
+Give the name as : Docker
+
+Provide the docker username and password where the image have to uploaded
+
+5. 
+http://ec2-34-228-21-147.compute-1.amazonaws.com:9000
+Add a user here username : admin and password as : admin
+
+=======================================================Not required
+Navigate to My Account --> Security --> select the token type as user token
+--> Generate Tokens (give the name as jenkins) --> copy the authentication token
+
+
+Manage Jenkins --> Add Credentials --> Type -- Secret Text
+
+Name : jenkins-sonar
+value : paste the token copied above
+
+=======================================
+
+upload your yaml in aws bucket and make it public
+wget https://hr-2022-91817.s3.us-east-2.amazonaws.com/revature.jpg [ not jpeg but your yaml files]
+/home/ubuntu/
+
+ls
+
+===========================That's it ==================
+
+Create the pipeline as below :  (This is for backend )
+
+pipeline {
+    agent any
+    stages {
+        stage('clone repo'){
+            steps {
+                script {
+                    git branch: 'pipelinetesting', url: "https://github.com/npng16/e-commerce-backend.git" 
+                }
+            }
+        }
+
+        stage('Maven Build - Package') {
+            steps {
+                script {
+                    def mvnHome = tool 'MyMaven'
+                    mvnHome = tool 'MyMaven'
+                    echo "Packaging application"
+                    sh "${mvnHome}/bin/mvn clean install"
+                }
+            }
+        }
+        stage('SonarQube analysis') {
+            steps {
+                echo "Starting SonarQube Analysis"
+                withSonarQubeEnv(installationName: 'MySonarQube') {
+                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar'}
+            }
+        }
+        stage('Docker Image Build') {
+            steps {
+                script {
+                    echo "Building docker image..."
+                    dockerImage = docker.build("revp3/project3backend:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+        stage('Build docker deploy'){
+            steps {
+                script {
+                    echo "Uploading Docker image to Dockerhub"
+                    //docker-hub-credentials - we have to create in jenkins credentials
+                    docker.withRegistry('https://registry.hub.docker.com/','Docker') {
+                        dockerImage.push("${env.BUILD_NUMBER}")
+                        dockerImage.push("latest")
+                    }
+                }
+            }
+        }
+        stage('deploying canary to kubernetes') {
+            steps {
+                withKubeConfig(caCertificate: '', clusterName: 'tufail-sre', contextName: 'arn:aws:eks:us-east-1:855430746673:cluster/tufail-sre', credentialsId: 'K8S', namespace: '', serverUrl: 'https://D63BD0D63E0483D549FD4B3B2C926BEB.sk1.us-east-1.eks.amazonaws.com') {
+                    sh ('kubectl apply -f /home/ubuntu/p3backend.yaml')
+                }
+            }
+        }
+        stage('deploying production to kubernetes') {
+            steps {
+                withKubeConfig(caCertificate: '', clusterName: 'tufail-sre', contextName: 'arn:aws:eks:us-east-1:855430746673:cluster/tufail-sre', credentialsId: 'K8S', namespace: '', serverUrl: 'https://D63BD0D63E0483D549FD4B3B2C926BEB.sk1.us-east-1.eks.amazonaws.com') {
+                    sh ('kubectl apply -f /home/ubuntu/p3backendprod.yaml')
+                    sh ('kubectl get all')
+                }
+            }
+        }
+    }
+}
+
+			
+	
+	Recent working pipeline build
+	node{
+    stage('Clone repo') {
+        git 'https://github.com/zohairawan/new-jenkins-pipeline-demo1.git'
+    }
+
+    stage('Build Project') {
+        sh 'mvn -B -DskipTests clean package' 
+    }
+
+    stage('Build Docker Image') {
+                echo "Building docker image"
+                dockerImage = docker.build("zohair89/custom-pipeline-demo-saturday:${env.BUILD_NUMBER}")
+    }
+
+    stage('Deploy') {
+        docker.withRegistry('https://registry.hub.docker.com/', 'dockerhub') {
+            dockerImage.push("${env.BUILD_NUMBER}")
+            dockerImage.push("latest")
+        }
+    }
+}
+
+
+	Chengs
+	pipeline {
+    agent any
+    stages {
+        stage('clone repo'){
+            steps {
+                script {
+                    git branch: 'master', url: "https://github.com/zohairawan/new-jenkins-pipeline-demo1.git" 
+                }
+            }
+        }
+
+        stage('Maven Build - Package') {
+            steps {
+                script {
+                    def mvnHome = tool 'MyMaven'
+                    mvnHome = tool 'MyMaven'
+                    echo "Packaging application"
+                    sh "${mvnHome}/bin/mvn clean install"
+                }
+            }
+        }
+        
+        stage('Docker Image Build') {
+            steps {
+                script {
+                    echo "Building docker image..."
+                    dockerImage = docker.build("zohair89/cog-lab-demo-sunday:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+        stage('Build docker deploy'){
+            steps {
+                script {
+                    echo "Uploading Docker image to Dockerhub"
+                    //docker-hub-credentials - we have to create in jenkins credentials
+                    docker.withRegistry('https://registry.hub.docker.com/','dockerhub') {
+                        dockerImage.push("${env.BUILD_NUMBER}")
+                        dockerImage.push("latest")
+                    }
+                }
+            }
+        }
+        
+        stage('deploying production to kubernetes') {
+            steps {
+                withKubeConfig(caCertificate: '', clusterName: 'tufail-sre', contextName: 'arn:aws:eks:us-east-1:855430746673:cluster/tufail-sre', credentialsId: 'k8s', namespace: 'zohair-awan', serverUrl: 'https://D63BD0D63E0483D549FD4B3B2C926BEB.sk1.us-east-1.eks.amazonaws.com') {
+                    sh ('kubectl apply -f /home/ubuntu/Demoservice.yaml')
+                    sh ('kubectl get all')
+                }
+            }
+        }
+    }
+}
