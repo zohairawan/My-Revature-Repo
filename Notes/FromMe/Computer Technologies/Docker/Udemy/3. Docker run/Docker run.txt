@@ -3,6 +3,10 @@ Docker run
 		Runs the specified version of the image
 		To find information about these versions go to hub.docker.com and look up the image, look for "Tag", and click on it
 	
+	run --name <instert_container_name>
+		By default Docker gives you a random name for the container
+		By giving the --name flag followed by the name of the container you want you can assign a container a specific name
+	
 	run -i <username/repo_name> OR <image_name>
 		By default docker containers do not listen to STDIN(standard input), meaning it does not read any input from you
 			For example: If you had an application that executed the following:

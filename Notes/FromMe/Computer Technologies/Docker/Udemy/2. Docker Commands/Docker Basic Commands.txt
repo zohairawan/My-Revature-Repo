@@ -1,4 +1,7 @@
 Docker Basic Commands
+	All commands should have the word 'docker' in front of them
+	Note: When running a command that involves specifying the container I.D. you can simply provide the first few characters just so it differentiates from the other container I.D.
+	
 	ps
 		Lists all running containers
 		Lists some basic information about them such as:
@@ -51,7 +54,7 @@ Docker Basic Commands
 	
 	attach <container_I.D. or container_name>
 		Attaches you back to a running container that you ran in detached mode
-		Note: if you're specifying the container I.D. you can simply provide the first few characters alone just so it differentiates from the other container I.D.
+		Note: if you're specifying the container I.D. you can simply provide the first few characters just so it differentiates from the other container I.D.
 	
 	stop <container_I.D. or container_name>
 		Stops a running container
@@ -90,7 +93,7 @@ Docker and hosting an OS
 	If you list all containers you will see the container in an exited state
 	Why did it run for a couple seconds and then exit?
 	Unlike VM's containers are not meant to host an OS
-	Containers are meant to run a specific task or process such:
+	Containers are meant to run a specific task or process such as:
 		Host an instance of a web server
 		Host an instance of an application server
 		Host an instance of a database
@@ -99,7 +102,6 @@ Docker and hosting an OS
 	A container only lives as long as the process inside it is alive
 	For example, if the web service inside the container is stopped or crashes then the container exits
 	This is why when you run a container from an Ubuntu image it stops immediately because Ubuntu is just an image of an OS that is used as the base image for other applications, there is no process running in it by default
-
 
 Naming Conventions
 		When running an instance of an image from an official repository supported by docker you can simply use the name directly
