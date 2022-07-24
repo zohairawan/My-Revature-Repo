@@ -90,7 +90,7 @@ Docker run
 			network settings
 			etc
 	
-	log <container_I.D.> OR <container_name>
+	logs <container_I.D.> OR <container_name>
 		View logs of a container you ran in the background
 		Logs are the contents written to the STDOUT of that container
 		For example if you ran your container using the -d flag and you want to view the logs

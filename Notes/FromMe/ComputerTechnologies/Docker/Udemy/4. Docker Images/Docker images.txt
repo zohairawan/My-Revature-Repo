@@ -15,11 +15,11 @@ How to create my own image
 		4.) Manual set up steps:
 			a.) Start with an OS, in this case, Ubuntu (Starting with an OS might not always apply as we've seen with our hands on demo in Revature which set up openjdk8)
 			b.) Update the source repositories
-			c.) Install dependencies
-			d.) Install python dependencies
+			c.) Install dependencies (apt-get update && apt-get -y install python)
+			d.) Install python dependencies (pip install flask flask-mysql)
 			e.) Copy over source code of the app to another location
 			f.) Run the web server
-		5.) Now that you have the instructions create a Dockerfile using these
+		5.) Now that you have the instructions create a Dockerfile using these instructions
 				Your Dockerfile would look like this:
 					FROM Ubuntu
 					RUN apt-get update && apt-get -y install python
@@ -38,5 +38,26 @@ How to create my own image
 				docker push zohair89/my-custom-web-app
 
 Dockerfile
+	Used to build a Docker image
 	Text file written in a specific format that docker can understand
-				
+	It's written in an 'INSTRUCTION' 'argument' format
+		In our example the 'INSTRUCTION' consists of:
+			FROM,RUN,COPY,and ENTRYPOINT
+		The 'argument' consists of everything to the right of the 'INSTRUCTION'
+		
+	Explanation of 'INSTRUCTION':
+		FROM
+			Defines what the base OS or another image should be for this container
+			Every Docker image must be based off another image, either an OS or another image that was created before based on an OS
+			All Dockerfile's must start with a FROM instruction
+		RUN
+			Instructs Docker to run a particular command on the base images
+		COPY
+			Copies files from the local system onto the Docker image
+			The . represents the current directory, so whatever files/folders are located in the current directory will be copied over to the specified location inside the Docker image(in this case /opt/source-code)
+		ENTRYPOINT
+			Allows us to specify a command that will be run when the image is run as a container
+
+Layered Architecture
+	When Docker builds an image it builds these in a layered architecture
+	Each line of instruction creates a new layer in the Docker image with just the changes from the previous layer
