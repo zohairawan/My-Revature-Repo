@@ -94,4 +94,29 @@ Docker run
 		View logs of a container you ran in the background
 		Logs are the contents written to the STDOUT of that container
 		For example if you ran your container using the -d flag and you want to view the logs
+
+Example with Jenkins using persistent data volume
+	We want to run a jenkins container
+	The problem is if that container shuts down or gets erased all the data we had associated with that jenkins container will be lost too
+	We want to run a jenkins container where the data persists
+	
+	Pulling a jenkins image
+		docker pull jenkins/jenkins
+			You don't have to specify the latest tag because by default it will pull the latest image if you don't specify a tag
+	
+	Running a jenkins container with persistent data volume
+		docker run -v "C:\Users\Zohair\Desktop\ComputerTechnologies\Docker\Udemy\3. Docker run\udemy-jenkins-volume":/var/jenkins_home --name jenkins-container-persistent -p 8080:8080 -d jenkins/jenkins
 		
+	Checking the container logs
+		Because we ran it in detached mode we have to get the initial password by checking the logs
+			docker logs <container_I.D.> OR <container_name>
+			
+	Logging into jenkins
+		Go to localhost:<whatever-port-you-specified>
+		Enter the initial password
+		Then set up the login information according to what you want
+		
+	Persistent Data
+		Because we added the -v flag followed by the file we created to store the data we now have persistent data
+		This means if we delete this container or something happens to it we can still have all the information we stored in jenkins when we create a new container
+		We just have to run the same command as before when running a new container

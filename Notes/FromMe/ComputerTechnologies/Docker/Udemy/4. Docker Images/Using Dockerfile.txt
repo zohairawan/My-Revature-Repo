@@ -1,0 +1,68 @@
+Running a simple web-app manually(w/o Dockerfile)
+	We are going to run a simple web-app using flask
+	In order to do this we will have to download some pre-req dependencies which include:
+		python
+		pip
+		flask
+	We can do this on our local machine OR we can do this on an ubuntu image
+	We will chose to run an ubuntu image and run the simple-web app from there that way we don't have all the dependencies downloaded to our local machine
+	
+	Running an ubuntu image
+		docker run -it --name udemy-simple-web-app -p 5000:5000 ubuntu
+		
+	Updating your package index
+		apt-get update
+		
+	Installing python
+		apt-get install -y python-is-python3
+		To ensure python was properly installed run:
+			python3
+				You should see the python version number as well as putting you in python
+				Type exit() to get out of python
+		
+	Installing pip
+		apt-get install python3-pip
+		
+	Installing flask
+		pip install flask
+		
+	Creating a folder to store the source code
+		Inside the running ubuntu container type the commands in the home directory:
+			mkdir zohair
+			cd zohair
+			mkdir simple-web-app
+			cd simple-web-app
+			
+	Copying Source Code
+		We have now downloaded all the necessary dependencies onto the ubuntu container
+		We now have to add the source code to the container
+		Since ubuntu images don't come with any kind of text editors we have to add it using another way
+		Get the source code from https://github.com/mmumshad/simple-webapp-flask
+		Copy the text inside the app.py file which is:
+			import os
+			from flask import Flask
+			app = Flask(__name__)
+
+			@app.route("/")
+			def main():
+				return "Welcome!"
+
+			@app.route('/how are you')
+			def hello():
+				return 'I am good, how about you?'
+
+			if __name__ == "__main__":
+				app.run(host="0.0.0.0", port=8080)
+		Go to your container and make sure you're in the container's terminal
+		If you want to add text run the command:
+			cat > <filename> and hit ENTER
+		You will then just have a cursor blinking, this is where you can begin to start writing whatever you want
+		When you are done make sure to hit ENTER
+			If you don't hit ENTER and the line you're currently on has text and you CTRL+C out of there the last line of text won't be saved
+		Press CTRL+C to exit out of the place where you can write text
+		If you want to append additional text into the file run the command:
+			cat >> <filename>
+		
+	Starting the web server
+		Before running the following command make sure you are in the directory that contains the app.py file
+		FLASK_APP=app.py flask run --host=0.0.0.0
