@@ -45,22 +45,23 @@ Sample application - voting application
 		
 	Components of application:
 		voting-app ---> in-memory DB ---> worker ---> db ---> result-app
+		(Python)		(Redis)			  (.NET) (PostgreSQL) (Node.js)
 
 Running voting application - using 'run'
 	Lets see how we can put this application stack together on a single Docker engine using 'docker run' commands
 	Lets assume that all the images of the application are already built and are available on Docker Repository
 	
-	Starting with the data layer
+	Starting with the data layer - redis
 		We want to run an instance of Redis
 			docker run -d --name redis redis
 		Now the in-memory DB portion of our app has the appropriate container
 		
-	Deploying the PostgreSQL database
+	Deploying the PostgreSQL database - postgres
 		We want to run an instance of PostgreSQL
-			docker run -d --name db postgres
+			docker run -d --name db postgres:9.4
 		Now the db portion of our app has the appropriate container
 	
-	Application services
+	Application services -voting-app
 		We want to create an instance of voting-app
 			docker run -d --name vote -p 5000:80 voting-app
 		Now the voting-app portion of our app has the appropriate container
@@ -68,7 +69,7 @@ Running voting application - using 'run'
 		Because this is a web server it has a UI instance running on port 80
 		We'll publish that port to 5000 on the host system so we can access it from a browser
 		
-	Application Services
+	Application Services -result-app
 		We want to create an instance of result-app
 			docker run -d --name result -p 5001:80 result-app
 		Now the result-app portion of our app has the appropriate container
@@ -76,7 +77,7 @@ Running voting application - using 'run'
 		Because this is a web server it has a UI instance running on port 80
 		We'll publish that port to 5001 on the host system so we can access it from a browser
 		
-	Application Services
+	Application Services - worker
 		We want to create an instance of worker
 			docker run --name worker worker
 			
@@ -88,8 +89,90 @@ Running voting application - using 'run'
 			We haven't told the worker and the result-app to use this particular instance of PostgreSQL database
 			Etc...
 			
-	Links
-		Command line option which can be used to link two containers together
+Links
+	Command line option which can be used to link two containers together
+	In our case the voting-app is dependent on the redis service when the web server starts
+	So we must link the voting-app container to the redis container
+		docker run -d --name vote -p 5000:80 --link redis:redis voting-app
+			--link <container_name>:<host>
+	What it's doing is it creates an entry into the etc/host file on the voting-app container, adding an entry with the host name redis with an internal IP of the redis container
 		
+	Let's link the remining containers
+		docker run -d --name result -p 5001:80 --link db:db result-app
+			
+	The worker application requires access to both the redis and PostgreSQL database
+	So we add two links to the worker application
+		One link to link the redis
+		The other link to link the PostgreSQL
+			docker run --name worker --link db:db --link redis:redis worker
+	Note that using links this way is deprecated and may be removed in the future
+	This is because newer concepts in Docker Swarm and networking supports better ways of achieving links
+				
 Running voting application - using 'compose up'
 	Lets see how we can put this application stack together on a single Docker engine using 'docker compose up'
+	Once we have the 'docker run' commands tested and ready it is easy to generate a docker-compose file
+	We start by using a dictionary of container names
+		We'll use the same names we used in the 'docker run' commands
+		
+	docker-compose.yml
+		redis:
+		db:
+		vote:
+		result:
+		worker:
+			Then under each container name we specify which image to use
+			
+		redis:
+			image: redis
+		db:
+			image: postgres:9.4
+		vote:
+			image: voting-app
+		result:
+			image: result-app
+		worker:
+			image: worker
+			The key is the image and the value is the name of the image to use
+			
+		Next we inspect the commands and see what other options were used
+		We published ports so lets move those ports under the respective containers
+		redis:
+			image: redis
+		db:
+			image: postgres:9.4
+		vote:
+			image: voting-app
+			ports:
+				- 5000:80
+		result:
+			image: result-app
+			ports:
+				-5001:80
+		worker:
+			image: worker
+			
+		Finally we are left with links
+		redis:
+			image: redis
+		db:
+			image: postgres:9.4
+		vote:
+			image: voting-app
+			ports:
+				- 5000:80
+			links:
+				- redis
+		result:
+			image: result-app
+			ports:
+				-5001:80
+			links:
+				- db
+		worker:
+			image: worker
+			links:
+				- redis
+				- db
+	
+	Now that we've finished writing our docker-compose file bringing up the stack is simple
+	Just run the 'docker compose up' command to bring up the entire application stack
