@@ -1,0 +1,95 @@
+Docker Compose
+	Compose is a tool for defining and running multi-container Docker applications
+	With Compose, you use a YML file to configure your application’s services
+	Then, with a single command, you create and start all the services from your configuration
+
+Using Docker Compose
+	Using Compose is basically a three-step process:
+		1. Define your app’s environment with a Dockerfile so it can be reproduced anywhere.
+		2. Define the services that make up your app in docker-compose.yml so they can be run together in an isolated environment.
+		3. Run 'docker compose up' and the Docker compose command starts and runs your entire app. You can alternatively run docker-compose up using the docker-compose binary.
+
+docker-compose.yml file
+	A docker-compose.yml file may look like this:
+		services:
+			web:
+				image: "mmumshad/simple-webapp"
+			database:
+				image: "mongodb"
+			messaging:
+				image: "redis:alpine"
+			orchestration:
+				image: "ansible"
+	This is a very simple version of the docker-compose.yml file and in reality your docker-compose.yml file will be more complicated than this
+	
+Sample application - voting application
+	Summary:
+		This is a sample voting application which provides an interface for a user to vote and another interface to show the results
+		This sample application is used to show how easy it is to set up an entire application stack consisting of diverse components in Docker
+		
+	Architecture/Dataflow:
+		voting-app
+			Web application developed in Python to provide the user with an interface to choose between two options - cat and dog
+		in-memory DB
+			When you make a selection(cat or dog) the vote is stored in redis
+			Redis, in this case, servers as a database in memory
+		worker:
+			This vote is then processed by the worker
+			The worker application takes the new vote and updates the persistent database, which is PostgreSQL
+			This application is written in .NET
+		db:
+			PostgreSQL, in our case, simply has a table with the number of votes for each category
+		result-app
+			The result of the vote is displayed in a web interface, which is another web application developed in Node.js
+			This application reads the results of the votes from the PostgreSQL database and displays it to the user
+		
+	Components of application:
+		voting-app ---> in-memory DB ---> worker ---> db ---> result-app
+
+Running voting application - using 'run'
+	Lets see how we can put this application stack together on a single Docker engine using 'docker run' commands
+	Lets assume that all the images of the application are already built and are available on Docker Repository
+	
+	Starting with the data layer
+		We want to run an instance of Redis
+			docker run -d --name redis redis
+		Now the in-memory DB portion of our app has the appropriate container
+		
+	Deploying the PostgreSQL database
+		We want to run an instance of PostgreSQL
+			docker run -d --name db postgres
+		Now the db portion of our app has the appropriate container
+	
+	Application services
+		We want to create an instance of voting-app
+			docker run -d --name vote -p 5000:80 voting-app
+		Now the voting-app portion of our app has the appropriate container
+		This will be the frontend portion of our application where users can cast their vote
+		Because this is a web server it has a UI instance running on port 80
+		We'll publish that port to 5000 on the host system so we can access it from a browser
+		
+	Application Services
+		We want to create an instance of result-app
+			docker run -d --name result -p 5001:80 result-app
+		Now the result-app portion of our app has the appropriate container
+		This will display the results to the user
+		Because this is a web server it has a UI instance running on port 80
+		We'll publish that port to 5001 on the host system so we can access it from a browser
+		
+	Application Services
+		We want to create an instance of worker
+			docker run --name worker worker
+			
+	Encountering an issue
+		This seems to be all good, however when you run the app you encounter an issue 'Internal Server Error'
+		Problem:
+			We have successfully run all the different containers but we haven't actually linked them together
+			As in, we haven't told the voting-app to use this particular instance of redis - there could be multiple redis instances running
+			We haven't told the worker and the result-app to use this particular instance of PostgreSQL database
+			Etc...
+			
+	Links
+		Command line option which can be used to link two containers together
+		
+Running voting application - using 'compose up'
+	Lets see how we can put this application stack together on a single Docker engine using 'docker compose up'

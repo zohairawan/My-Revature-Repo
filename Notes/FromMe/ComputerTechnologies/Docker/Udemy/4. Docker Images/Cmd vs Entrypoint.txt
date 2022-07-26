@@ -1,0 +1,130 @@
+Command vs Entrypoint
+	We will be looking at Command's arguments vs Entrypoints
+	Lets look at a simple scenario
+	
+Life of a container
+	Say you were to run a docker container from an ubuntu image
+	When you run the 'docker run ubuntu' command it runs an instance of ubuntu image and exits immediately
+	Why is that?
+	Unlike virtual machines, containers are not meant to host an operating system
+	Containers are meant to run a specific task/process such as host an instance of a web server, app server, database, or simply to carry out some kind of computation/analysis
+	Once the task is complete the container exits
+	The container only lives as long as the process inside it is alive
+	If the web service inside the container is stopped/crashed the container exits
+	So who defines what process is run within the container
+	It can be either the CMD instruction, ENTRYPOINT instruction, or both
+		
+CMD
+	CMD specifies the program that is to be executed when a docker container starts
+	It is used to specify the default command
+	If you look at the Dockerfile for docker images like nginx you'll see an instruction called cmd, which stands for command, that defines the program that will be run within the container when it starts the nginx image
+	For the nginx image it is the "nginx" command
+	For the MySQL image it is the "mysqld" command
+	Earlier we ran a container with a plain ubuntu operating system
+	If you look at the Dockerfile for the ubuntu image you'll see "bash" as defualt command
+	Bash isn't really a process like a web server or database server
+	It's a shell that listens for inputs from a terminal and if it can't find a terminal it exits
+	By default docker doesn't attach a terminal to a container when it is run, so the bash program does not find the terminal so it exits
+	Since the process that was started when the container was created finished the container exits as well
+
+Specifying different commands
+	How do you specidy different commands to start the container?
+		1.) Append the command + parameter
+				Append a command to the 'docker run' command and that way it overrides the default command specified within the image
+				Syntax:
+					docker run <image_I.D.> OR <image_name> [COMMAND]
+				For example:
+					docker run ubuntu sleep 5
+					In this case we run the 'docker run ubuntu' command with the sleep 5 command as the added option
+		
+		2.) Writing it in the Dockerfile
+				There are 2 different ways you can specify a CMD
+					Shell form ---> CMD command param1
+					JSON array format ---> ["command","param1"]
+						The first element in the array should be the executable followed by the parameter(s)
+						Do not specify the command and the parameter(s) together, the command and its parameter(s) should be seperate elements in the list
+				
+					Our previous example would look like this:
+						CMD sleep 5
+							OR
+						CMD ["sleep","5"]
+						
+			How can you make that change permanent?
+				You can create your own image from the base ubuntu image and specify a new CMD
+		
+	Putting it all together
+		Now you would build your new image and name it whatever you want
+			docker build -t ubuntu-sleeper .
+		Now run the image and you'll get the same results as if you had appended the command, it'll sleep for 5 seconds and exit
+			docker run ubuntu-sleeper
+
+ENTRYPOINT
+	Changing the parameters of a command
+		What if we want to change the number of seconds it sleeps?
+		Currently it is hardcoded to 5 seconds
+		We have different options to change the parameters
+			1.) Append the command + parameter
+					For example:
+						docker run ubuntu-sleeper sleep 10
+					This will overwrite the CMD inside the Dockerfile
+					
+			2.) Append just the parameter
+					We want to pass only the number of seconds the container should sleep
+					The sleep command should be invoked automatically
+					For example:
+						docker run ubuntu-sleeper 10
+					
+					This is where ENTRYPOINT instructions comes into play
+						The ENTRYPOINT instruction is like the CMD instruction as in you can specify the program that will be run when the container starts
+						Our Dockerfile would look like this:
+							ENTRYPOINT["sleep"]
+						Whatever you specify on the command line(in this case 10) will get appended to the ENTRYPOINT
+						So the command that will be run when the container starts is 'sleep 10'
+
+CMD vs ENTRYPOINT
+	CMD
+		Command line parameters passed will replace whatever is in the Dockerfile
+		Example:
+			Dockerfile:
+				FROM Ubuntu
+				CMD sleep 5
+			Terminal:
+				docker run ubuntu-sleeper sleep 10
+			Commmand at startup: sleep 10
+			
+	ENTRYPOINT
+		Command line parameters will get appended
+		Example:
+			Dockerfile:
+				FROM Ubuntu
+				ENTRYPOINT["sleep"]
+			Terminal:
+				docker run ubuntu-sleeper 10
+			Command at startup: sleep 10
+		
+		In the previous example what happens if you run the ubuntu-sleeper image without appending the number of seconds?
+			In that case the command at startup will be just 'sleep'(this will come from the ENTRYPOINT in the Dockerfile) and you will get an error saying "The operand is missing"
+			
+			How do we configure a default value for the command if one is not specified in the command line?
+				We would use both ENTRYPOINT as well as CMD
+				For example:
+					Dockerfile:
+						FROM Ubuntu
+						ENTRYPOINT["sleep"]
+						CMD["5"]
+				In this case the CMD will be appended to the ENTRYPOINT instruction
+				If you didn't specify any parameter(s) in the command line the command at startup: sleep 5
+				
+				If you do specify parameter(s) in the command line then they will override the CMD instruction in the Dockerfile
+					For example:
+						docker run ubuntu-sleeper 10
+					Command at startup: sleep 10
+					
+				In order for this to happen you should always specify the ENTRYPOINT and CMD instructions in the JSON format
+				
+Modifying ENTRYPOINT during runtime
+	If you want to override the ENTRYPOINT in the Dockerfile you can do so by using the entrypoint option in the 'docker run' command
+	For example:
+		docker run --entrypoint sleep2.0 ubuntu-sleeper 10
+			sleep2.0 is an imaginary command
+		Command at startup: sleep2.0 10

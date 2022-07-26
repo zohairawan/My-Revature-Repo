@@ -1,0 +1,38 @@
+Environment Variables
+	Suppose you have an application in which you set the color of the background to red
+		import os
+		from flask import Flask
+		app = Flask(__name__)
+		
+		color = "red"
+
+		@app.route("/")
+		def main():
+			return "Welcome!"
+
+		@app.route('/how are you')
+		def hello():
+			return 'I am good, how about you?'
+
+		if __name__ == "__main__":
+			app.run(host="0.0.0.0", port=8080)
+	The problem with this is that everytime you want to change the background color you have to go into the code to do it
+
+Changing hardcoded values into 'Environment Variables'
+	It is best practice to move hardcoded values out of the application code and into an environment variable
+		color = "red" ---> color = os.environ.get('APP_COLOR')
+	When you want to give the environment variable a value just do so at the command line
+		export APP_COLOR=blue; python app.py
+		
+Environment Variables in Docker
+	Once your application gets packaged in a Docker image, you will then run it with the docker run <image_I.D.> OR <image_name> command
+	However if you want to pass the environment variable as you did before you do as follows
+		docker run -e APP_COLOR=blue <image_I.D.> OR <image_name>
+	This will set an environment variable within the container
+	
+Inspect Environment Variables
+	How do you find the environment variable set on a container that's already running
+	Use the docker command
+		docker inspect <container_I.D> OR <container_name>
+	This will allow you to inspect the properties of a running container
+	Under the config section you'll find a list of environment variables set on the container
