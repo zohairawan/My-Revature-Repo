@@ -61,7 +61,11 @@ YAML vs JSON
 						},
 						{
 							"model": "X345ERT",
-							"location": "front-right"
+							"location": "rear-right"
+						},
+						{
+							"model": "X345ERT",
+							"location": "rear-left"
 						}
 					]
 				}
@@ -100,6 +104,7 @@ JSON PATH
 			
 	For any given data you apply a query and you get a result which is a subset of that data
 	
+$ Root Element
 	In the JSON world JSON PATH is a query language that when applied to a given JSON data set gets you results that are subsets of that data
 	For example:
 		{
@@ -149,6 +154,7 @@ JSON PATH
 	A query created for a JSON document with a dictionary at its root should start with a $
 	The . notation helps you select a particular field within a dictionary
 	
+JSON PATH - Dictionaries/Maps
 	Let's suppose the car and bus are encapsulated within a dictionary named vehicles
 		{
 			"vehicles": {
@@ -188,3 +194,124 @@ JSON PATH
 			[
 				"$120,000"
 			]
+
+JSON PATH - Arrays/Lists
+	[
+		"car",
+		"bus",
+		"truck",
+		"bike"
+	]
+	As you can see there are no {} so there are no dictionaries, this is a simple list of vehicles
+	The root element is an array as denoted by the []
+	How do we get the first element in this list?
+	To get a particular element from a list use the [] in your query and specify the position of the element you want
+	For example:
+		[
+			"car",
+			"bus",
+			"truck",
+			"bike"
+		]
+		
+		Get the 1st element
+		$[0]
+			["car"]
+		Remember to start with the $ for the root element
+		
+		Get the 4th element
+		$[3]
+			["bike"]
+			
+		Get the 1st and the 4th element
+		$[0,3]
+			["car", "bike"]
+			
+JSON PATH - Dictionaries & Lists
+	{
+		"car": {
+			"color": "blue",
+			"price": "20000",
+			"wheels": [
+				{
+					"model": "X345ERT",
+					"location": "front-right"
+				},
+				{
+					"model": "X345ERT",
+					"location": "front-left"
+				},
+				{
+					"model": "X345ERT",
+					"location": "rear-right"
+				},
+				{
+					"model": "X345ERT",
+					"location": "rear-left"
+				}
+			]
+		}
+	}
+		Here we have data of a car
+		It's properties are color,price,and wheels
+		Wheels is a list that has four items in it, each one being a dictionary
+		
+		Get the model of the 2nd wheel
+		$.car.wheels[1].model
+		
+		Our query starts with a $ for the root element
+		The root element is a dictionary denoted by the {}
+		Because it's a dictionary we know our query has to have a . following the $
+		Withing the root dictionary we have the car dictionary
+		Within the car we have wheels so that's next
+		To specify the second item within the array we use the [] followed by its postion
+			Note that we didn't use the . here because wheels is not a dictionary, it's an array
+		If we just leave it as $.car.wheels[1] this will give us the model and location information but we don't want all that, we just want the model
+		Because these details are a dictionary we can use the . notation again and add model
+		
+JSON PATH - Criteria
+	Lets look at applying some basic conditions or criteria to our query
+	Criteria helps to filter our query based on a condition
+	For example:
+		[
+			12,
+			34,
+			46,
+			1,
+			76,
+			47,
+			99,
+			10,
+			89
+		]
+		Suppose we want to get all numbers > 40
+		
+		Get all numbers > than 40
+		$[]
+		
+		We start with the $ symbol for root element
+		Since the root element is an array we use []
+		Inside the [] we want to define our criteria
+			$[Check if each item in the array > 40]
+			You can replace Check if ---> ?()
+			$[?()]
+				This is used to specify a criteria or filter
+				
+		Now we have
+			$[?(each item in the array > 40)]
+			each item in the array ---> @
+			$[?(@ > 40)]
+				The @ symbol in a criteria means each item in the array
+				
+		Other operators include:
+			== (@ == 40)
+			!= )@ != 40)
+			@ in [] (@ in [40,43,45])
+				This will return all the numbers that are either 40,43,45
+			@ nin [] (@ nin [40,43,45]
+				This will not return all the numbers that are either 40,43,45
+				
+	Lets look at the previous car example
+	Find the model of the rear-right wheel
+		$.car.wheels[?(@.location == "rear-right")].model
+		X345ERT
