@@ -43,13 +43,13 @@ First step towards putting your database in the cloud:
 -----Now we have to change the security settings-----
 10.) Services > EC2
 11.) Click on Security groups
-12.) Under "Security group name" find "default" > Click on the "Security group ID" associated with that
+12.) Under "Security group name" find Security groups associated with that EC2 instance > Click on the "Security group ID" associated with that
 13.) Inbound Rules > Edit inbound rules > Add rule
 14.) Type: PostgreSQL / Source: Custom / 0.0.0.0/0 > Save rules
 -----We have username and password but we still need our URL-----
 15.) RDS > Databases > Click circle next to database you just created and then click on database name
 16.) Connectivity & security > url is located underneath "Endpoint" database-1.cnzaphtm51gc.us-west-1.rds.amazonaws.com
-17.) You have to add prepend jdbc:postgresql:// and append :5432/postgres to the URL (5432 is the port number and i think postgres is either master username or database)
+17.) You have to prepend jdbc:postgresql:// and append :5432/postgres to the URL (5432 is the port number and i think postgres is either master username or database)
 18.) Should look like jdbc:postgresql://database-1.cnzaphtm51gc.us-west-1.rds.amazonaws.com:5432/postgres
 19.) We will implement this in pms-springboot application
 20.) The new URL will go into our projects application.properties file

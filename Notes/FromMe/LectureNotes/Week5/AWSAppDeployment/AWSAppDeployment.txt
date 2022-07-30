@@ -61,6 +61,7 @@ Navigate to your bucket and:
 click on it > Go to permissions > Block public access (bucket settings) Click Edit > Make sure Block all public access is unchecked
 Navigate to your JAR file in your bucket and:
 Click on JAR file > Permissions > Click on bucket owner enforced > Click on ACLs enabled > Click I acknowledge > Save changes
+!!!!!!!!!!!!MUST DO EVEN IF YOU ENABLED ACLs!!!!!!!!!!!!!!!!!!!!!!!!
 Navigate back to your JAR file and:
 Check mark box next to it > Actions > Make public using ACL > Click Make Public
 

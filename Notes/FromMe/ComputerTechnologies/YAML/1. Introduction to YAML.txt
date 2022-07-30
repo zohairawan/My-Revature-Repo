@@ -1,0 +1,120 @@
+What is YAML
+	A YAML file is used to represent data - configuration data
+	It is commonly used for configuration files and in applications where data is being stored or transmitted
+	
+Other Data Structure formats
+	XML
+	JSON
+	
+Example files
+	XML:
+		<Servers>
+			<Server>
+				<name>Server1</name>
+				<owner>John</owner>
+				<created>12232012</created>
+				<status>active</status>
+			</Server>
+		</Servers>
+		
+	JOSN
+		{
+			Servers: [
+				{
+					name: Server1,
+					owner: John,
+					created: 12232012,
+					status: active,
+				}
+			]
+		}
+	
+	YAML
+		Servers:
+			-	name: Server1
+				owner: John
+				created: 12232012
+				status: active
+				
+Building Blocks
+	Key Value Pair
+		Fundamentally, a file written in YAML consists of a set of key-value pairs
+		Each pair is written as key: value, where whitespace after the : is optional
+		Syntax:
+			key: value
+		Example:
+			Fruit: Apple
+			Vegetable: Carrot
+			Liquid: Water
+			Meat: Chicken
+		
+	Array/Lists
+		In certain circumstances it is necessary to provide multiple values or objects for a single key
+		More than one key-value pair can be mapped to a single key
+		Example:
+			Fruits:
+			-	Apple
+			-	Orange
+			-	Banana
+			
+			Vegetables:
+			-	Carrot
+			-	Tomato
+			- Cauliflower
+			
+			The - indicates that it's an element of an array
+			
+	Dictionary/Map
+		A set of properties grouped together under an item
+		Syntax:
+			Key/Property: Value
+		Example:
+			Banana:
+				Calories: 105
+				Fat: 0.4g
+				Carbs: 27g
+			
+			Grapes:
+				Calories: 62
+				Fat: 0.3g
+				Carbs: 16
+				
+Spaces
+	There is a 'parent' and 'child' relationship with data
+	A child is represented by being indented further in than the parent
+	For example:
+		Banana:
+			Calories: 105
+			Fat: 0.4g
+			Carbs: 27g
+		Banana is the parent and everything indented below it is the child
+	The number of spaces before each property is important in YAML
+	Siblings are properties that have the same number of spaces
+
+YAML Advanced
+	Key Value/Dictionary/Lists
+		Fruits:
+			-	Banana:
+					Calories: 105
+					Fat: 0.4g
+					Carbs: 27g
+					
+			-	Grapes:
+					Calories: 62
+					Fat: 0.3g
+					Carbs: 16
+		In this case we have a list of fruits and the elements of the list are banana and grape but each of these elements are further dictionaries containing nutrition information
+		
+YAML - Notes
+	List is an ordered collection
+		Fruits:				=/=		Fruits:
+			-	Apple					-	Apple
+			-	Orange					-	Banana
+			-	Banana					-	Orange
+	Dictionary is an unordered collection
+		Banana:					=		Banana
+			Calories: 105					Calories: 105
+			Fat: 0.4g						Carbs: 27g
+			Carbs: 27g						Fat: 0.4g
+	
+	# represents comments

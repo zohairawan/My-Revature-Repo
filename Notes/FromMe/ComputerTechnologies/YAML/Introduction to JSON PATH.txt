@@ -1,0 +1,190 @@
+Objectives
+	YAML
+	YAML vs JSON
+	JSON PATH
+		Dictionaries
+		Lists
+		Lists and Dictionaries
+		Criteria
+	Practice Exercise
+	
+YAML
+	Used to represent data in a structured format
+
+YAML vs JSON
+	They are very similar
+	While YAML uses indentation to organize data into lists and dictionaries JSON uses [] or {}
+	A set of properties defined with the same indentation form a dictionary in YAML whereas it is everything within a pair of {} in JSON
+	For example:
+		YAML
+			car:
+				color: blue
+				price: 20000
+				
+		JSON
+			{
+				"car": {
+					"color": "blue",
+					"price": "20000"
+				}
+			}
+			
+	While in YAML we use a - to denote an item in a list, in JOSN we use [] to define a list and each item within the list is seperated by a ,
+	For example:
+		YAML
+			car:
+				color: blue
+				price: 20000
+				wheels:
+					-	model: X345ERT
+						location: front-right
+					-	model: X345ERT
+						location: front-left
+					-	model: X345ERT
+						location: rear-right
+					-	model: X345ERT
+						location: rear-left
+						
+		JSON
+			{
+				"car": {
+					"color": "blue",
+					"price": "20000",
+					"wheels": [
+						{
+							"model": "X345ERT",
+							"location": "front-right"
+						},
+						{
+							"model": "X345ERT",
+							"location": "front-left"
+						},
+						{
+							"model": "X345ERT",
+							"location": "front-right"
+						}
+					]
+				}
+			}
+	You can easily convert data from one to the other using online coverters
+		JSON ---> YAML https://www.json2yaml.com/
+		YAML ---> JSON https://www.json2yaml.com/
+			This website allows you to convert either
+			
+JSON PATH
+	A query language that can help you parse data represented in JSON/YAML format
+	The same way you can use SQL to run queries
+	For example:
+		Cars Table
+		Car		Color	  Price		Year
+		1		Blue	  $20,000	1987
+		2		Red		  $22,000	1988
+		3		Yellow	  $18,000	1989
+		
+		Get color and price of cars
+		SELECT color,price FROM cars;
+			Color	  Price
+			Blue	  $20,000
+			Red		  $22,000
+			Yellow	  $18,000
+		
+		Get blue car details
+		SELECT * FROM cars
+		WHERE color is "Blue";
+			1		Blue	  $20,000	1987
+		
+		Get price of the blue car
+		SELECT price FROM cars
+		WHERE color is "Blue";
+			$20,000
+			
+	For any given data you apply a query and you get a result which is a subset of that data
+	
+	In the JSON world JSON PATH is a query language that when applied to a given JSON data set gets you results that are subsets of that data
+	For example:
+		{
+			"car": {
+				"color": "blue",
+				"price": "$20,000"
+			},
+			"bus": {
+				"color": "white",
+				"price": "$120,000"
+			}
+		}
+		
+		Get car details
+		$.car
+			[
+				{
+					"color": "blue",
+					"price": "$20,000"
+				}
+			]
+			
+		Get bus details
+		$.bus
+			[
+				{
+					"price": "$120,000"
+					"color": "white",
+				}
+			]
+		
+		Get car's color
+		$.car.color
+			[
+				"blue"
+			]
+		
+		Get bus price
+		$.bus.price
+			[
+				"$120,000"
+			]
+	
+	The $ denotes the root element
+	As we said earlier anything within {} is a dictionary
+	So 'car' and 'bus' are two properties of a dictionary or two dictionaries within a dictionary 
+	A query created for a JSON document with a dictionary at its root should start with a $
+	The . notation helps you select a particular field within a dictionary
+	
+	Let's suppose the car and bus are encapsulated within a dictionary named vehicles
+		{
+			"vehicles": {
+				"car": {
+					"color": "blue",
+					"price": "$20,000"
+				},
+				"bus": {
+					"color": "white",
+					"price": "$120,000"
+				}
+			}
+		}
+		
+		Get car details
+		$.vehicles.car
+			{
+				"color": "blue",
+				"price": "$20,000"
+			}
+		
+		Get bus details
+		$.vehicles.bus
+			{
+				"color": "white",
+				"price": "$120,000"
+			}
+		
+		Get car's color
+		$.vehicles.car.color
+			[
+				"blue"
+			]
+		
+		Get bus price
+		$.vehicles.bus.price
+			[
+				"$120,000"
+			]
