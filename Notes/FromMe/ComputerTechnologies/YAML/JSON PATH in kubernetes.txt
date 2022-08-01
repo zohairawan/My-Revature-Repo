@@ -1,0 +1,155 @@
+JSON PATH in kubernetes
+
+Objectives
+	Why JSON PATH
+	JSON PATH in KubeCtl
+	View and interpret KubeCtl output in JSON format
+	How to use JSON PATH with KubeCtl
+	JSON PATH examples
+	Loops-Range
+	Custom Columns
+	Sort
+	
+Why JSON PATH
+	When you're working with production environments for kubernetes you'll need to view information about
+		Large Data sets
+			100s of Nodes
+			1000s of Pods, Deployments, ReplicaSets
+		You'll be using kubectl utility to view information about these objects
+		Viewing information by manually going through these resource is an overwhelming task
+		kubectl offers a JSON option in which you can filter data and retrieve the desired information
+
+KubeCtl
+	kubectl is a kubernetes CLI used for reading/writing kubernetes objects
+	Everytime you run a kubectl command it interacts with the kubernetes API through the kube-apiserver
+	The kube-apiserver speaks the JSON language so it returns the requested information in a JSON format
+	The kubectl utility upon receiving the information in a JSON format converts it into a human readable format and prints it out to our screen
+		kubctl get nodes
+		kubectl -----> kube-apiserver
+		kubectl <----- kube-apiserver
+	During that process alot of information that came in JSON format is hidden in an effort to make the output readable by showing only the necessary inormation
+	If you'd like to see additional details you can run the command:
+		kubectl get nodes -o wide
+		This prints more details but is still not complete
+		There's still alot more details being hidden
+		
+KubeCtl - JSON PATH 
+	If you want to view even more details none of the built in commands can give you this detail
+	That's where JSON PATH query comes into play
+	With JSON PATH query you can filter and format the output of a command as you like
+	
+How to use JSON PATH with KubeCtl
+	In order to get started with JSON PATH in kubectl you must follow these 4 steps:
+		1. Identify the kubectl command
+			You need to know the command that will give you the required information in the raw format
+		
+		2. Familiarize with JSON ouput
+			Once you identify the command inspect its output in JSON format, for this add the '-o json' option
+			It will print the ouput in JSON format
+		
+		3. Form the JSON PATH query
+			Look through the structure of the JSON document(which you get when running the -o json option) and form the JSON PATH query that will retrieve the required information
+		
+		4. Use the JSON PATH query with kubectl command
+			Use the query you developed with the same kubectl command
+				kubectl get pods -o=jsonpath='{query}'
+		
+		You can run multiple queries at the same time
+			kubectl get nodes -o=jsonpath='{query1}{query2}'
+			
+		The output will be on a single line though which does not look very good, if you want to add a new line do this:
+			kubectl get nodes -o=jsonpath='{query1}{"\n"}{query2}'
+			{"\n"} - new line
+			{"\t"} - tab
+			
+JSON PATH Examples
+	kubectl get nodes -o=jsonpath='{.items[*].metadata.name}'
+		master node01
+		
+	kubectl get nodes -o=jsonpath='{.items[*].status.capacity.cpu}'
+		4 4
+		
+	kubectl get nodes -o=jsonpath='{.items[*].metadata.name}{.items[*].status.capacity.cpu}'
+		master node01 4 4
+		
+	kubectl get nodes -o=jsonpath='{.items[*].metadata.name}{"\n"}{.items[*].status.capacity.cpu}'
+		master node01
+		4		4
+		
+	Note that you don't need to add the $ to the beginning as kubectl does this for you
+			
+Loops - Range
+	The previous queries would've given your output as follows:
+		master node01
+		4		4
+		
+	We don't want it to look like this though, we want it as follows:
+		master 4
+		node01 4
+	The node names in one column and the cpu counts in the other
+	This is where we use loops to iterate through items in the list and print properties of each item
+	We'll focus on the JSON query part alone for now
+	
+	When we run the kubectl get nodes command we get a list of items, each item being a node
+	We want to say:
+		FOR EACH NODE
+		  PRINT THE NODE NAME \t PRINT CPU COUNT \n
+		END FOR
+	This will give us our desired output
+	So let's translate this to our query
+	
+	FOR EACH ---> 'range' keyword
+	'{range.items[*]}
+		This means 'for each item'
+		
+	{.metadata.name}
+		This will print the node name
+		
+	{"\t"}
+		This will add a tab
+		
+	{.items[*].status.capacity.cpu}
+		This prints the CPU count
+		
+	{"\n"}
+		This will add a new line
+		
+	{end}'
+		This ends the loop
+		
+	Merging it together it should look like this:
+		'{range.items[*]}{.metadata.name}{"\t"}{.items[*].status.capacity.cpu}{"\n"}{end}'
+		
+	Adding it to the command it should look like this:
+		kubectl get nodes -o=jsonpath='{range.items[*]}{.metadata.name}{"\t"}{.items[*].status.capacity.cpu}{"\n"}{end}'
+		
+JSON PATH for Custom Columns
+	You can also use JSON PATH for printing custom columns with kubectl
+		kubectl get nodes -o=custom-columns=<COLUMN NAME>:<JSON PATH>
+	At times this is an easier approach when compared to the loop method
+	Lets look at the previous example
+	What we really want is to print them as seperate columns, one column with the node name and the other with the cpu count
+	Instead of using the jsonpath option directly with the command we can use the custom-columns option 
+	The custom-columns option takes a set of column names and JSON path options
+	
+	For example, for the first column the column name is NODE, the JSON PATH corresponding to the node name is .metadata.name
+		kubectl get nodes -o=custom-columns=<COLUMN NAME>:<JSON PATH>
+		kubectl get nodes -o=custom-columns=NODE:.metadata.name
+			Note that you omit the items section of the query because the custom-columns assumes the query is for each item in the list
+		This prints the first column with the given column name and its data
+			NODE
+			master
+			node01
+			
+		Adding more columns
+			You can add additional columns by adding an additional column and JSON PATH pairs seperated by a ,
+				kubectl get nodes -o=custom-columns=NODE:.metadata.name, CPU:.status.capacity.cpu
+				NODE	CPU
+				master	4
+				node01	4
+				
+JSON PATH - Sort
+	JSON PATH can also be used while sorting objects by specifying the 'sort-by' option
+	You can sort the output based on the value of a property from the JSON formatted properties of each item
+		kubectl get nodes --sort-by=.metadata.name
+		kubectl get nodes --sort-by=.status.capacity.cpu

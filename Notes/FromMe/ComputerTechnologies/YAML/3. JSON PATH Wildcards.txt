@@ -1,0 +1,55 @@
+JSON PATH - Wildcards
+	{
+		"car": {
+			"color": "blue",
+			"price": "$20,000"
+		},
+		"bus": {
+			"color": "white",
+			"price": "$120,000"
+		}
+	}
+	Get car's color
+	$car.color
+	
+	Get bus's color
+	$.bus.color
+	
+	Get all colors
+	$.*.color
+	
+	Get all prices
+	$.*.price
+	
+	{
+		"car": {
+			"color": "blue",
+			"price": "20000",
+			"wheels": [
+				{
+					"model": "X345ERT",
+					"location": "front-right"
+				},
+				{
+					"model": "X345ERT",
+					"location": "front-left"
+				},
+				{
+					"model": "X345ERT",
+					"location": "rear-right"
+				},
+				{
+					"model": "X345ERT",
+					"location": "rear-left"
+				}
+			]
+		}
+	}
+	Get 1st wheel's model
+	$[0].model
+	
+	Get 4th wheel's model
+	$[3].model
+	
+	Get all wheel's model
+	$[*].model

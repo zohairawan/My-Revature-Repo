@@ -1,0 +1,167 @@
+Voting Application Example with Docker Compose
+	In this demo we'll look at Docker Compose
+	We'll look at how to use Docker Compose to deploy a complex application stack
+	We'll use the same example-voting-application and this time we'll deploy it using Docker Compose
+	
+Objectives
+	1. Install Docker Compose
+	2. Create compose file
+	3. Run Docker Compose
+	
+Install Docker Compose
+	Docker Compose does not get installed by default when you install Docker
+	You can find the instructions for whichever OS you need
+		https://docs.docker.com/compose/install/compose-desktop/
+		
+Create compose file
+	Create a file named 'docker-compose.yml'
+	First thing we'll do is start by defining services
+		Identify all the services required and list them as root properties in the file
+		We can identify which services we need by looking at the architecture of the application(diagram can be found on application's github repo)
+	
+	Format #1:
+	redis:
+	  image: redis
+
+	db:
+	  image: postgres:9.4
+	  environment:
+		- POSTGRES_PASSWORD=postgres
+
+	vote:
+	  image: voting-app
+	  ports:
+		- 5000:80
+	  links:
+		- redis
+
+	worker:
+	  image: worker-app
+	  links:
+		- db
+		- redis
+
+	result:
+	  image: result-app
+	  ports:
+		- 5001:80
+	  links:
+		- db
+	If you don't include - POSTGRES_PASSWORD=postgres you will get an error saying:
+		 Creating desktop_worker_1 ... error
+		 Creating desktop_result_1 ... error
+		 ERROR: for desktop_worker_1  Cannot start service worker: Cannot link to a non running container: /desktop_db_1 AS /desktop_worker_1/db
+		 ERROR: for desktop_result_1  Cannot start service result: Cannot link to a non running container: /desktop_db_1 AS /desktop_result_1/db
+		 ERROR: for worker  Cannot start service worker: Cannot link to a non running container: /desktop_db_1 AS /desktop_worker_1/db
+		 ERROR: for result  Cannot start service result: Cannot link to a non running container: /desktop_db_1 AS /desktop_result_1/db
+		 ERROR: Encountered errors while bringing up the project.
+		 
+	Format #2:
+	redis:
+	  image: redis
+	 
+	db:
+	  image: postgres:9.4
+	  environment:
+		- POSTGRES_HOST_AUTH_METHOD=trust
+	 
+	vote:
+	  image: voting-app
+	  ports:
+		- 5000:80
+	  links:
+		- redis
+	 
+	worker:
+	  image: worker-app
+	  links:
+		- db
+		- redis
+	 
+	result:
+	  image: result-app
+	  ports:
+		- 5001:80
+	  links:
+		- db
+		
+Formatting Note
+	Format #1
+	environment:
+	  MYSQL_ROOT_PASSWORD: rootpassword
+
+	Format #2
+	environment:
+	  - MYSQL_ROOT_PASSWORD=rootpassword
+
+Docker Compose version 3
+	The docker-compose file we wrote above was version 1 of the docker-compose file
+	Now, let's use version 3
+	
+	version: "3"
+	services:
+	  redis:
+	    image: redis
+	 
+	  db:
+	    image: postgres:9.4
+	    environment:
+		  - POSTGRES_HOST_AUTH_METHOD=trust
+	 
+	  vote:
+	    image: voting-app
+	    ports:
+		  - 5000:80
+	 
+	  worker:
+	    image: worker-app
+	 
+	  result:
+	    image: result-app
+	    ports:
+		  - 5001:80
+	
+	OR
+	
+	version: "3"
+	services:
+	  redis:
+		image: redis
+
+	  db:
+		image: postgres:9.4
+		environment:
+		  POSTGRES_USER: postgres
+		  POSTGRES_PASSWORD: postgres
+
+	  vote:
+		image: voting-app
+		ports:
+		  - 5000:80
+
+	  worker:
+		image: worker-app
+
+	  result:
+		image: result-app
+		ports:
+		  - 5001:80
+
+
+	With version 3 when you deploy the application it will automatically create a network for these containers and connect all containers/services to that network
+	That network also takes care of DNS resolution
+	All containers within this application will be able to reach each other using service names that are given in the docker-compose file
+	For example the vote app will be able to reach the redis or db app with the host name redis or db
+	So we no longer need the 'links' section
+	This is now a valid version 3 docker-compose file
+	
+	Docker-compose will use the name of the directory it's in for the name of the project
+	All services created by docker-compose will have this project name prefixed to it
+	For example I stored the docker-compose file in a directory called code within the example-voting-application directory
+	When I ran the docker-compose up command I got the following output
+		Creating network "code_default" with the default driver
+		Creating code_redis_1  ... done
+		Creating code_db_1     ... done
+		Creating code_vote_1   ... done
+		Creating code_worker_1 ... done
+		Creating code_result_1 ... done

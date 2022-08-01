@@ -1,0 +1,43 @@
+JSON PATH - Lists
+	We will get introduced to some of the advanced options available while working with JSON PATHS queries specifically with lists
+	
+	For example:
+		[
+			"Apple",
+			"Google",
+			"Microsoft",
+			"Amazon",
+			"Facebook",
+			"Coca-Cola",
+			"Samsung",
+			"Disney",
+			"Toyota",
+			"McDonalds"
+		]
+		
+		Get the 1st element
+		$[0]
+		
+		Get the 4th element
+		$[3]
+		
+		Get the 1st and 4th element
+		$[0,3]
+		
+		Get the 1st to 4th element
+		$[0:3]
+			Apple, Google, Microsoft
+			3rd element in not inclusive
+			
+		Starting at the 1st get every other element
+		$[0:8:2]
+			Apple, Microsoft, Facebook, Samsung
+			The 2 means increment the counter twice before getting the next item, in other words skip/hop over one item
+			
+		Get the last element
+		$[-1] ---> Does not work in certain implementations though
+		$[-1:] OR $[-1:0]
+			The last element in an array has index -1, second to last is -2, etc...
+			
+		Get the last 3 elements
+		$[-3:]

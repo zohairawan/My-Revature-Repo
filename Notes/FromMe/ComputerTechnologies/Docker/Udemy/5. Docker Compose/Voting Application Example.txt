@@ -1,0 +1,115 @@
+Voting Application Example
+	In this demo we're going to look at the architecture and source code
+	We're going to understand how it's put together and we'll deploy it using docker
+	Initially we'll deploy it with docker run, later on we'll use docker compose to deploy it
+	
+Link to application
+	https://github.com/dockersamples/example-voting-app
+	
+App Architecture
+	voting-app ---> redis ---> worker ---> db ---> result-app
+	(Python)	    (Redis)	   (.NET) (PostgreSQL) (Node.js)
+
+Understanding the app
+	It's an app where you cast your vote between dog and cat
+	The number of votes for dog and cat are then shown to the user
+	Out of the 5 components 2 are already built(redis and PostgreSQL)
+	The other 3 are user made
+	There are 3 folders for the user made components
+		They contain:
+			Source code
+			Dockerfile
+			
+voting-app component
+	Source code is located in app.py
+	Purpose of app.py:
+		It's a flask based application
+		Has POST and GET request
+		Get request sends an index.html which shows the actual web page where you cast a vote
+		When the user casts a vote it comes to the POST section and establishes a connectivity to redis and stores the vote information in redis
+		The host that it tries to connect to is a host named redis
+		
+	Dockerfile
+		Created from a python:3.9-slim image
+		Sets the working directory to /app(which is located inside the container)
+		Copies a requirements.txt to /app
+		Installs the requirements via pip install -r requirements.txt
+		Copies over the source code
+		Exposes port 80
+		Specifies commands to be run once app starts
+		
+worker component
+	Source code is located in Worker.java
+	Purpose of Worker.java
+		.NET bases application
+		Tries to connect to redis and postgres database
+		A while loop where it waits for the votes from redis
+		Whenever a vote is cast and it's available in redis it takes that vote and updates the table in postgres database
+		
+	Dockerfile
+		Created from mcr.microsoft.com/dotnet/core/sdk:3.1 image
+		Sets the working directory to /Worker
+		Copies over source code
+		
+result-app component
+	Source code is located in server.js
+	Purpose of server.js
+		It establishes a connectivity to postgres database
+		Connects to host db
+		Reads values from database and displays them on the UI
+		
+	Dockerfile
+		Created from node:10-slim image
+		Adds curl for healthcheck
+		Adds Tini for proper init of signals
+		Copies over dependencies
+		Runs npm to install those dependencies
+		Copies source code over
+		Specifies commands to be run once app starts
+		
+Deploying the application
+	1. Clone source code repo to local system
+		git clone https://github.com/dockersamples/example-voting-app.git
+		cd example-voting-app/
+	
+	2. Running redis image
+		docker run -d --name redis redis
+		We don't have to build this image because it is already built for us, we just have to run the image
+		
+	3. Building voting-app image
+		We need to create a docker image for the voting-app
+		Go into the vote directory
+			cd vote/
+		Build docker image of voting-app
+			docker build -t voting-app .
+	
+	4. Running voting-app image
+		docker run -d --name voting-app --link redis:redis -p 5000:80 voting-app
+		Go to browser and type 'localhost:5000'
+		We have to create a link between this container and the redis container because this container needs to establish a connectivity to the redis container
+	
+	5. Run postgres database
+		In order to find out the version of postgres to use go to the example-voting-app github repo, click on the docker-compose file and look at which version of postgres they're using
+		docker run -d --name db -e POSTGRES_PASSWORD=postgres postgres:9.4
+		We have to run this container before the worker container because the worker container needs to link to this, so we want it to already exist in order to create the link
+		We have to include the -e POSTGRES_PASSWORD=postgres because otherwise it will exit immediately
+		I got the password from the Worker.java file from the worker folder
+		
+	6. Building woker-app image
+		We need to create a docker image for the worker-app
+		Go into the worker directory
+		cd worker
+		docker build -t worker-app .
+	
+	7. Running worker-app image
+		docker run -d --name worker-app --link redis:redis --link db:db worker-app
+		
+	8. Building result-app image
+		We need to create a docker image for the result-app
+		Go into the result directory
+		cd result
+		docker build -t result-app .
+		
+	9. Running the result-app image
+		docker run -d --name result-app --link db:db -p 5001:80 result-app
+		Go to browser and type 'localhost:5001'
