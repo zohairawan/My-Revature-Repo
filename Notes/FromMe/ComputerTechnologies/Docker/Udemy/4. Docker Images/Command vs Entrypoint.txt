@@ -1,4 +1,0 @@
-Command vs Entrypoint
-	We will be looking at Command's arguments vs Entrypoints
-	Lets look at a simple scenario
-		Say you were to run a docker container from an ubuntu image
