@@ -1,34 +1,34 @@
-*****Docker Introduction*****
-Why do you need it?
-	Imagine you have an end to end application that uses different technologies like:
-		Web server (Node JS)
-		Database (mongoDB)
-		Messaging (redis)
-		Orchestration (Ansible)
-	
-	IMAGE(How Docker Looks)
-	You may have a lot of issues developing this application with all the different componenents
-	Issues like:
-		Compatibility between services and underlying OS
-			Must ensure that all these different services were compatible with the version of OS you're planning to use
-		Compatibility between services and libraries/dependencies on OS
-			One service may require one version of a dependent library whereas another service requires another version
-		The issues above will inevitably change the architecture of your application
-			Everytime something changes you'll have to go through the same process of checking for Compatibility between services and underlying OS/Compatibility between services and libraries/dependencies on OS
-		This compatibility matrix issue is usually known as "The matrix from Hell"
-			
-	Without Docker you may run into:
-		Compatibility/Dependency issues
-		Long setup time
-		Different Dev/Test/Prod environments
-	
-	With Docker you can:
-		Avoid the compatibility issue
-		Modify/change the components without affecting the other components
-		Modify/change the components without having to modify the underlying OS
-		Run each component in a seperate container with its own libraries and dependencies
-		Containerize applications
-		Run each service with its own dependencies in seperate containers
+Docker Introduction
+	Why do you need it?
+		Imagine you have an end to end application that uses different technologies like:
+			Web server (Node JS)
+			Database (mongoDB)
+			Messaging (redis)
+			Orchestration (Ansible)
+		
+		IMAGE(How Docker Looks)
+		You may have a lot of issues developing this application with all the different componenents
+		Issues like:
+			Compatibility between services and underlying OS
+				Must ensure that all these different services were compatible with the version of OS you're planning to use
+			Compatibility between services and libraries/dependencies on OS
+				One service may require one version of a dependent library whereas another service requires another version
+			The issues above will inevitably change the architecture of your application
+				Everytime something changes you'll have to go through the same process of checking for Compatibility between services and underlying OS/Compatibility between services and libraries/dependencies on OS
+			This compatibility matrix issue is usually known as "The matrix from Hell"
+				
+		Without Docker you may run into:
+			Compatibility/Dependency issues
+			Long setup time
+			Different Dev/Test/Prod environments
+		
+		With Docker you can:
+			Avoid the compatibility issue
+			Modify/change the components without affecting the other components
+			Modify/change the components without having to modify the underlying OS
+			Run each component in a seperate container with its own libraries and dependencies
+			Containerize applications
+			Run each service with its own dependencies in seperate containers
 
 What are containers?
 	IMAGE(Containers)
