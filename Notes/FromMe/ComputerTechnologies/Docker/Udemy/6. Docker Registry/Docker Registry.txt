@@ -1,0 +1,64 @@
+Docker Registry
+	Central repository for all Docker images
+	
+Image
+	Let's look at a simple nginx container
+		> docker run nginx
+		This will run an instance of the nginx image
+		
+		Let's take a closer look at that image name
+			The name is nginx but what is this image and where is it pulled from?
+			This name follows Docker's image naming convention
+			image: nginx
+				   Image/
+				   Repository name
+			nginx is the image/repository name
+				   
+			In reality it's actually:
+			image: nginx/nginx
+				   User/ Image/
+				 Account Repository
+			The first nginx is the user/account name and the second nginx is the image/repository name
+			If you don't provide an user/account name it assumes that it's the same as the given name
+			The user/account name is usually your dockerhub account name or if it's an organization it's the name of your organization
+			
+Default Registry
+	Since we haven't specified the location where these images are to be pulled from it's assumed to be on Docker's default registry
+	Docker's default registry Docker Hub, the DNS name for which is docker.io
+	image: docker.io/nginx/nginx
+		   Regisry   User  Image
+	The registry is where all the images are stored
+	Whenever you create a new image or update an existing one you push it to the registry and everytime anyone deploys this app it is pulled from that registry
+	These are all publicly accessible images that anyone can download
+	
+Private registry
+	When you have apps built in-house that shouldn't be made available to the public you should host an internal private registry
+	You may choose to make a repository private so that it can only be accessed using a set of credentials
+	
+Running image from private registry
+	To run a container from an image from a private registry you first login to your private registry
+		> docker login private-registry.io
+	Then you input your credentials(username and password)
+	Once successful run the app using the private-registry as part of the image name
+		> docker run private-registry.io/apps/internal-app
+	If you didn't login to the private registry it will say that the image cannot be found, so remember to login before pulling/pushing to a private registry
+	
+Deploy Private Regisry
+	How do you deploy your own private registry within your organization?
+	The Docker Registry is itself another application and is available as a Docker image
+	The name of the image is registry and it exposes the API on port 5000
+		> docker run -d --name registry -p 5000:5000 registry:2
+		
+	Now that you have your custom registry running, how do you push your own image to it?
+		> docker image tag my-image localhost:5000/my-image
+		Tag the image with the private registry URL in it - in this case since it's running on the same Docker host we can use localhost:5000 followed by the image name
+		
+		We can then push the image to the local private registry with a new image name with the docker registry information in it
+		> docker push localhost:5000/my-image
+		
+		From there on we can pull that image from anywhere within this network using either:
+		> docker pull localhost:5000/my-image
+			If you're on the same host
+			
+		> docker pull 192.168.56.100:5000/my-image
+			Or use the IP or domain name of your docker host if you're accessing from another host in your environment
